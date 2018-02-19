@@ -11,6 +11,7 @@
         "tsc"
     ],
     "compilerOptions": {
+        //This is the output destination for the compiled TypeScript server file
         "outDir": "./tsc",
         "sourceMap": true,
         "declaration": false,

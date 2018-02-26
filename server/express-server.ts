@@ -5,6 +5,8 @@ import { Paths } from './paths';
     IMPORT ROUTE FILES HERE. EXAMPLE:
 */
 import * as ExampleRoute from './routes/example-route';
+import * as OrderRoute from './routes/order';
+
 
 class ExpressServer {
     public express:express.Application;
@@ -24,7 +26,7 @@ class ExpressServer {
 
     private middleware():void {
         this.express.use(this.cors);
-        this.express.use(express.static(`${Paths.__root}\\dist`));
+        //this.express.use(express.static(`${Paths.__root}\\dist`));
     }
 
     private routes():void {
@@ -35,9 +37,11 @@ class ExpressServer {
         */
         router.use('/example', ExampleRoute);
 
+        router.use('/order', OrderRoute);
+
         // Re-direct to Angular front-end.
         router.get('*', (req, res) => {
-            res.sendFile(`${Paths.__root}\\dist\\index.html`);
+            //res.sendFile(`${Paths.__root}\\dist\\index.html`);
         });
     }
 }

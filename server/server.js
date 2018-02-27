@@ -8,9 +8,11 @@ const port = process.env.PORT || process.argv[2] || 3000;
 // Route imports.
 const orderRoute = require('./routes/order.route');
 
-//mongoose.connect('mongodb://<user>:<pass>@<url>:<port>/<database>');
-//mongoose.connect('mongodb://elliot:Rugger126@ds233238.mlab.com:33238/adv-web-2-db');
-mongoose.connect('mongodb://localhost:27017/advanced_web');
+// mongoose.connect('mongodb://<user>:<pass>@<url>:<port>/<database>');
+// mongoose.connect('mongodb://elliot:Rugger126@ds233238.mlab.com:33238/adv-web-2-db');
+// mongoose.connect('mongodb://localhost:27017/advanced_web');
+// mongoose.connect('mongodb+srv://elliot:Rugger126!!??@advancedwebmongodb-levvn.mongodb.net/AdvancedWebMongoDB');
+mongoose.connect('mongodb://admin:abc123@139.59.163.216:8080');
 
 // Set CORS and other stuff.
 const CORS = (req, res, next) => {

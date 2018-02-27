@@ -1,0 +1,87 @@
+{
+	"info": {
+		"name": "Advanced Web #2",
+		"_postman_id": "abc6f4cb-68cd-4948-3042-b5519367feaa",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bb0bef62-8621-400e-b0d9-c5f4edcc3a86",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "orderId",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "userId",
+							"value": "3",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "tableId",
+							"value": "4",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "content[0]",
+							"value": "1",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "content[1]",
+							"value": "2",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "content[2]",
+							"value": "3",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:{{port}}/order",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"order"
+					]
+				},
+				"description": "Add a new order."
+			},
+			"response": []
+		}
+	]
+}

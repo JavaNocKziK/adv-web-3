@@ -9,8 +9,28 @@ const MSGNEEDTOBELOGGED = "You need to be logged in to do this.";
 const MSGNEEDTOBEADMIN = "You require admin level security to do this.";
 const MSGNEEDTOBEUSER = "You need to be logged in as this user, or an admin to do this.";
 
+
+router.route('/login')
+    .post((req, res) => {
+        // Login to user account.
+        UsersController.login(req.body)
+            .then((data) => {
+                req.session.userId = data.message.id;
+                req.session.userSecurity = data.message.security;
+                res.json(data);
+            })
+            .catch((err) => res.json(err));
+    });
+
+router.route('/logout')
+    .get((req, res) => {
+        // Logout of user account.
+        res.json({"message": "logout"});
+    });
+
 router.route('/')
-    .get((req, res, next) => {
+    .get((req, res) => {
+        console.log('GET /user/');
         // Get all users.
         if(!req.session.userId) {
             return res.status(401).send(MSGNEEDTOBELOGGED);
@@ -70,28 +90,6 @@ router.route('/:id')
         }
         UsersController.delete(req.params.id)
             .then((data) => res.json(data))
-            .catch((err) => res.json(err));
-    });
-
-router.route('/login')
-    .post((req, res) => {
-        // Login to user account.
-        UsersController.login(req.body)
-            .then((data) => {
-                req.session.userId = data.message.id;
-                req.session.userSecurity = data.message.security;
-                res.json(data);
-            })
-            .catch((err) => res.json(err));
-    });
-
-router.route('/logout')
-    .post((req, res) => {
-        // Logout of user account.
-        UsersController.logout(req.body)
-            .then((data) => {
-                res.json(data);
-            })
             .catch((err) => res.json(err));
     });
 

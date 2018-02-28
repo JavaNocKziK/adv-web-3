@@ -1,4 +1,5 @@
 const express = require('express');
+const session = require('express-session');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
@@ -27,6 +28,11 @@ app.use(express.static(path.join(__dirname, 'dist')));
 app.use(CORS);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(session({
+    secret: 'ass2',
+    resave: true,
+    saveUninitialized: false
+}));
 
 // Routes
 app.use('/order', orderRoute);

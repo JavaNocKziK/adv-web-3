@@ -41,24 +41,7 @@ router.route('/:id')
         if(!req.session.userId) {
             return res.status(401).send(MSGNEEDTOBELOGGED);
         }
-        if(
-            (req.session.userId !== req.params.id)
-        ) {
-            /*
-            We only want to go here if:
-                - We are not an admin (explicit)
-                - We are not the user logged in (implicit)
-
-            If user is admin we don't care if they're the user, let them do it.
-            If user is NOT admin then we do care if they're the user.
-
-            ...
-
-            If we are NOT admin and NOT user, then we want to be here.
-
-            (req.session.userId !== req.params.id) -> Are we the same person? If FALSE we cannot view (unless admin).
-
-            */
+        if((req.session.userId !== req.params.id) && (req.session.userSecurity != 0)) {
             return res.status(401).send(MSGNEEDTOBEUSER);
         }
         UsersController.get(req.params.id)
@@ -70,10 +53,7 @@ router.route('/:id')
         if(!req.session.userId) {
             return res.status(401).send(MSGNEEDTOBELOGGED);
         }
-        if(
-            !(req.session.userSecurity == 0) ||
-            !(req.session.userSecurity !== 0 && (req.session.userId == req.params.id))
-        ) {
+        if((req.session.userId !== req.params.id) && (req.session.userSecurity != 0)) {
             return res.status(401).send(MSGNEEDTOBEUSER);
         }
         UsersController.update(req.params.id, req.body)
@@ -85,8 +65,8 @@ router.route('/:id')
         if(!req.session.userId) {
             return res.status(401).send(MSGNEEDTOBELOGGED);
         }
-        if(req.session.userSecurity !== 0 || (req.session.userId !== req.params.id)) {
-            return res.status(401).send(MSGNEEDTOBEUSER);
+        if(req.session.userSecurity != 0) {
+            return res.status(401).send(MSGNEEDTOBEADMIN);
         }
         UsersController.delete(req.params.id)
             .then((data) => res.json(data))

@@ -7,6 +7,7 @@ const port = process.env.PORT || process.argv[2] || 3000;
 
 // Route imports.
 const orderRoute = require('./routes/order.route');
+const userRoute = require('./routes/user.route');
 
 // mongoose.connect('mongodb://<user>:<pass>@<url>:<port>/<database>');
 // mongoose.connect('mongodb://elliot:Rugger126@ds233238.mlab.com:33238/adv-web-2-db');
@@ -29,6 +30,7 @@ app.use(bodyParser.json());
 
 // Routes
 app.use('/order', orderRoute);
+app.use('/user', userRoute);
 
 // Send all requests to our dist.
 app.get('*', (req, res) => {

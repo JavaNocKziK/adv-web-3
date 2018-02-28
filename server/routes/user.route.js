@@ -1,12 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const MSG = require('../classes/messages');
 
 // Controllers
 const UsersController = require('../mongodb/controllers/user.controller');
-
-// Messages
-const MSGNEEDTOBEADMIN = "You require admin level security to do this.";
-const MSGNEEDTOBEUSER = "You need to be logged in as this user, or have admin level security to do this.";
 
 router.route('/login')
     .post((req, res) => {
@@ -42,7 +39,7 @@ router.route('/')
             return res.redirect('/login');
         }
         if(req.session.userSecurity != 0) {
-            return res.status(401).send(MSGNEEDTOBEADMIN);
+            return res.status(401).send(MSG.MSGNEEDTOBEADMIN);
         }
         UsersController.list()
             .then((data) => res.json(data))
@@ -54,7 +51,7 @@ router.route('/')
             return res.redirect('/login');
         }
         if(req.session.userSecurity != 0) {
-            return res.status(401).send(MSGNEEDTOBEADMIN);
+            return res.status(401).send(MSG.MSGNEEDTOBEADMIN);
         }
         UsersController.add(req.body)
             .then((data) => res.json(data))
@@ -68,7 +65,7 @@ router.route('/:id')
             return res.redirect('/login');
         }
         if((req.session.userId !== req.params.id) && (req.session.userSecurity != 0)) {
-            return res.status(401).send(MSGNEEDTOBEUSER);
+            return res.status(401).send(MSG.MSGNEEDTOBEUSER);
         }
         UsersController.get(req.params.id)
             .then((data) => res.json(data))
@@ -80,7 +77,7 @@ router.route('/:id')
             return res.redirect('/login');
         }
         if((req.session.userId !== req.params.id) && (req.session.userSecurity != 0)) {
-            return res.status(401).send(MSGNEEDTOBEUSER);
+            return res.status(401).send(MSG.MSGNEEDTOBEUSER);
         }
         UsersController.update(req.params.id, req.body)
             .then((data) => res.json(data))
@@ -92,7 +89,7 @@ router.route('/:id')
             return res.redirect('/login');
         }
         if(req.session.userSecurity != 0) {
-            return res.status(401).send(MSGNEEDTOBEADMIN);
+            return res.status(401).send(MSG.MSGNEEDTOBEADMIN);
         }
         UsersController.delete(req.params.id)
             .then((data) => res.json(data))

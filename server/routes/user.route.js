@@ -5,10 +5,8 @@ const router = express.Router();
 const UsersController = require('../mongodb/controllers/user.controller');
 
 // Messages
-const MSGNEEDTOBELOGGED = "You need to be logged in to do this.";
 const MSGNEEDTOBEADMIN = "You require admin level security to do this.";
-const MSGNEEDTOBEUSER = "You need to be logged in as this user, or an admin to do this.";
-
+const MSGNEEDTOBEUSER = "You need to be logged in as this user, or have admin level security to do this.";
 
 router.route('/login')
     .post((req, res) => {
@@ -25,15 +23,23 @@ router.route('/login')
 router.route('/logout')
     .get((req, res) => {
         // Logout of user account.
-        res.json({"message": "logout"});
+        if(req.session) {
+            req.session.destroy((err) => {
+                if(err) {
+                    return res.status(500).send(err);
+                } else {
+                    return res.redirect('/login');
+                }
+            });
+        }
+        return res.redirect('/login');
     });
 
 router.route('/')
     .get((req, res) => {
-        console.log('GET /user/');
         // Get all users.
-        if(!req.session.userId) {
-            return res.status(401).send(MSGNEEDTOBELOGGED);
+        if(!req.session) {
+            return res.redirect('/login');
         }
         if(req.session.userSecurity != 0) {
             return res.status(401).send(MSGNEEDTOBEADMIN);
@@ -44,8 +50,8 @@ router.route('/')
     })
     .post((req, res) => {
         // Add new user.
-        if(!req.session.userId) {
-            return res.status(401).send(MSGNEEDTOBELOGGED);
+        if(!req.session) {
+            return res.redirect('/login');
         }
         if(req.session.userSecurity != 0) {
             return res.status(401).send(MSGNEEDTOBEADMIN);
@@ -58,8 +64,8 @@ router.route('/')
 router.route('/:id')
     .get((req, res) => {
         // Get single user.
-        if(!req.session.userId) {
-            return res.status(401).send(MSGNEEDTOBELOGGED);
+        if(!req.session) {
+            return res.redirect('/login');
         }
         if((req.session.userId !== req.params.id) && (req.session.userSecurity != 0)) {
             return res.status(401).send(MSGNEEDTOBEUSER);
@@ -70,8 +76,8 @@ router.route('/:id')
     })
     .put((req, res) => {
         // Update a user.
-        if(!req.session.userId) {
-            return res.status(401).send(MSGNEEDTOBELOGGED);
+        if(!req.session) {
+            return res.redirect('/login');
         }
         if((req.session.userId !== req.params.id) && (req.session.userSecurity != 0)) {
             return res.status(401).send(MSGNEEDTOBEUSER);
@@ -82,8 +88,8 @@ router.route('/:id')
     })
     .delete((req, res) => {
         // Delete a user.
-        if(!req.session.userId) {
-            return res.status(401).send(MSGNEEDTOBELOGGED);
+        if(!req.session) {
+            return res.redirect('/login');
         }
         if(req.session.userSecurity != 0) {
             return res.status(401).send(MSGNEEDTOBEADMIN);

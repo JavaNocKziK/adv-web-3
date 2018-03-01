@@ -22,10 +22,6 @@ export class LoginComponent implements OnInit {
                 Validators.required
             ])
         });
-        this.userService.user.subscribe((res) => {
-            console.log('Logged in as:');
-            console.log(res);
-        });
     }
     ngOnInit() {}
     private login() {
@@ -34,7 +30,7 @@ export class LoginComponent implements OnInit {
             this.userService.login(data.username, data.password).subscribe((res) => {
                 if(res.status == 1) {
                     this.userService.set(new User(
-                        res.message.security,
+                        res.message.id,
                         data.username,
                         res.message.security
                     ));

@@ -1,4 +1,5 @@
 const express = require('express');
+const session = require('express-session');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
@@ -7,6 +8,7 @@ const port = process.env.PORT || process.argv[2] || 3000;
 
 // Route imports.
 const orderRoute = require('./routes/order.route');
+const userRoute = require('./routes/user.route');
 
 // mongoose.connect('mongodb://<user>:<pass>@<url>:<port>/<database>');
 // mongoose.connect('mongodb://elliot:Rugger126@ds233238.mlab.com:33238/adv-web-2-db');
@@ -26,9 +28,15 @@ app.use(express.static(path.join(__dirname, 'dist')));
 app.use(CORS);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(session({
+    secret: 'ass2',
+    resave: true,
+    saveUninitialized: false
+}));
 
 // Routes
 app.use('/order', orderRoute);
+app.use('/user', userRoute);
 
 // Send all requests to our dist.
 app.get('*', (req, res) => {

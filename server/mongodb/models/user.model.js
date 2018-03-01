@@ -34,30 +34,20 @@ UserSchema.statics.authenticate = function authenticate(username, password) {
         User.findOne({ username: username })
             .exec((err, user) => {
                 if(err) {
-                    reject({
-                        "status": 0,
-                        "message": err
-                    });
-                }
-                if(!user) {
-                    reject({
-                        "status": 0,
-                        "message": "User not found."
-                    });
-                }
-                bcrypt.compare(password, user.password, (err, result) => {
-                    if(result === true) {
-                        accept({
-                            "status": 1,
-                            "message": user
-                        });
+                    reject(err);
+                } else {
+                    if(!user) {
+                        reject("Username or password incorrect.");
                     } else {
-                        reject({
-                            "status": 0,
-                            "message": "Password mismatch."
+                        bcrypt.compare(password, user.password, (err, result) => {
+                            if(result === true) {
+                                accept(user);
+                            } else {
+                                reject("Username or password incorrect.");
+                            }
                         });
                     }
-                });
+                }
             });
     });
 };

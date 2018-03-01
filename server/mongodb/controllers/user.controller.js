@@ -119,8 +119,8 @@ module.exports = {
                     accept({
                         "status": 1,
                         "message": {
-                            "id": data.message._id,
-                            "security": data.message.security
+                            "id": data._id,
+                            "security": data.security
                         }
                     });
                 })

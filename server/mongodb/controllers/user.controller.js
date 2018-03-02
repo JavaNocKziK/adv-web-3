@@ -144,12 +144,21 @@ module.exports = {
                 });
         });
     },
-    logout: (id, data) => {
+    logout: (token) => {
         return new Promise((accept, reject) => {
-            reject({
-                "status": 0,
-                "message": "I haven't been implemented yet."
-            });
+            UserModel.deauthenticate(token)
+                .then((data) => {
+                    accept({
+                        "status": 1,
+                        "message": ""
+                    });
+                })
+                .catch((err) => {
+                    reject({
+                        "status": 0,
+                        "message": err
+                    });
+                });
         });
     },
     reauthenticate: (token) => {

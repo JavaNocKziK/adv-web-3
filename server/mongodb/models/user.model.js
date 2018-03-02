@@ -52,7 +52,7 @@ UserSchema.statics.authenticate = function authenticate(username, password) {
                                 user.tokenExpiry = expiry.toJSON();
                                 user.save((err) => {
                                     if(err) {
-                                        reject("Error saving token.");
+                                        reject(err);
                                     } else {
                                         accept({
                                             id: user._id,
@@ -64,6 +64,34 @@ UserSchema.statics.authenticate = function authenticate(username, password) {
                                 });
                             } else {
                                 reject("Username or password incorrect.");
+                            }
+                        });
+                    }
+                }
+            });
+    });
+};
+
+UserSchema.statics.deauthenticate = function deauthenticate(token) {
+    return new Promise((accept, reject) => {
+        User.findOne({ token: token })
+            .exec((err, user) => {
+                if(err) {
+                    // Some generic database error. Couldn't deauth.
+                    reject(err);
+                } else {
+                    if(!user) {
+                        // Just accept if user doesn't exist, deauthing here isn't a security issue.
+                        accept();
+                    } else {
+                        // User exists, strip token and expiry from database.
+                        user.token = undefined;
+                        user.tokenExpiry = undefined;
+                        user.save((err) => {
+                            if(err) {
+                                reject(err);
+                            } else {
+                                accept();
                             }
                         });
                     }

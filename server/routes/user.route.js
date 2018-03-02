@@ -19,18 +19,22 @@ router.route('/login')
     });
 
 router.route('/logout')
-    .get((req, res) => {
+    .post((req, res) => {
         // Logout of user account.
-        if(req.session.token) {
-            req.session.destroy((err) => {
-                if(err) {
-                    return res.status(500).send(err);
-                } else {
-                    return res.redirect('/login');
+        UsersController.logout(req.body.token)
+            .then((data) => {
+                if(req.session.token) {
+                    req.session.destroy((err) => {
+                        if(err) {
+                            return res.status(500).send(err);
+                        }
+                    });
                 }
+                return res.json(data);
+            })
+            .catch((err) => {
+                return res.status(500).send(err)
             });
-        }
-        return res.redirect('/login');
     });
 
 router.route('/reauthenticate')

@@ -33,6 +33,10 @@ export class UserService {
             return result.json();
         });
     }
+    public clear() {
+        this.userSource.next(undefined);
+        sessionStorage.removeItem('token');
+    }
     public set(user: User) {
         let token = JSON.stringify(user.token);
         if(token) {

@@ -34,30 +34,22 @@ export class AppComponent {
                 it's legitimate and hasn't expired.
             */
             let sessionToken = JSON.parse(session);
-            let currentDate = new Date();
-            let tokenExpiry = new Date(sessionToken.expiry);
-            if(tokenExpiry < currentDate) {
-                // Token expired.
-                sessionStorage.removeItem('token');
-                this.router.navigate(['/login']);
-            } else {
-                // Token not expired, re-authenticate.
-                this.userService.reauthenticate(sessionToken.value).subscribe((res) => {
-                    if(res.status == 1) {
-                        let data = res.message;
-                        let user = new User(
-                            data.id,
-                            data.username,
-                            data.security
-                        )
-                        user.token = new Token(sessionToken.value, sessionToken.expiry);
-                        this.userService.set(user);
-                    } else {
-                        // Token isn't valid.
-                        this.router.navigate(['/login']);
-                    }
-                });
-            }
+            this.userService.reauthenticate(sessionToken.value).subscribe((res) => {
+                if(res.status == 1) {
+                    let data = res.message;
+                    let user = new User(
+                        data.id,
+                        data.username,
+                        data.security
+                    )
+                    user.token = new Token(sessionToken.value, sessionToken.expiry);
+                    this.userService.set(user);
+                } else {
+                    // Token isn't valid.
+                    this.userService.clear();
+                    this.router.navigate(['/login']);
+                }
+            });
         } else {
             this.router.navigate(['/login']);
         }

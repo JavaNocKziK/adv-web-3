@@ -25,7 +25,7 @@ export class UserService {
     }
     public logout() {
         (() => {
-            let session = JSON.parse(sessionStorage.getItem('token'));
+            let session = JSON.parse(localStorage.getItem('token'));
             return this.http.post(`${environment.api}/user/logout`, {
                 token: (session.value || '')
             }).map((result) => {
@@ -38,7 +38,7 @@ export class UserService {
         });
     }
     public reauthenticate() {
-        let session = JSON.parse(sessionStorage.getItem('token'));
+        let session = JSON.parse(localStorage.getItem('token'));
         return this.http.post(`${environment.api}/user/reauthenticate`, {
             token: (session.value || '')
         }).map((result) => {
@@ -46,13 +46,13 @@ export class UserService {
         });
     }
     public clear() {
-        sessionStorage.removeItem('token');
+        localStorage.removeItem('token');
         this.userSource.next(undefined);
     }
     public set(user: User) {
         let token = JSON.stringify(user.token);
         if(token) {
-            sessionStorage.setItem('token', token);
+            localStorage.setItem('token', token);
             this.userSource.next(user);
         }
     }

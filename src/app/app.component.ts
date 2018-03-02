@@ -18,14 +18,14 @@ export class AppComponent {
                 // Route to the home area of the user.
                 this.router.navigate([user.home()]);
             } else {
-                let session: string = sessionStorage.getItem('token');
+                let session: string = localStorage.getItem('token');
                 if(!session) {
                     // We don't have a user or a session.
                     this.router.navigate(['/login']);
                 }
             }
         });
-        let session: string = sessionStorage.getItem('token');
+        let session: string = localStorage.getItem('token');
         if(session) {
             /*
                 we're only here if someone refreshed the web

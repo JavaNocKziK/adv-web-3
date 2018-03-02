@@ -33,9 +33,9 @@ export class AppComponent {
                 We're going to check their token to make sure
                 it's legitimate and hasn't expired.
             */
-            let sessionToken = JSON.parse(session);
-            this.userService.reauthenticate(sessionToken.value).subscribe((res) => {
+            this.userService.reauthenticate().subscribe((res) => {
                 if(res.status == 1) {
+                    let sessionToken = JSON.parse(session);
                     let data = res.message;
                     let user = new User(
                         data.id,

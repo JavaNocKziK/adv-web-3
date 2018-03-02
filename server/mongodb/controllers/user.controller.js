@@ -1,15 +1,11 @@
 const UserModel = require('../models/user.model');
+const bcrypt = require('bcrypt');
 
 module.exports = {
     add: (data) => {
         return new Promise((accept, reject) => {
-            if(!data.username && !data.password && !data.security) {
-                reject({
-                    "status": 0,
-                    "message": "Missing required variables."
-                });
-            }
             bcrypt.hash(data.password, 10, (err, passwordHash) => {
+                let user = new UserModel();
                 if(err) {
                     reject({
                         "status": 0,
@@ -18,7 +14,7 @@ module.exports = {
                 }
                 user.username = data.username;
                 user.password = passwordHash;
-                user.security = security;
+                user.security = data.security;
                 user.save((err) => {
                     if(err) {
                         reject({

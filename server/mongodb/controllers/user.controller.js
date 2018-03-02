@@ -9,19 +9,29 @@ module.exports = {
                     "message": "Missing required variables."
                 });
             }
-            let user = new UserModel(data);
-            user.save((err) => {
+            bcrypt.hash(data.password, 10, (err, passwordHash) => {
                 if(err) {
                     reject({
                         "status": 0,
                         "message": err
                     });
-                } else {
-                    accept({
-                        "status": 1,
-                        "message": ""
-                    });
                 }
+                user.username = data.username;
+                user.password = passwordHash;
+                user.security = security;
+                user.save((err) => {
+                    if(err) {
+                        reject({
+                            "status": 0,
+                            "message": err
+                        });
+                    } else {
+                        accept({
+                            "status": 1,
+                            "message": ""
+                        });
+                    }
+                });
             });
         });
     },
@@ -119,8 +129,10 @@ module.exports = {
                     accept({
                         "status": 1,
                         "message": {
-                            "id": data.message._id,
-                            "security": data.message.security
+                            "id": data.id,
+                            "token": data.token,
+                            "tokenExpiry": data.tokenExpiry,
+                            "security": data.security
                         }
                     });
                 })
@@ -132,12 +144,38 @@ module.exports = {
                 });
         });
     },
-    logout: (id, data) => {
+    logout: (token) => {
         return new Promise((accept, reject) => {
-            reject({
-                "status": 0,
-                "message": "I haven't been implemented yet."
-            });
+            UserModel.deauthenticate(token)
+                .then((data) => {
+                    accept({
+                        "status": 1,
+                        "message": ""
+                    });
+                })
+                .catch((err) => {
+                    reject({
+                        "status": 0,
+                        "message": err
+                    });
+                });
+        });
+    },
+    reauthenticate: (token) => {
+        return new Promise((accept, reject) => {
+            UserModel.reauthenticate(token)
+                .then((user) => {
+                    accept({
+                        "status": 1,
+                        "message": user
+                    });
+                })
+                .catch((err) => {
+                    reject({
+                        "status": 0,
+                        "message": err
+                    });
+                });
         });
     }
 }

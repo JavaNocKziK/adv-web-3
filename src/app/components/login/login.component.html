@@ -1,0 +1,9 @@
+<div class="login">
+    <p>Login To E-Restaurant</p>
+    <div class="inputs" [formGroup]="_loginForm" [attr.haserror]="hasError()" (keyup.enter)="login()">
+        <p>{{_error}}</p>
+        <input placeholder="Username" type="username" formControlName="username" />
+        <input placeholder="Password" type="password" formControlName="password" />
+        <button (click)="login()" [disabled]="allow()">Login</button>
+    </div>
+</div>

@@ -8,7 +8,7 @@ const OrderController = require('../mongodb/controllers/order.controller');
 router.route('/')
     .get((req, res) => {
         // Get all orders.
-        if(!req.session) {
+        if(!req.session.token) {
             return res.redirect('/login');
         }
         OrderController.list()
@@ -17,7 +17,7 @@ router.route('/')
     })
     .post((req, res) => {
         // Add new order.
-        if(!req.session) {
+        if(!req.session.token) {
             return res.redirect('/login');
         }
         OrderController.add(req.body)
@@ -28,7 +28,7 @@ router.route('/')
 router.route('/:id')
     .get((req, res) => {
         // Get single order.
-        if(!req.session) {
+        if(!req.session.token) {
             return res.redirect('/login');
         }
         OrderController.get(req.params.id)
@@ -37,7 +37,7 @@ router.route('/:id')
     })
     .put((req, res) => {
         // Update an order.
-        if(!req.session) {
+        if(!req.session.token) {
             return res.redirect('/login');
         }
         OrderController.update(req.params.id, req.body)
@@ -46,7 +46,7 @@ router.route('/:id')
     })
     .delete((req, res) => {
         // Delete an order.
-        if(!req.session) {
+        if(!req.session.token) {
             return res.redirect('/login');
         }
         if(req.session.userSecurity != 0) {

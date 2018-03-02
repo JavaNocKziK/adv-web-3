@@ -10,7 +10,8 @@ router.route('/login')
         // Login to user account.
         UsersController.login(req.body)
             .then((data) => {
-                req.session.userId = data.message.id;
+                req.session.token = data.message.token;
+                req.session.tokenExpiry = data.message.tokenExpiry;
                 req.session.userSecurity = data.message.security;
                 res.json(data);
             })
@@ -20,7 +21,7 @@ router.route('/login')
 router.route('/logout')
     .get((req, res) => {
         // Logout of user account.
-        if(req.session) {
+        if(req.session.token) {
             req.session.destroy((err) => {
                 if(err) {
                     return res.status(500).send(err);
@@ -32,10 +33,18 @@ router.route('/logout')
         return res.redirect('/login');
     });
 
+router.route('/reauthenticate')
+    .post((req, res) => {
+        // Reauthenticate with token.
+        UsersController.reauthenticate(req.body.token)
+            .then((data) => res.json(data))
+            .catch((err) => res.json(err));
+    });
+
 router.route('/')
     .get((req, res) => {
         // Get all users.
-        if(!req.session) {
+        if(!req.session.token) {
             return res.redirect('/login');
         }
         if(req.session.userSecurity != 0) {
@@ -47,7 +56,7 @@ router.route('/')
     })
     .post((req, res) => {
         // Add new user.
-        if(!req.session) {
+        if(!req.session.token) {
             return res.redirect('/login');
         }
         if(req.session.userSecurity != 0) {
@@ -61,7 +70,7 @@ router.route('/')
 router.route('/:id')
     .get((req, res) => {
         // Get single user.
-        if(!req.session) {
+        if(!req.session.token) {
             return res.redirect('/login');
         }
         if((req.session.userId !== req.params.id) && (req.session.userSecurity != 0)) {
@@ -73,7 +82,7 @@ router.route('/:id')
     })
     .put((req, res) => {
         // Update a user.
-        if(!req.session) {
+        if(!req.session.token) {
             return res.redirect('/login');
         }
         if((req.session.userId !== req.params.id) && (req.session.userSecurity != 0)) {
@@ -85,7 +94,7 @@ router.route('/:id')
     })
     .delete((req, res) => {
         // Delete a user.
-        if(!req.session) {
+        if(!req.session.token) {
             return res.redirect('/login');
         }
         if(req.session.userSecurity != 0) {

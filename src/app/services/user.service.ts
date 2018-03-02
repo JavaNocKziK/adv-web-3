@@ -24,18 +24,30 @@ export class UserService {
         });
     }
     public logout() {
-
+        (() => {
+            let session = JSON.parse(sessionStorage.getItem('token'));
+            return this.http.post(`${environment.api}/user/logout`, {
+                token: (session.value || '')
+            }).map((result) => {
+                return result.json();
+            });
+        })().subscribe((res) => {
+            if(res.status == 1) {
+                this.clear();
+            }
+        });
     }
-    public reauthenticate(token: string) {
+    public reauthenticate() {
+        let session = JSON.parse(sessionStorage.getItem('token'));
         return this.http.post(`${environment.api}/user/reauthenticate`, {
-            token: token
+            token: (session.value || '')
         }).map((result) => {
             return result.json();
         });
     }
     public clear() {
-        this.userSource.next(undefined);
         sessionStorage.removeItem('token');
+        this.userSource.next(undefined);
     }
     public set(user: User) {
         let token = JSON.stringify(user.token);

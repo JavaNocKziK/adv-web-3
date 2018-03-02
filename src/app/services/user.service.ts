@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { Http } from '@angular/http';
+import { HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Rx';
@@ -19,13 +20,24 @@ export class UserService {
             username: username,
             password: password
         }).map((result) => {
-            return result.json()
+            return result.json();
         });
     }
     public logout() {
 
     }
+    public reauthenticate(token: string) {
+        return this.http.post(`${environment.api}/user/reauthenticate`, {
+            token: token
+        }).map((result) => {
+            return result.json();
+        });
+    }
     public set(user: User) {
-        this.userSource.next(user);
+        let token = JSON.stringify(user.token);
+        if(token) {
+            sessionStorage.setItem('token', token);
+            this.userSource.next(user);
+        }
     }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../../services/user.service';
-import { User } from '../../classes/user';
+import { User, Token } from '../../classes/user';
 
 @Component({
   selector: 'app-login',
@@ -29,11 +29,13 @@ export class LoginComponent implements OnInit {
             let data = this._loginForm.value;
             this.userService.login(data.username, data.password).subscribe((res) => {
                 if(res.status == 1) {
-                    this.userService.set(new User(
+                    let user = new User(
                         res.message.id,
                         data.username,
                         res.message.security
-                    ));
+                    );
+                    user.token = new Token(res.message.token, new Date(res.message.tokenExpiry));
+                    this.userService.set(user);
                 } else {
                     this._error = res.message;
                 }

@@ -25,4 +25,7 @@ export class Stock {
             case 3: return 'Drink';
         }
     }
+    get category(): number {
+        return this._category;
+    }
 }

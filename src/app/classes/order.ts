@@ -36,6 +36,9 @@ export class Order {
             return data.stockId == id;
         });
     }
+    get items(): OrderItem[] {
+        return this._items;
+    }
 }
 
 export class OrderItem {

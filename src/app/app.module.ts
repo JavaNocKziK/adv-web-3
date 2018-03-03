@@ -7,6 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 
+import { StockService } from './services/stock.service';
 import { UserService } from './services/user.service';
 import { WaitAreaComponent } from './components/wait-area/wait-area.component';
 
@@ -24,7 +25,8 @@ import { WaitAreaComponent } from './components/wait-area/wait-area.component';
     AppRoutingModule
   ],
   providers: [
-    UserService
+    UserService,
+    StockService
   ],
   bootstrap: [AppComponent]
 })

@@ -25,7 +25,17 @@ export class StockService {
             ).map((result) => { return result.json(); });
         })().subscribe((res) => {
             if(res.status == 1) {
-                console.log(res);
+                let stock: Stock[] = [];
+                res.message.forEach((data) => {
+                    stock.push(new Stock(
+                        data._id,
+                        data.name,
+                        data.detail,
+                        data.category,
+                        data.quantity
+                    ));
+                });
+                this.stockSource.next(stock);
             }
         });
     }

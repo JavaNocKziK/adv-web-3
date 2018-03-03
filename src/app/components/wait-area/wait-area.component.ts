@@ -19,4 +19,13 @@ export class WaitAreaComponent implements OnInit {
     ngOnInit() {
         this.stockService.stock.subscribe((stock: Stock[]) => this._stock = stock);
     }
+    public add(id: string) {
+        this._order.add(id);
+    }
+    public remove(id: string) {
+        this._order.remove(id);
+    }
+    public quantity(id: string): number {
+        return this._order.quantity(id);
+    }
 }

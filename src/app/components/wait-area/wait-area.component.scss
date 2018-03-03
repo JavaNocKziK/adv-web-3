@@ -31,6 +31,7 @@
                 background-repeat: no-repeat;
                 background-position: center center;
                 background-size: 24px 24px;
+                cursor: pointer;
             }
         }
         .actions:first-of-type {
@@ -136,6 +137,8 @@
                 border-radius: 40px;
                 font-weight: bold;
                 color: #FEFEFE;
+                outline: none;
+                cursor: pointer;
             }
             .ticker {
                 display: grid;

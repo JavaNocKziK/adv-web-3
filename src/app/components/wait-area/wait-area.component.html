@@ -18,12 +18,17 @@
         <p>Drinks</p>
     </div>
     <div class="list">
-        <div class="item">
-            <p>Nachos</p>
+        <div class="item" *ngFor="let stock of _stock" id={{stock.id}}>
+            <p>{{stock.name}}</p>
             <div class="ticker">
-                <button data-icon="minus-white-24" data-style="red" disabled></button>
-                <p>-</p>
-                <button data-icon="plus-white-24" data-style="green"></button>
+                <button
+                    data-icon="minus-white-24"
+                    data-style="red"
+                    [disabled]="(quantity(stock.id) == 0 ? true : false)"
+                    (click)="remove(stock.id)"
+                ></button>
+                <p>{{quantity(stock.id)}}</p>
+                <button data-icon="plus-white-24" data-style="green" (click)="add(stock.id)"></button>
             </div>
         </div>
     </div>

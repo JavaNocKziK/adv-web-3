@@ -9,11 +9,11 @@
             <p>New Order</p>
         </div>
         <div class="actions" *ngIf="_taking">
-            <button data-icon="check-white-32" (click)="confirm()"></button>
+            <button data-icon="check" (click)="confirm()"></button>
         </div>
         <div class="actions" *ngIf="!_taking">
-            <button data-icon="check-white-32" (click)="generate()"></button>
-            <button data-icon="check-white-32" (click)="unconfirm()"></button>
+            <button data-icon="check" (click)="generate()"></button>
+            <button data-icon="back" (click)="unconfirm()"></button>
         </div>
     </div>
     <div class="tabbar" *ngIf="_taking">
@@ -54,3 +54,27 @@
         </div>
     </div>
 </div>
+<!--
+<div class="overlay">
+    <div class="plate">
+        <h3>Table #</h3>
+        <div class="list">
+            <div class="item">
+                <p>#1</p>
+                <p>Back corner.</p>
+                <button data-icon="check-white-32" (click)="add(readback.id)"></button>
+            </div>
+            <div class="item">
+                <p>#2</p>
+                <p>Back corner.</p>
+                <button data-icon="check-white-32" (click)="add(readback.id)"></button>
+            </div>
+            <div class="item">
+                <p>#3</p>
+                <p>Side window.</p>
+                <button data-icon="check-white-32" (click)="add(readback.id)"></button>
+            </div>
+        </div>
+    </div>
+</div>
+-->

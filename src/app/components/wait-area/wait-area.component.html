@@ -1,9 +1,9 @@
 <div class="window" [attr.taking]="(_taking)">
     <div class="navbar">
         <div class="actions">
-            <button data-icon="account-white-32"></button>
-            <button data-icon="list-white-32"></button>
-            <button data-icon="list-white-32"></button>
+            <button data-icon="account"></button>
+            <button data-icon="list"></button>
+            <button data-icon="refresh"></button>
         </div>
         <div class="title">
             <p>New Order</p>
@@ -28,13 +28,13 @@
             <p>{{stock.name}}</p>
             <div class="ticker">
                 <button
-                    data-icon="minus-white-24"
+                    data-icon="minus"
                     data-style="red"
                     [disabled]="(quantity(stock.id) == 0 ? true : false)"
                     (click)="remove(stock.id)"
                 ></button>
                 <p>{{quantity(stock.id)}}</p>
-                <button data-icon="plus-white-24" data-style="green" (click)="add(stock.id)"></button>
+                <button data-icon="plus" data-style="green" (click)="add(stock.id)"></button>
             </div>
         </div>
     </div>
@@ -47,9 +47,9 @@
         <div class="item"  *ngFor="let readback of order">
             <p>{{readback.title}}</p>
             <div class="ticker">
-                <button data-icon="minus-white-24" data-style="red" (click)="remove(readback.id)"></button>
+                <button data-icon="minus" data-style="red" (click)="remove(readback.id)"></button>
                 <p>{{readback.quantity}}</p>
-                <button data-icon="plus-white-24" data-style="green" (click)="add(readback.id)"></button>
+                <button data-icon="plus" data-style="green" (click)="add(readback.id)"></button>
             </div>
         </div>
     </div>

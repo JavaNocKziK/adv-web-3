@@ -18,6 +18,9 @@ export class UserService {
     constructor(
         private http: Http
     ) {}
+    public me(): User {
+        return this.userSource.value;
+    }
     public login(username: string, password: string) {
         return this.http.post(
             `${environment.api}/user/login`,

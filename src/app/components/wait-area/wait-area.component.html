@@ -1,3 +1,56 @@
-<p>
-  wait-area works!
-</p>
+<div class="window" [attr.taking]="(_taking)">
+    <div class="navbar">
+        <div class="actions">
+            <button data-icon="account-white-32"></button>
+            <button data-icon="list-white-32"></button>
+            <button data-icon="list-white-32"></button>
+        </div>
+        <div class="title">
+            <p>New Order</p>
+        </div>
+        <div class="actions" *ngIf="_taking">
+            <button data-icon="check-white-32" (click)="confirm()"></button>
+        </div>
+        <div class="actions" *ngIf="!_taking">
+            <button data-icon="check-white-32" (click)="generate()"></button>
+            <button data-icon="check-white-32" (click)="unconfirm()"></button>
+        </div>
+    </div>
+    <div class="tabbar" *ngIf="_taking">
+        <p
+            *ngFor="let tab of _tabs; let i = index"
+            [attr.selected]="(_activeTab == i ? true : false)"
+            (click)="changeTab(i)"
+        >{{tab.title}}</p>
+    </div>
+    <div class="list" *ngIf="(_taking && list.length > 0)">
+        <div class="item"  *ngFor="let stock of list" id={{stock.id}}>
+            <p>{{stock.name}}</p>
+            <div class="ticker">
+                <button
+                    data-icon="minus-white-24"
+                    data-style="red"
+                    [disabled]="(quantity(stock.id) == 0 ? true : false)"
+                    (click)="remove(stock.id)"
+                ></button>
+                <p>{{quantity(stock.id)}}</p>
+                <button data-icon="plus-white-24" data-style="green" (click)="add(stock.id)"></button>
+            </div>
+        </div>
+    </div>
+    <div class="list" *ngIf="(_taking && list.length == 0)">
+        <div class="item">
+            <p>No items found.</p>
+        </div>
+    </div>
+    <div class="list" *ngIf="(!_taking)">
+        <div class="item"  *ngFor="let readback of order">
+            <p>{{readback.title}}</p>
+            <div class="ticker">
+                <button data-icon="minus-white-24" data-style="red" (click)="remove(readback.id)"></button>
+                <p>{{readback.quantity}}</p>
+                <button data-icon="plus-white-24" data-style="green" (click)="add(readback.id)"></button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -15,6 +15,9 @@ export class User {
             default: return '/login';
         }
     }
+    get id(): string {
+        return this._id;
+    }
 }
 
 export class Token {

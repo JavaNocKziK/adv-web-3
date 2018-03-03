@@ -7,8 +7,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 
+import { StockService } from './services/stock.service';
 import { UserService } from './services/user.service';
 import { WaitAreaComponent } from './components/wait-area/wait-area.component';
+import { OrderService } from './services/order.service';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { WaitAreaComponent } from './components/wait-area/wait-area.component';
     AppRoutingModule
   ],
   providers: [
-    UserService
+    UserService,
+    StockService,
+    OrderService
   ],
   bootstrap: [AppComponent]
 })

@@ -1,5 +1,5 @@
 const express = require('express');
-const session = require('express-session');
+const cookieSession = require('cookie-session');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
@@ -19,7 +19,7 @@ mongoose.connect('mongodb://admin:abc123@139.59.163.216:8080');
 
 // Set CORS and other stuff.
 const CORS = (req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
@@ -29,11 +29,26 @@ app.use(express.static(path.join(__dirname, 'dist')));
 app.use(CORS);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+/*
 app.use(session({
     secret: 'ass2',
-    resave: true,
-    saveUninitialized: false
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        maxAge: 2628000000,
+        secure: true
+    }
 }));
+*/
+app.use(cookieSession({
+    name: 'session',
+    secret: 'ass2',
+    httpOnly: true,
+    maxAge: 1000 * 60 * 60 * 24,
+    secure: false,
+    overwrite: false
+}));
+
 
 // Routes
 app.use('/order', orderRoute);

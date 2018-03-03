@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Order } from '../../classes/order';
+import { StockService } from '../../services/stock.service';
+import { Stock } from '../../classes/stock';
 
 @Component({
   selector: 'app-wait-area',
@@ -6,6 +9,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./wait-area.component.scss']
 })
 export class WaitAreaComponent implements OnInit {
-    constructor() {}
-    ngOnInit() {}
+    private _order: Order = new Order();
+    private _stock: Stock[] = [];
+    constructor(
+        private stockService: StockService
+    ) {
+        this.stockService.fetch();
+    }
+    ngOnInit() {
+        this.stockService.stock.subscribe((stock: Stock[]) => this._stock = stock);
+    }
 }

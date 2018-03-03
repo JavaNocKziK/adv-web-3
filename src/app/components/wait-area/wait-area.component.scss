@@ -151,9 +151,9 @@
                     width: 32px;
                     height: 32px;
                 }
-                button[style="green"]   { background-color: #388E3C; }
-                button[style="red"]     { background-color: #B71C1C; }
-                button[disabled]        { background-color: #DEDEDE; }
+                button[data-style="green"]  { background-color: #388E3C; }
+                button[data-style="red"]    { background-color: #B71C1C; }
+                button[disabled]            { background-color: #DEDEDE; }
             }
         }
         .marker {

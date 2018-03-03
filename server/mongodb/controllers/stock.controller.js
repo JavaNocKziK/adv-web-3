@@ -1,39 +1,27 @@
-const UserModel = require('../models/user.model');
-const bcrypt = require('bcrypt');
+const StockModel = require('../models/stock.model');
 
 module.exports = {
     add: (data) => {
         return new Promise((accept, reject) => {
-            bcrypt.hash(data.password, 10, (err, passwordHash) => {
-                let user = new UserModel();
+            let stock = new StockModel(data);
+            stock.save((err) => {
                 if(err) {
                     reject({
                         "status": 0,
                         "message": err
                     });
+                } else {
+                    accept({
+                        "status": 1,
+                        "message": data
+                    });
                 }
-                user.username = data.username;
-                user.password = passwordHash;
-                user.security = data.security;
-                user.save((err) => {
-                    if(err) {
-                        reject({
-                            "status": 0,
-                            "message": err
-                        });
-                    } else {
-                        accept({
-                            "status": 1,
-                            "message": ""
-                        });
-                    }
-                });
             });
         });
     },
     get: (id) => {
         return new Promise((accept, reject) => {
-            UserModel.findById(id, (err, result) => {
+            StockModel.findById(id, (err, result) => {
                 if(err) {
                     reject({
                         "status": 0,
@@ -50,7 +38,7 @@ module.exports = {
     },
     list: () => {
         return new Promise((accept, reject) => {
-            let query = UserModel.find();
+            let query = StockModel.find();
             query.exec((err, result) => {
                 if(err) {
                     reject({
@@ -68,22 +56,14 @@ module.exports = {
     },
     update: (id, data) => {
         return new Promise((accept, reject) => {
-            if(!data.password && !data.security) {
-                reject({
-                    "status": 0,
-                    "message": "Missing required variables."
-                });
-            }
-            UserModel.findById(id, (err, result) => {
+            StockModel.findById(id, (err, result) => {
                 if(err) {
                     reject({
                         "status": 0,
                         "message": err
                     });
                 } else {
-                    // Don't use .set(...), we don't want to change their username.
-                    result.password = data.password;
-                    result.security = data.security;
+                    result.set(data);
                     result.save((err) => {
                         if(err) {
                             reject({
@@ -103,7 +83,7 @@ module.exports = {
     },
     delete: (id) => {
         return new Promise((accept, reject) => {
-            UserModel.remove({_id: id}, (err, result) => {
+            StockModel.remove({_id: id}, (err, result) => {
                 if(err) {
                     reject({
                         "status": 0,
@@ -118,52 +98,13 @@ module.exports = {
             });
         });
     },
-    login: (data) => {
+    take: (id, count) => {
         return new Promise((accept, reject) => {
-            UserModel.authenticate(data.username, data.password)
+            StockModel.take(id, count)
                 .then((data) => {
                     accept({
                         "status": 1,
-                        "message": {
-                            "id": data.id,
-                            "token": data.token,
-                            "tokenExpiry": data.tokenExpiry,
-                            "security": data.security
-                        }
-                    });
-                })
-                .catch((err) => {
-                    reject({
-                        "status": 0,
-                        "message": err
-                    });
-                });
-        });
-    },
-    logout: (token) => {
-        return new Promise((accept, reject) => {
-            UserModel.deauthenticate(token)
-                .then((data) => {
-                    accept({
-                        "status": 1,
-                        "message": ""
-                    });
-                })
-                .catch((err) => {
-                    reject({
-                        "status": 0,
-                        "message": err
-                    });
-                });
-        });
-    },
-    reauthenticate: (token) => {
-        return new Promise((accept, reject) => {
-            UserModel.reauthenticate(token)
-                .then((user) => {
-                    accept({
-                        "status": 1,
-                        "message": user
+                        "message": data.message
                     });
                 })
                 .catch((err) => {

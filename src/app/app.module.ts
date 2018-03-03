@@ -10,6 +10,7 @@ import { LoginComponent } from './components/login/login.component';
 import { StockService } from './services/stock.service';
 import { UserService } from './services/user.service';
 import { WaitAreaComponent } from './components/wait-area/wait-area.component';
+import { OrderService } from './services/order.service';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { WaitAreaComponent } from './components/wait-area/wait-area.component';
   ],
   providers: [
     UserService,
-    StockService
+    StockService,
+    OrderService
   ],
   bootstrap: [AppComponent]
 })

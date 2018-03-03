@@ -3,6 +3,7 @@ const router = express.Router();
 
 router.route('/:icon/:colour')
     .get((req, res) => {
+        res.type('image/svg+xml');
         res.send(icons[req.params.icon].replace('#', `#${req.params.colour}`));
     });
 

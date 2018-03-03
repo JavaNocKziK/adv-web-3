@@ -1,6 +1,11 @@
+.window[taking="true"] {
+    grid-template-rows: 50px 50px 1fr;
+}
+.window[taking="false"] {
+    grid-template-rows: 50px 1fr;
+}
 .window {
     display: grid;
-    grid-template-rows: 50px 50px 1fr;
     grid-template-columns: 1;
     width: 600px;
     height: calc(100vh - 100px);
@@ -69,7 +74,7 @@
         p:hover {
             opacity: 1;
         }
-        p[selected] {
+        p[selected="true"] {
             border-bottom: 4px solid #2196F3;
             opacity: 1;
         }

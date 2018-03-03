@@ -1,13 +1,13 @@
 {
 	"info": {
 		"name": "Advanced Web #2",
-		"_postman_id": "abc6f4cb-68cd-4948-3042-b5519367feaa",
+		"_postman_id": "0c060f75-7f80-4cef-4f75-c50f42729403",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "Order",
+			"name": "Orders (Create New)",
 			"event": [
 				{
 					"listen": "test",
@@ -39,31 +39,26 @@
 						{
 							"key": "userId",
 							"value": "3",
-							"description": "",
 							"type": "text"
 						},
 						{
 							"key": "tableId",
 							"value": "4",
-							"description": "",
 							"type": "text"
 						},
 						{
 							"key": "content[0]",
 							"value": "1",
-							"description": "",
 							"type": "text"
 						},
 						{
 							"key": "content[1]",
 							"value": "2",
-							"description": "",
 							"type": "text"
 						},
 						{
 							"key": "content[2]",
 							"value": "3",
-							"description": "",
 							"type": "text"
 						}
 					]
@@ -80,6 +75,705 @@
 					]
 				},
 				"description": "Add a new order."
+			},
+			"response": []
+		},
+		{
+			"name": "Orders (Get All)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bb0bef62-8621-400e-b0d9-c5f4edcc3a86",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "orderId",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "userId",
+							"value": "3",
+							"type": "text"
+						},
+						{
+							"key": "tableId",
+							"value": "4",
+							"type": "text"
+						},
+						{
+							"key": "content[0]",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "content[1]",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "content[2]",
+							"value": "3",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:{{port}}/order",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"order"
+					]
+				},
+				"description": "List all orders."
+			},
+			"response": []
+		},
+		{
+			"name": "Orders (Get Single)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bb0bef62-8621-400e-b0d9-c5f4edcc3a86",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "orderId",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "userId",
+							"value": "3",
+							"type": "text"
+						},
+						{
+							"key": "tableId",
+							"value": "4",
+							"type": "text"
+						},
+						{
+							"key": "content[0]",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "content[1]",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "content[2]",
+							"value": "3",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:{{port}}/order/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"order",
+						"{{id}}"
+					]
+				},
+				"description": "Get an order."
+			},
+			"response": []
+		},
+		{
+			"name": "Orders (Update Single)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bb0bef62-8621-400e-b0d9-c5f4edcc3a86",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "orderId",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "userId",
+							"value": "3",
+							"type": "text"
+						},
+						{
+							"key": "tableId",
+							"value": "4",
+							"type": "text"
+						},
+						{
+							"key": "content[0]",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "content[1]",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "content[2]",
+							"value": "3",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:{{port}}/order/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"order",
+						"{{id}}"
+					]
+				},
+				"description": "Update an order."
+			},
+			"response": []
+		},
+		{
+			"name": "Orders (Delete Single)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bb0bef62-8621-400e-b0d9-c5f4edcc3a86",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "orderId",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "userId",
+							"value": "3",
+							"type": "text"
+						},
+						{
+							"key": "tableId",
+							"value": "4",
+							"type": "text"
+						},
+						{
+							"key": "content[0]",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "content[1]",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "content[2]",
+							"value": "3",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:{{port}}/order/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"order",
+						"{{id}}"
+					]
+				},
+				"description": "Delete an order."
+			},
+			"response": []
+		},
+		{
+			"name": "User (Create New)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "scrub",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "security",
+							"value": "1",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:{{port}}/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"user"
+					]
+				},
+				"description": "Create a new user."
+			},
+			"response": []
+		},
+		{
+			"name": "User (Get All)",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "username",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "security",
+							"value": "0",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:{{port}}/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"user"
+					]
+				},
+				"description": "Get all users."
+			},
+			"response": []
+		},
+		{
+			"name": "User (Get Single)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:{{port}}/user/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"user",
+						"{{id}}"
+					]
+				},
+				"description": "Get a single user."
+			},
+			"response": []
+		},
+		{
+			"name": "User (Login)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "username",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:{{port}}/user/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"user",
+						"login"
+					]
+				},
+				"description": "Login to the specific user."
+			},
+			"response": []
+		},
+		{
+			"name": "User (Logout)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:{{port}}/user/logout",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"user",
+						"logout"
+					]
+				},
+				"description": "Logout of the current session."
+			},
+			"response": []
+		},
+		{
+			"name": "User (Reauthenticate)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:{{port}}/user/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"user",
+						"login"
+					]
+				},
+				"description": "Reauthenticate a user using a token."
+			},
+			"response": []
+		},
+		{
+			"name": "Stock (Create New)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "Garlic Bread",
+							"description": "The name of the stock item.",
+							"type": "text"
+						},
+						{
+							"key": "detail",
+							"value": "",
+							"description": "Additional detail about the stock item. A description as it were.",
+							"type": "text"
+						},
+						{
+							"key": "category",
+							"value": "0",
+							"description": "What category is it? (0=Starters, 1=Mains, 2=Deserts, 3=Drinks)",
+							"type": "text"
+						},
+						{
+							"key": "quantity",
+							"value": "250",
+							"description": "How much of this item do we have?",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:{{port}}/stock",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"stock"
+					]
+				},
+				"description": "Create a new stock item."
+			},
+			"response": []
+		},
+		{
+			"name": "Stock (Get All)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:{{port}}/stock",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"stock"
+					]
+				},
+				"description": "Get all stock items."
+			},
+			"response": []
+		},
+		{
+			"name": "Stock (Get Single)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:{{port}}/stock/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"stock",
+						"{{id}}"
+					]
+				},
+				"description": "Get information about a single piece of stock."
+			},
+			"response": []
+		},
+		{
+			"name": "Stock (Update Single)",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "Garlic Bread",
+							"type": "text",
+							"description": ""
+						},
+						{
+							"key": "detail",
+							"value": "",
+							"type": "text",
+							"description": ""
+						},
+						{
+							"key": "category",
+							"value": "0",
+							"type": "text",
+							"description": ""
+						},
+						{
+							"key": "quantity",
+							"value": "500",
+							"type": "text",
+							"description": ""
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:{{port}}/stock/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"stock",
+						"{{id}}"
+					]
+				},
+				"description": "Update an item of stock."
+			},
+			"response": []
+		},
+		{
+			"name": "Stock (Delete Single)",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:{{port}}/stock/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"stock",
+						"{{id}}"
+					]
+				},
+				"description": "Delete an item of stock."
+			},
+			"response": []
+		},
+		{
+			"name": "Stock (Take Stock)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:{{port}}/stock/{{id}}/take/{{count}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"stock",
+						"{{id}}",
+						"take",
+						"{{count}}"
+					]
+				},
+				"description": "Take a specific amount of quantity from a specific stock item."
 			},
 			"response": []
 		}

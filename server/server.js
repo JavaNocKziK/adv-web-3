@@ -44,7 +44,7 @@ app.use(cookieSession({
     name: 'session',
     secret: 'ass2',
     httpOnly: true,
-    maxAge: 30 * 60 * 1000,
+    maxAge: 1000 * 60 * 60 * 24,
     secure: false,
     overwrite: false
 }));

@@ -54,6 +54,24 @@ module.exports = {
             });
         });
     },
+    forUser: (userId) => {
+        return new Promise((accept, reject) => {
+            let query = OrderModel.find({ userId: userId });
+            query.exec((err, result) => {
+                if(err) {
+                    reject({
+                        "status": 0,
+                        "message": err
+                    });
+                } else {
+                    accept({
+                        "status": 1,
+                        "message": result
+                    });
+                }
+            });
+        });
+    },
     update: (id, data) => {
         return new Promise((accept, reject) => {
             OrderModel.findById(id, (err, result) => {

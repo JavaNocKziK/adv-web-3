@@ -55,6 +55,17 @@ router.route('/:id')
         OrderController.delete(req.params.id)
             .then((data)    => res.json(data))
             .catch((data)   => res.json(data));
-    })
+    });
+
+router.route('/for/:userId')
+    .get((req, res) => {
+        // Get orders for a specific user.
+        if(!req.session.token) {
+            return res.redirect('/login');
+        }
+        OrderController.forUser(req.params.userId)
+            .then((data)    => res.json(data))
+            .catch((data)   => res.json(data));
+    });
 
 module.exports = router;

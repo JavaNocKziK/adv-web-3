@@ -3,6 +3,8 @@ import { Order, OrderItem } from '../../classes/order';
 import { StockService } from '../../services/stock.service';
 import { Stock } from '../../classes/stock';
 import { OrderService } from '../../services/order.service';
+import { UserService } from '../../services/user.service';
+import { User } from '../../classes/user';
 
 @Component({
   selector: 'app-wait-area',
@@ -14,10 +16,12 @@ export class WaitAreaComponent implements OnInit {
     private _stock: Stock[] = [];
     private _tabs: Tab[] = [];
     private _activeTab: number = 0;
-    private _taking: boolean = true;
+    private _state: number = 0; // 0 (Taking Order), 1 (Reviewing Order), 2 (Previous Orders)
+    private _user: User;
     constructor(
         private stockService: StockService,
-        private orderService: OrderService
+        private orderService: OrderService,
+        private userSerivce: UserService
     ) {
         this._tabs.push(new Tab('Starters', 0));
         this._tabs.push(new Tab('Mains', 1));
@@ -27,12 +31,23 @@ export class WaitAreaComponent implements OnInit {
     }
     ngOnInit() {
         this.stockService.stock.subscribe((stock: Stock[]) => this._stock = stock);
+        this.userSerivce.user.subscribe((user: User) => {
+            if(user) {
+                this._user = user;
+                this.orderService.forUser(this._user.id).subscribe((orders) => {
+                    console.log(orders);
+                });
+            }
+        });
     }
     public add(id: string) {
         this._order.add(id);
     }
     public remove(id: string) {
         this._order.remove(id);
+        if(this._order.items.length == 0) {
+            this._state = 0;
+        }
     }
     public quantity(id: string): number {
         return this._order.quantity(id);
@@ -61,11 +76,9 @@ export class WaitAreaComponent implements OnInit {
         return items;
     }
     public generate() {
-        this.orderService.place(this._order).subscribe((result) => {
+        this.orderService.place(this._user.id, this._order).subscribe((result) => {
             if(result.status == 1) {
-                this._taking = true;
-                this._order = new Order();
-                this._activeTab = 0;
+                this.clear();
             } else {
                 // Some kind of error message here.
             }
@@ -73,11 +86,15 @@ export class WaitAreaComponent implements OnInit {
     }
     public confirm() {
         if(this._order.items.length > 0) {
-            this._taking = false;
+            this._state = 1;
         }
     }
     public unconfirm() {
-        this._taking = true;
+        this._state = 0;
+    }
+    public clear() {
+        this._state = 0;
+        this._order = new Order();
     }
 }
 

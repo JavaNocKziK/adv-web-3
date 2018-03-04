@@ -5,7 +5,6 @@ import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Rx';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { Order } from '../classes/order';
-import { UserService } from './user.service';
 
 const options: RequestOptionsArgs = {
     withCredentials: true
@@ -14,10 +13,9 @@ const options: RequestOptionsArgs = {
 @Injectable()
 export class OrderService {
     constructor(
-        private http: Http,
-        private userService: UserService
+        private http: Http
     ) {}
-    public place(order: Order) {
+    public place(userId: string, order: Order) {
         let content = [];
         order.items.forEach((item) => {
             content.push({
@@ -28,7 +26,7 @@ export class OrderService {
         return this.http.post(
             `${environment.api}/order`,
             {
-                userId: this.userService.me().id,
+                userId: userId,
                 tableId: 'placeholder',
                 content: content,
                 timeCreated: (new Date()).toJSON()

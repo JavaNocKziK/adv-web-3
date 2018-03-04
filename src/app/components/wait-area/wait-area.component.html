@@ -1,29 +1,29 @@
-<div class="window" [attr.taking]="(_taking)">
+<div class="window" [attr.showtabs]="(_state == 0 ? true : false)">
     <div class="navbar">
         <div class="actions">
             <button data-icon="account"></button>
             <button data-icon="list"></button>
-            <button data-icon="refresh"></button>
+            <button data-icon="refresh" (click)="clear()"></button>
         </div>
         <div class="title">
             <p>New Order</p>
         </div>
-        <div class="actions" *ngIf="_taking">
+        <div class="actions" *ngIf="_state == 0">
             <button data-icon="check" (click)="confirm()"></button>
         </div>
-        <div class="actions" *ngIf="!_taking">
+        <div class="actions" *ngIf="_state == 1">
             <button data-icon="check" (click)="generate()"></button>
             <button data-icon="back" (click)="unconfirm()"></button>
         </div>
     </div>
-    <div class="tabbar" *ngIf="_taking">
+    <div class="tabbar" *ngIf="(_state == 0)">
         <p
             *ngFor="let tab of _tabs; let i = index"
             [attr.selected]="(_activeTab == i ? true : false)"
             (click)="changeTab(i)"
         >{{tab.title}}</p>
     </div>
-    <div class="list" *ngIf="(_taking && list.length > 0)">
+    <div class="list" *ngIf="(_state == 0 && list.length > 0)">
         <div class="item"  *ngFor="let stock of list" id={{stock.id}}>
             <p>{{stock.name}}</p>
             <div class="ticker">
@@ -38,12 +38,12 @@
             </div>
         </div>
     </div>
-    <div class="list" *ngIf="(_taking && list.length == 0)">
+    <div class="list" *ngIf="(_state == 0 && list.length == 0)">
         <div class="item">
             <p>No items found.</p>
         </div>
     </div>
-    <div class="list" *ngIf="(!_taking)">
+    <div class="list" *ngIf="(_state == 1)">
         <div class="item"  *ngFor="let readback of order">
             <p>{{readback.title}}</p>
             <div class="ticker">

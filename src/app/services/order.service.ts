@@ -36,4 +36,10 @@ export class OrderService {
             options
         ).map((result) => { return result.json(); });
     }
+    public forUser(id: string) {
+        return this.http.get(
+            `${environment.api}/order/for/${id}`,
+            options
+        ).map((result) => { return result.json(); });
+    }
 }

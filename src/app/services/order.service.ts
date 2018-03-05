@@ -5,6 +5,7 @@ import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Rx';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { Order } from '../classes/order';
+import { OrderStatus } from '../classes/order-status';
 
 const options: RequestOptionsArgs = {
     withCredentials: true
@@ -12,6 +13,7 @@ const options: RequestOptionsArgs = {
 
 @Injectable()
 export class OrderService {
+    public statuses: OrderStatus[] = [];
     constructor(
         private http: Http
     ) {}
@@ -32,12 +34,32 @@ export class OrderService {
                 timeCreated: (new Date()).toJSON()
             },
             options
-        ).map((result) => { return result.json(); });
+        ).map((result) => {
+            return result.json();
+        });
     }
     public forUser(id: string) {
         return this.http.get(
             `${environment.api}/order/for/${id}`,
             options
         ).map((result) => { return result.json(); });
+    }
+    public loadStatuses() {
+        let statuses: OrderStatus[] = [];
+        (() => {
+            return this.http.get(
+                `${environment.api}/order/statuses`,
+                options
+            ).map((result) => { return result.json(); });
+        })().subscribe((result) => {
+            result.message.forEach((item) => {
+                statuses.push(new OrderStatus(
+                    item._id,
+                    item.value,
+                    item.description
+                ));
+            });
+        });
+        this.statuses = statuses;
     }
 }

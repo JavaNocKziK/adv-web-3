@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { UserService } from './services/user.service';
 import { Router } from '@angular/router';
 import { User, Token } from './classes/user';
+import { OrderService } from './services/order.service';
 
 @Component({
   selector: 'app-root',
@@ -11,13 +12,17 @@ import { User, Token } from './classes/user';
 export class AppComponent {
     constructor(
         private userService: UserService,
-        private router: Router
+        private router: Router,
+        private orderService: OrderService
     ) {
         this.userService.user.subscribe((user) => {
             console.log(user);
             if(user) {
                 // Route to the home area of the user.
                 this.router.navigate([user.home]);
+                // Fetch all static data:
+                this.orderService.loadStatuses();
+                console.log(this.orderService.statuses);
             } else {
                 let session: string = localStorage.getItem('token');
                 if(!session) {

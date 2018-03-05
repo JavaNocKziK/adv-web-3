@@ -12,8 +12,8 @@ let UserSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-        security: {
-            type: String,
+        admin: {
+            type: Boolean,
             required: true
         },
         token: {
@@ -23,6 +23,10 @@ let UserSchema = new mongoose.Schema(
         tokenExpiry: {
             type: String,
             required: false
+        },
+        homePath: {
+            type: String,
+            required: true
         }
     },
     { versionKey: false }
@@ -58,7 +62,8 @@ UserSchema.statics.authenticate = function authenticate(username, password) {
                                             id: user._id,
                                             token: token,
                                             tokenExpiry: expiry.toJSON(),
-                                            security: user.security
+                                            admin: user.admin,
+                                            homePath: user.homePath
                                         });
                                     }
                                 });
@@ -126,7 +131,8 @@ UserSchema.statics.reauthenticate = function reauthenticate(token) {
                             accept({
                                 id: user._id,
                                 username: user.username,
-                                security: user.security
+                                admin: user.admin,
+                                homePath: user.homePath
                             });
                         }
                     }

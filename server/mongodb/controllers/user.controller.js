@@ -14,7 +14,7 @@ module.exports = {
                 }
                 user.username = data.username;
                 user.password = passwordHash;
-                user.security = data.security;
+                user.admin = data.admin;
                 user.save((err) => {
                     if(err) {
                         reject({
@@ -68,12 +68,6 @@ module.exports = {
     },
     update: (id, data) => {
         return new Promise((accept, reject) => {
-            if(!data.password && !data.security) {
-                reject({
-                    "status": 0,
-                    "message": "Missing required variables."
-                });
-            }
             UserModel.findById(id, (err, result) => {
                 if(err) {
                     reject({
@@ -83,7 +77,7 @@ module.exports = {
                 } else {
                     // Don't use .set(...), we don't want to change their username.
                     result.password = data.password;
-                    result.security = data.security;
+                    result.admin = data.admin;
                     result.save((err) => {
                         if(err) {
                             reject({
@@ -128,7 +122,8 @@ module.exports = {
                             "id": data.id,
                             "token": data.token,
                             "tokenExpiry": data.tokenExpiry,
-                            "security": data.security
+                            "admin": data.admin,
+                            "homePath": data.homePath
                         }
                     });
                 })

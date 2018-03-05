@@ -24,11 +24,7 @@ router.route('/logout')
         UsersController.logout(req.body.token)
             .then((data) => {
                 if(req.session.token) {
-                    req.session.destroy((err) => {
-                        if(err) {
-                            return res.status(500).send(err);
-                        }
-                    });
+                    req.session = null;
                 }
                 return res.json(data);
             })

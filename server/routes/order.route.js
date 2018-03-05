@@ -25,6 +25,17 @@ router.route('/')
             .catch((data)   => res.json(data));
     });
 
+router.route('/statuses')
+    .get((req, res) => {
+        // Get a list of possible status states for orders.
+        if(!req.session.token) {
+            return res.redirect('/login');
+        }
+        OrderController.statuses()
+            .then((data)    => res.json(data))
+            .catch((data)   => res.json(data));
+    });
+
 router.route('/:id')
     .get((req, res) => {
         // Get single order.

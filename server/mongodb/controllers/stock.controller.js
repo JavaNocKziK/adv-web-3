@@ -114,5 +114,22 @@ module.exports = {
                     });
                 });
         });
+    },
+    give: (id, count) => {
+        return new Promise((accept, reject) => {
+            StockModel.give(id, count)
+                .then((data) => {
+                    accept({
+                        "status": 1,
+                        "message": data.message
+                    });
+                })
+                .catch((err) => {
+                    reject({
+                        "status": 0,
+                        "message": err
+                    });
+                });
+        });
     }
 }

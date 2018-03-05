@@ -21,6 +21,10 @@ let StockSchema = new mongoose.Schema(
     { versionKey: false }
 );
 
+/**
+ * Take a specific amount of stock.
+ * Currently used when placing an order. 
+ */
 StockSchema.statics.take = function take(id, count) {
     return new Promise((accept, reject) => {
         Stock.findById(id, (err, stock) => {
@@ -37,6 +41,56 @@ StockSchema.statics.take = function take(id, count) {
                     });
                 } else {
                     let quantity = (stock.quantity - count);
+                    if(quantity < 0) {
+                        // We're taking more stock than what is left, reject it.
+                        reject({
+                            "status": 0,
+                            "message": err
+                        });
+                    } else {
+                        stock.quantity = quantity;
+                        stock.save((err) => {
+                            if(err) {
+                                reject({
+                                    "status": 0,
+                                    "message": err
+                                });
+                            } else {
+                                accept({
+                                    "status": 1,
+                                    "message": {
+                                        "quantity": quantity
+                                    }
+                                });
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    });
+};
+
+/**
+ * Give a specific amount of stock.
+ * Useful if an order fails we can "refund" the stock.
+ */
+StockSchema.statics.give = function give(id, count) {
+    return new Promise((accept, reject) => {
+        Stock.findById(id, (err, stock) => {
+            if(err) {
+                reject({
+                    "status": 0,
+                    "message": err
+                });
+            } else {
+                if(!stock) {
+                    reject({
+                        "status": 0,
+                        "message": "Stock not found."
+                    });
+                } else {
+                    let quantity = (stock.quantity + count);
                     stock.quantity = quantity;
                     stock.save((err) => {
                         if(err) {

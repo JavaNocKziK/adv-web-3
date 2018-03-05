@@ -32,7 +32,8 @@ export class LoginComponent implements OnInit {
                     let user = new User(
                         res.message.id,
                         data.username,
-                        res.message.security
+                        res.message.admin,
+                        res.message.homePath
                     );
                     user.token = new Token(res.message.token, new Date(res.message.tokenExpiry));
                     this.userService.set(user);

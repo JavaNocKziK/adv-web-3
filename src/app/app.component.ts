@@ -14,9 +14,10 @@ export class AppComponent {
         private router: Router
     ) {
         this.userService.user.subscribe((user) => {
+            console.log(user);
             if(user) {
                 // Route to the home area of the user.
-                this.router.navigate([user.home()]);
+                this.router.navigate([user.home]);
             } else {
                 let session: string = localStorage.getItem('token');
                 if(!session) {
@@ -40,7 +41,8 @@ export class AppComponent {
                     let user = new User(
                         data.id,
                         data.username,
-                        data.security
+                        data.admin,
+                        data.homePath
                     )
                     user.token = new Token(sessionToken.value, sessionToken.expiry);
                     this.userService.set(user);

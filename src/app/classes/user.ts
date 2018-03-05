@@ -1,22 +1,23 @@
 export class User {
     private _id: string;
     private _username: string;
-    private _security: number;
+    private _admin: boolean;
     public token: Token;
-    constructor(id: string, username: string, security: number) {
+    private _homepath: string;
+    constructor(id: string, username: string, admin: boolean, homepath: string) {
         this._id = id;
         this._username = username;
-        this._security = security;
+        this._admin = admin;
+        this._homepath = homepath;
     }
-    public home(): string {
-        switch(Number(this._security)) {
-            case 0: return '/login';
-            case 1: return '/wait';
-            default: return '/login';
-        }
+    get home(): string {
+        return (this._homepath || '/login');
     }
     get id(): string {
         return this._id;
+    }
+    get admin(): boolean {
+        return this._admin;
     }
 }
 

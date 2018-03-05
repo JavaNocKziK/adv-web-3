@@ -183,22 +183,16 @@
     .marker.done {
         background-color: #2E7D32;
     }
-    > h3 {
+    h3 {
         margin: 0;
         width: 100%;
-        padding: 10px;
-        font-size: 10pt;
+        padding: 20px;
+        font-size: 12pt;
         font-weight: bold;
         text-transform: uppercase;
         box-shadow: inset 0px 0px 8px 0px rgba(0, 0, 0, 0.05);
         border-top: 1px solid rgba(0, 0, 0, 0.075);
         background-color: rgba(0, 0, 0, 0.0125);
-    }
-    > p {
-        width: 100%;
-        padding: 10px;
-        font-size: 10pt;
-        border-top: 1px solid rgba(0, 0, 0, 0.075);
     }
 }
 .list::-webkit-scrollbar {
@@ -316,27 +310,24 @@
 [data-icon="check"] {
     background-image: url('http://localhost:3000/icon/check/fefefe');
 }
-
 [data-icon="plus"] {
     background-image: url('http://localhost:3000/icon/plus/fefefe');
 }
-
 [data-icon="minus"] {
     background-image: url('http://localhost:3000/icon/minus/fefefe');
 }
-
 [data-icon="account"] {
     background-image: url('http://localhost:3000/icon/user/fefefe');
 }
-
 [data-icon="list"] {
     background-image: url('http://localhost:3000/icon/list/fefefe');
 }
-
+[data-icon="listnew"] {
+    background-image: url('http://localhost:3000/icon/listnew/fefefe');
+}
 [data-icon="refresh"] {
     background-image: url('http://localhost:3000/icon/refresh/fefefe');
 }
-
 [data-icon="back"] {
     background-image: url('http://localhost:3000/icon/back/fefefe');
 }

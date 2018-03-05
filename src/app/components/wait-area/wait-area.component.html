@@ -1,12 +1,12 @@
 <div class="window" [attr.showtabs]="(_state == 0 ? true : false)">
     <div class="navbar">
         <div class="actions">
-            <button data-icon="account"></button>
-            <button data-icon="list"></button>
-            <button data-icon="refresh" (click)="clear()"></button>
+            <button data-icon="account" (click)="logout()"></button>
+            <button [attr.data-icon]="(_state == 2 ? 'listnew' : 'list')" (click)="toggleOwnOrders()"></button>
+            <button data-icon="refresh" (click)="clear()" *ngIf="_state != 2"></button>
         </div>
         <div class="title">
-            <p>New Order</p>
+            <p>{{pageTitle}}</p>
         </div>
         <div class="actions" *ngIf="_state == 0">
             <button data-icon="check" (click)="confirm()"></button>
@@ -50,6 +50,16 @@
                 <button data-icon="minus" data-style="red" (click)="remove(readback.id)"></button>
                 <p>{{readback.quantity}}</p>
                 <button data-icon="plus" data-style="green" (click)="add(readback.id)"></button>
+            </div>
+        </div>
+    </div>
+    <div class="list" *ngIf="(_state == 2)">
+        <div *ngFor="let status of orderStatuses">
+            <div *ngIf="myOrders(status.value).length > 0">
+                <h3>{{status.description}}</h3>
+                <div class="item"  *ngFor="let order of myOrders(status.value)">
+                    <p>{{order.friendlyId}}</p>
+                </div>
             </div>
         </div>
     </div>

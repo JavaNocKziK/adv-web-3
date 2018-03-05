@@ -5,6 +5,7 @@ import { Stock } from '../../classes/stock';
 import { OrderService } from '../../services/order.service';
 import { UserService } from '../../services/user.service';
 import { User } from '../../classes/user';
+import { OrderStatus } from '../../classes/order-status';
 
 @Component({
   selector: 'app-wait-area',
@@ -13,6 +14,7 @@ import { User } from '../../classes/user';
 })
 export class WaitAreaComponent implements OnInit {
     private _order: Order = new Order();
+    private _myOrders: Order[] = [];
     private _stock: Stock[] = [];
     private _tabs: Tab[] = [];
     private _activeTab: number = 0;
@@ -39,9 +41,6 @@ export class WaitAreaComponent implements OnInit {
         this.userSerivce.user.subscribe((user: User) => {
             if(user) {
                 this._user = user;
-                this.orderService.forUser(this._user.id).subscribe((orders) => {
-                    console.log(orders);
-                });
             }
         });
     }
@@ -107,6 +106,43 @@ export class WaitAreaComponent implements OnInit {
     }
     public cancelTables() {
         this._showTables = false;
+    }
+    public toggleOwnOrders() {
+        this._state = (this._state == 2 ? 0 : 2);
+        if(this._state == 2) {
+            this.orderService.forUser(this._user.id).subscribe((result) => {
+                this._myOrders = [];
+                result.message.forEach((item) => {
+                    this._myOrders.push(new Order(
+                        item._id,
+                        item.friendlyId,
+                        [],
+                        item.status,
+                        item.tableId,
+                        item.timeCreated,
+                        item.userId
+                    ));
+                });
+            });
+        }
+    }
+    public myOrders(status: number): Order[] {
+        return this._myOrders.filter((order) => {
+            return order.status == status;
+        });
+    }
+    get orderStatuses(): OrderStatus[] {
+        return this.orderService.statuses;
+    }
+    get pageTitle(): string {
+        switch(this._state) {
+            case 0: return 'New Order';
+            case 1: return 'Confirm';
+            case 2: return 'My Orders';
+        }
+    }
+    public logout() {
+        this.userSerivce.logout();
     }
 }
 

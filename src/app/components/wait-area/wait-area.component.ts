@@ -18,6 +18,8 @@ export class WaitAreaComponent implements OnInit {
     private _activeTab: number = 0;
     private _state: number = 0; // 0 (Taking Order), 1 (Reviewing Order), 2 (Previous Orders)
     private _user: User;
+    private _showTables: boolean = false;
+    private _tables: Table[] = [];
     constructor(
         private stockService: StockService,
         private orderService: OrderService,
@@ -27,6 +29,9 @@ export class WaitAreaComponent implements OnInit {
         this._tabs.push(new Tab('Mains', 1));
         this._tabs.push(new Tab('Deserts', 2));
         this._tabs.push(new Tab('Drinks', 3));
+        this._tables.push(new Table('abc123', 1, 'Back corner.'));
+        this._tables.push(new Table('def456', 2, 'Back corner.'));
+        this._tables.push(new Table('ghi789', 3, 'Side window.'));
         this.stockService.fetch();
     }
     ngOnInit() {
@@ -75,8 +80,9 @@ export class WaitAreaComponent implements OnInit {
         });
         return items;
     }
-    public generate() {
-        this.orderService.place(this._user.id, this._order).subscribe((result) => {
+    public generate(tableId: string) {
+        this._showTables = false;
+        this.orderService.place(this._user.id, tableId, this._order).subscribe((result) => {
             if(result.status == 1) {
                 this.clear();
             } else {
@@ -96,6 +102,12 @@ export class WaitAreaComponent implements OnInit {
         this._state = 0;
         this._order = new Order();
     }
+    public showTables() {
+        this._showTables = true;
+    }
+    public cancelTables() {
+        this._showTables = false;
+    }
 }
 
 export class Tab {
@@ -111,4 +123,15 @@ export class Readback {
     public id: string;
     public title: string;
     public quantity: number;
+}
+
+export class Table {
+    public id: string;
+    public number: number;
+    public description: string;
+    constructor(id: string, number: number, description: string) {
+        this.id = id;
+        this.number = number;
+        this.description = description;
+    }
 }

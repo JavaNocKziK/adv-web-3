@@ -15,7 +15,7 @@ export class OrderService {
     constructor(
         private http: Http
     ) {}
-    public place(userId: string, order: Order) {
+    public place(userId: string, tableId: string, order: Order) {
         let content = [];
         order.items.forEach((item) => {
             content.push({
@@ -27,7 +27,7 @@ export class OrderService {
             `${environment.api}/order`,
             {
                 userId: userId,
-                tableId: 'placeholder',
+                tableId: tableId,
                 content: content,
                 timeCreated: (new Date()).toJSON()
             },

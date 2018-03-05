@@ -12,7 +12,7 @@ router.route('/login')
             .then((data) => {
                 req.session.token = data.message.token;
                 req.session.tokenExpiry = data.message.tokenExpiry;
-                req.session.userSecurity = data.message.security;
+                req.session.isAdmin = data.message.admin;
                 res.json(data);
             })
             .catch((err) => res.json(err));
@@ -51,7 +51,7 @@ router.route('/')
         if(!req.session.token) {
             return res.redirect('/login');
         }
-        if(req.session.userSecurity != 0) {
+        if(!req.session.isAdmin) {
             return res.status(401).send(MSG.MSGNEEDTOBEADMIN);
         }
         UsersController.list()
@@ -63,7 +63,7 @@ router.route('/')
         if(!req.session.token) {
             return res.redirect('/login');
         }
-        if(req.session.userSecurity != 0) {
+        if(!req.session.isAdmin) {
             return res.status(401).send(MSG.MSGNEEDTOBEADMIN);
         }
         UsersController.add(req.body)
@@ -77,7 +77,7 @@ router.route('/:id')
         if(!req.session.token) {
             return res.redirect('/login');
         }
-        if((req.session.userId !== req.params.id) && (req.session.userSecurity != 0)) {
+        if((req.session.userId !== req.params.id) && !(req.session.isAdmin)) {
             return res.status(401).send(MSG.MSGNEEDTOBEUSER);
         }
         UsersController.get(req.params.id)
@@ -89,7 +89,7 @@ router.route('/:id')
         if(!req.session.token) {
             return res.redirect('/login');
         }
-        if((req.session.userId !== req.params.id) && (req.session.userSecurity != 0)) {
+        if((req.session.userId !== req.params.id) && !(req.session.isAdmin)) {
             return res.status(401).send(MSG.MSGNEEDTOBEUSER);
         }
         UsersController.update(req.params.id, req.body)
@@ -101,7 +101,7 @@ router.route('/:id')
         if(!req.session.token) {
             return res.redirect('/login');
         }
-        if(req.session.userSecurity != 0) {
+        if(!req.session.isAdmin) {
             return res.status(401).send(MSG.MSGNEEDTOBEADMIN);
         }
         UsersController.delete(req.params.id)

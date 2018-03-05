@@ -20,7 +20,7 @@ router.route('/')
         if(!req.session.token) {
             return res.redirect('/login');
         }
-        if(req.session.userSecurity != 0) {
+        if(!req.session.isAdmin) {
             return res.status(401).send(MSG.MSGNEEDTOBEADMIN);
         }
         StockController.add(req.body)
@@ -52,7 +52,7 @@ router.route('/:id')
         if(!req.session.token) {
             return res.redirect('/login');
         }
-        if(req.session.userSecurity != 0) {
+        if(!req.session.isAdmin) {
             return res.status(401).send(MSG.MSGNEEDTOBEADMIN);
         }
         StockController.delete(req.params.id)

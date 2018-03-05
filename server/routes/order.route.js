@@ -25,6 +25,17 @@ router.route('/')
             .catch((data)   => res.json(data));
     });
 
+router.route('/statuses')
+    .get((req, res) => {
+        // Get a list of possible status states for orders.
+        if(!req.session.token) {
+            return res.redirect('/login');
+        }
+        OrderController.statuses()
+            .then((data)    => res.json(data))
+            .catch((data)   => res.json(data));
+    });
+
 router.route('/:id')
     .get((req, res) => {
         // Get single order.
@@ -55,6 +66,17 @@ router.route('/:id')
         OrderController.delete(req.params.id)
             .then((data)    => res.json(data))
             .catch((data)   => res.json(data));
-    })
+    });
+
+router.route('/for/:userId')
+    .get((req, res) => {
+        // Get orders for a specific user.
+        if(!req.session.token) {
+            return res.redirect('/login');
+        }
+        OrderController.forUser(req.params.userId)
+            .then((data)    => res.json(data))
+            .catch((data)   => res.json(data));
+    });
 
 module.exports = router;

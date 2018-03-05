@@ -1,56 +1,81 @@
-<div class="window" [attr.taking]="(_taking)">
+<div class="window" [attr.showtabs]="(_state == 0 ? true : false)">
     <div class="navbar">
         <div class="actions">
-            <button data-icon="account-white-32"></button>
-            <button data-icon="list-white-32"></button>
-            <button data-icon="list-white-32"></button>
+            <button data-icon="account" (click)="logout()"></button>
+            <button [attr.data-icon]="(_state == 2 ? 'listnew' : 'list')" (click)="toggleOwnOrders()"></button>
+            <button data-icon="refresh" (click)="clear()" *ngIf="_state != 2"></button>
         </div>
         <div class="title">
-            <p>New Order</p>
+            <p>{{pageTitle}}</p>
         </div>
-        <div class="actions" *ngIf="_taking">
-            <button data-icon="check-white-32" (click)="confirm()"></button>
+        <div class="actions" *ngIf="_state == 0">
+            <button data-icon="check" (click)="confirm()"></button>
         </div>
-        <div class="actions" *ngIf="!_taking">
-            <button data-icon="check-white-32" (click)="generate()"></button>
-            <button data-icon="check-white-32" (click)="unconfirm()"></button>
+        <div class="actions" *ngIf="_state == 1">
+            <button data-icon="check" (click)="showTables()"></button>
+            <button data-icon="back" (click)="unconfirm()"></button>
         </div>
     </div>
-    <div class="tabbar" *ngIf="_taking">
+    <div class="tabbar" *ngIf="(_state == 0)">
         <p
             *ngFor="let tab of _tabs; let i = index"
             [attr.selected]="(_activeTab == i ? true : false)"
             (click)="changeTab(i)"
         >{{tab.title}}</p>
     </div>
-    <div class="list" *ngIf="(_taking && list.length > 0)">
+    <div class="list" *ngIf="(_state == 0 && list.length > 0)">
         <div class="item"  *ngFor="let stock of list" id={{stock.id}}>
             <p>{{stock.name}}</p>
             <div class="ticker">
                 <button
-                    data-icon="minus-white-24"
+                    data-icon="minus"
                     data-style="red"
                     [disabled]="(quantity(stock.id) == 0 ? true : false)"
                     (click)="remove(stock.id)"
                 ></button>
                 <p>{{quantity(stock.id)}}</p>
-                <button data-icon="plus-white-24" data-style="green" (click)="add(stock.id)"></button>
+                <button data-icon="plus" data-style="green" (click)="add(stock.id)"></button>
             </div>
         </div>
     </div>
-    <div class="list" *ngIf="(_taking && list.length == 0)">
+    <div class="list" *ngIf="(_state == 0 && list.length == 0)">
         <div class="item">
             <p>No items found.</p>
         </div>
     </div>
-    <div class="list" *ngIf="(!_taking)">
+    <div class="list" *ngIf="(_state == 1)">
         <div class="item"  *ngFor="let readback of order">
             <p>{{readback.title}}</p>
             <div class="ticker">
-                <button data-icon="minus-white-24" data-style="red" (click)="remove(readback.id)"></button>
+                <button data-icon="minus" data-style="red" (click)="remove(readback.id)"></button>
                 <p>{{readback.quantity}}</p>
-                <button data-icon="plus-white-24" data-style="green" (click)="add(readback.id)"></button>
+                <button data-icon="plus" data-style="green" (click)="add(readback.id)"></button>
             </div>
+        </div>
+    </div>
+    <div class="list" *ngIf="(_state == 2)">
+        <div *ngFor="let status of orderStatuses">
+            <div *ngIf="myOrders(status.value).length > 0">
+                <h3>{{status.description}}</h3>
+                <div class="item"  *ngFor="let order of myOrders(status.value)">
+                    <p>{{order.friendlyId}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="overlay" [attr.display]="_showTables">
+    <div class="plate">
+        <h3>Table #</h3>
+        <div class="list">
+            <div class="item" *ngFor="let table of _tables">
+                <p>#{{table.number}}</p>
+                <p>{{table.description}}</p>
+                <button data-icon="check" (click)="generate(table.id)"></button>
+            </div>
+        </div>
+        <div class="cancel">
+            <h3 (click)="cancelTables()">Cancel</h3>
         </div>
     </div>
 </div>

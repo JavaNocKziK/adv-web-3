@@ -13,20 +13,23 @@ module.exports = {
             failed: []
         }
         let rollback = async () => {
-            // Rollback taken stock.
-            await stock.taken.forEach(async (item) => {
+            for(let i = 0; i < stock.taken.length; i++) {
+                let item = stock.taken[i];
                 await StockModel.adjust(item.stockId, item.quantity);
-            });
+            }
         }
         // Take stock.
-        await order.content.forEach(async (item) => {
-            let result = await StockModel.adjust(item.stockId, -item.quantity);
-            if(result.status == 1) {
-                stock.taken.push(item);
-            } else {
-                stock.failed.push(item);
+        await (async () => {
+            for(let i = 0; i < order.content.length; i++) {
+                let item = order.content[i];
+                let result = await StockModel.adjust(item.stockId, -item.quantity);
+                if(result.status == 1) {
+                    stock.taken.push(item);
+                } else {
+                    stock.failed.push(item);
+                }
             }
-        });
+        })();
         if(stock.failed.length > 0) {
             // If we have failed stock, rollback.
             await rollback();

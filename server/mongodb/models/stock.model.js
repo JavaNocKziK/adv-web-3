@@ -25,7 +25,7 @@ let StockSchema = new mongoose.Schema(
 /**
  * To take stock make the count negative. To give stock make the count positive.
  */
-StockSchema.statics.adjust = async function adjust(id, count) {
+StockSchema.statics.adjust = function adjust(id, count) {
     return new Promise((resolve) => {
         Stock.findById(id, (err, stock) => {
             if(err) {

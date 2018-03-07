@@ -6,7 +6,8 @@ let OrderSchema = new Schema(
         friendlyId: {
             type: Number,
             required: true,
-            unique: true
+            unique: true,
+            min: 1
         },
         userId: {
             type: String,
@@ -41,9 +42,27 @@ let OrderSchema = new Schema(
     { versionKey: false }
 );
 
-// Generate the next user-friendly order ID.
-OrderSchema.statics.nextId = function nextId() {
-    return new Promise((accept, reject) => {
+/**
+ * Place an order.
+ * @param order The data of the order you want to save.
+ */
+OrderSchema.statics.place = async function place(order) {
+    return new Promise((resolve) => {
+        Order.create(order, (err, instance) => {
+            if(err) {
+                resolve({ "status": 0, "message": err });
+            } else {
+                resolve({ "status": 1, "message": instance });
+            }
+        });
+    });
+}
+
+/**
+ * Get the next friendly ID of an order.
+ */
+OrderSchema.statics.nextId = async function nextId() {
+    return new Promise((resolve) => {
         Order
             .find()
             .sort('-friendlyId')
@@ -51,12 +70,12 @@ OrderSchema.statics.nextId = function nextId() {
             .exec(
         (err, data) => {
             if(err) {
-                reject();
+                resolve(0);
             } else {
                 if(data.length == 0) {
-                    accept(1);
+                    resolve(1);
                 } else {
-                    accept(++data[0].friendlyId);
+                    resolve(++data[0].friendlyId);
                 }
             }
         });

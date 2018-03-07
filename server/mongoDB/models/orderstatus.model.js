@@ -3,6 +3,7 @@ let OrderStatusSchema = new mongoose.Schema(
     {
         value: {
             type: Number,
+            unique: true,
             required: true
         },
         description: {

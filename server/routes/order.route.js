@@ -15,14 +15,13 @@ router.route('/')
             .then((data)    => res.json(data))
             .catch((data)   => res.json(data));
     })
-    .post((req, res) => {
+    .post(async (req, res) => {
         // Add new order.
         if(!req.session.token) {
             return res.redirect('/login');
         }
-        OrderController.add(req.body)
-            .then((data)    => res.json(data))
-            .catch((data)   => res.json(data));
+        let result = await OrderController.add(req.body);
+        res.json(result);
     });
 
 router.route('/statuses')

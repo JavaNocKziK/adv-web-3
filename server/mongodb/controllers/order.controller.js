@@ -1,35 +1,48 @@
 const OrderModel = require('../models/order.model');
 const OrderStatusModel = require('../models/orderstatus.model');
+const StockModel = require('../models/stock.model');
 
 module.exports = {
-    add: (data) => {
-        return new Promise((accept, reject) => {
-            let order = new OrderModel(data);
-            OrderModel.nextId()
-                .then((id) => {
-                    order.friendlyId = id;
-                    order.status = 0;
-                    order.save((err) => {
-                        if(err) {
-                            reject({
-                                "status": 0,
-                                "message": err
-                            });
-                        } else {
-                            accept({
-                                "status": 1,
-                                "message": data
-                            });
-                        }
-                    });
-                })
-                .catch((err) => {
-                    reject({
-                        "status": 0,
-                        "message": err
-                    });
-                });
+    /**
+     * Add a new order to the system.
+     * @param order The order data you want to add.
+     */
+    add: async (order) => {
+        let stock = {
+            taken: [],
+            failed: []
+        }
+        let rollback = async () => {
+            // Rollback taken stock.
+            await stock.taken.forEach(async (item) => {
+                await StockModel.adjust(item.stockId, item.quantity);
+            });
+        }
+        // Take stock.
+        await order.content.forEach(async (item) => {
+            let result = await StockModel.adjust(item.stockId, -item.quantity);
+            if(result.status == 1) {
+                stock.taken.push(item);
+            } else {
+                stock.failed.push(item);
+            }
         });
+        if(stock.failed.length > 0) {
+            // If we have failed stock, rollback.
+            await rollback();
+            return { "status": 0, "message": "Taking stock failed." };
+        } else {
+            // Place the order.
+            order.friendlyId = await OrderModel.nextId();
+            order.status = 0;
+            let orderResult = await OrderModel.place(order);
+            if(orderResult.status == 1) {
+                return orderResult;
+            } else {
+                await rollback();
+                return { "status": 0, "message": "Placing order failed." };
+            }
+        }
     },
     get: (id) => {
         return new Promise((accept, reject) => {

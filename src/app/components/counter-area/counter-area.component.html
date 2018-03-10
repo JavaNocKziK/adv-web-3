@@ -1,0 +1,49 @@
+<div class="window">
+    <div class="titlebar">
+        <div class="actions">
+            <button data-icon="user-profile" (click)="logout()"></button>
+        </div>
+        <div class="title">
+            <p>Counter</p>
+        </div>
+        <div class="actions">
+            <button data-icon="refresh" (click)="fetchOrders()"></button>
+        </div>
+    </div>
+    <div class="tabbar">
+        <p selected>Bills</p>
+        <p>Reports</p>
+    </div>
+    <div class="split">
+        <div class="list">
+            <h3>Orders</h3>
+            <div class="item" *ngFor="let order of orders; let i = index" (click)="select(i)">
+                <p>Order #{{order.friendlyId}}</p>
+                <p>Table 1</p>
+            </div>
+        </div>
+        <div class="bill" showing="true" *ngIf="(selected !== undefined)">
+            <div class="header">
+                <h3>Order #{{orders[selected].friendlyId}}</h3>
+            </div>
+            <div class="items">
+                <div class="item" *ngFor="let item of orders[selected].items">
+                    <p>{{item.quantity}}x</p>
+                    <p>{{item.stockName}}</p>
+                    <p>£{{item.totalPrice.toFixed(2)}}</p>
+                </div>
+            </div>
+            <div class="summary">
+                <button colour="bgrey" (click)="close()">Close</button>
+                <button colour="blue">Payment Options</button>
+                <div class="total">
+                    <h3>Total</h3>
+                    <p>£{{orders[selected].total}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="bill" showing="false" *ngIf="(selected === undefined)">
+            <!-- Empty bill. -->
+        </div>
+    </div>
+</div>

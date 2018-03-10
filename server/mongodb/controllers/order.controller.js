@@ -62,15 +62,45 @@ module.exports = {
      * @param size Search for an order based on the number of unique items. (Not implemented).
      * @param items Search for an order that contains one or many items. (Not implemented).
      */
-    many: (status, dateRange, size, items) => {
+    many: (detail, status, dateRange, size, items) => {
         return new Promise((resolve) => {
             let search = OrderModel.find();
             if (status)         search.where('status').equals(status);
             if (dateRange[0])   search.where('timeCreated').gte(new Date(dateRange[0]));
             if (dateRange[1])   search.where('timeCreated').lte(new Date(dateRange[1]));
-            search.exec((err1, orders) => {
+            search.exec(async (err1, orders) => {
                 if (err1 || !orders) return resolve({ "status": 0, "code": 500, "message": "Issue obtaining orders.", "error": err1 });
-                return resolve({ "status": 1, "code": 200, "message": orders });
+                if (!detail) {
+                    // Not asking for detail, pass them just the orders.
+                    return resolve({ "status": 1, "code": 200, "message": orders });
+                } else {
+                    // Asking for detail, so we include stock name and price data with the content.
+                    for(let a = 0; a < orders.length; a++) {
+                        for(let b = 0; b < orders[a].content.length; b++) {
+                            let item = orders[a].content[b];
+                            let result = await (() => {
+                                return new Promise((resolve) => {
+                                    StockModel.findById(item.stockId, (err2, stock) => {
+                                        if (err2 || !stock) return resolve({ "status": 0, "message": err2 });
+                                        return resolve({ "status": 1, "message": stock });
+                                    });
+                                });
+                            })();
+                            if(result.status == 1) {
+                                orders[a].content[b] = {
+                                    _id: item._id,
+                                    stockId: item.stockId,
+                                    quantity: item.quantity,
+                                    stockName: result.message.name,
+                                    totalPrice: (result.message.price * item.quantity)
+                                }
+                            } else {
+                                return resolve({ "status": 0, "code": 500, "message": "Issue obtaining orders.", "error": err1 });
+                            }
+                        }
+                    }
+                    return resolve({ "status": 1, "code": 200, "message": orders });
+                }
             });
         });
     },

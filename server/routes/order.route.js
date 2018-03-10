@@ -16,6 +16,7 @@ router.route('/')
             res.status(secResult.code).send();
         } else {
             let result = await OrderController.many(
+                req.query.detail,
                 req.query.status,
                 [req.query.dateAfter, req.query.dateBefore]
             );

@@ -18,6 +18,7 @@ export class OrderService {
         private http: Http
     ) {}
     public place(userId: string, tableId: string, order: Order) {
+        options.params = {};
         let content = [];
         order.items.forEach((item) => {
             content.push({
@@ -38,12 +39,14 @@ export class OrderService {
         });
     }
     public forUser(id: string) {
+        options.params = {};
         return this.http.get(
             `${environment.api}/user/${id}/orders`,
             options
         ).map((result) => { return result.json(); });
     }
     public loadStatuses() {
+        options.params = {};
         let statuses: OrderStatus[] = [];
         (() => {
             return this.http.get(
@@ -60,5 +63,27 @@ export class OrderService {
             });
         });
         this.statuses = statuses;
+    }
+    public many(detail?: boolean, status?: number, dateRange?: [Date, Date]) {
+        let paramDetail: boolean;
+        let paramStatus: number;
+        let paramDateFrom: string;
+        let paramDateTo: string;
+        if (detail)         paramDetail = detail;
+        if (status)         paramStatus = status;
+        if (dateRange) {
+            if (dateRange[0])   paramDateFrom = dateRange[0].toJSON();
+            if (dateRange[1])   paramDateFrom = dateRange[1].toJSON();
+        }
+        options.params = {
+            detail: paramDetail,
+            status: paramStatus,
+            dateFrom: paramDateFrom,
+            dateTo: paramDateTo
+        };
+        return this.http.get(
+            `${environment.api}/order`,
+            options
+        ).map((result) => { return result.json(); });
     }
 }

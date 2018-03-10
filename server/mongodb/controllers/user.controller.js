@@ -88,7 +88,7 @@ module.exports = {
     deleteSingle: (id) => {
         return new Promise((resolve) => {
             UserModel.remove({ _id: id }, (err) => {
-                if (err) return resolve({ "status": 0, "code": 500, "message": "Error updating user.", "error": err });
+                if (err) return resolve({ "status": 0, "code": 500, "message": "Error deleting user.", "error": err });
                 return resolve({ "status": 1, "code": 200, "message": "" });
             });
         });

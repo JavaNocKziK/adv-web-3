@@ -1,81 +1,95 @@
 const express = require('express');
 const router = express.Router();
-const MSG = require('../classes/messages');
+const sec = require('../classes/security');
 
 // Controllers
 const OrderController = require('../mongodb/controllers/order.controller');
 
 router.route('/')
-    .get((req, res) => {
-        // Get all orders.
-        if(!req.session.token) {
-            return res.redirect('/login');
+    /**
+     * Get a list of all the orders.
+     * Security: [Session]
+     */
+    .get(async (req, res) => {
+        let secResult = await sec.check(req, sec.session);
+        if(!secResult.valid) {
+            res.status(secResult.code).send();
+        } else {
+            let result = await OrderController.many(
+                req.query.status,
+                [req.query.dateAfter, req.query.dateBefore]
+            );
+            res.status(result.code).json(result);
         }
-        OrderController.list()
-            .then((data)    => res.json(data))
-            .catch((data)   => res.json(data));
     })
+    /**
+     * Add a new order.
+     * Security: [Session]
+     */
     .post(async (req, res) => {
-        // Add new order.
-        if(!req.session.token) {
-            return res.redirect('/login');
+        let secResult = await sec.check(req, sec.session);
+        if(!secResult.valid) {
+            res.status(secResult.code).send();
+        } else {
+            let result = await OrderController.add(req.body);
+            res.status(result.code).json(result);
         }
-        let result = await OrderController.add(req.body);
-        res.json(result);
     });
 
 router.route('/statuses')
-    .get((req, res) => {
-        // Get a list of possible status states for orders.
-        if(!req.session.token) {
-            return res.redirect('/login');
+    /**
+     * Add a new order.
+     * Security: [Session]
+     */
+    .get(async (req, res) => {
+        let secResult = await sec.check(req, sec.session);
+        if(!secResult.valid) {
+            res.status(secResult.code).send();
+        } else {
+            let result = await OrderController.statuses();
+            res.status(result.code).json(result);
         }
-        OrderController.statuses()
-            .then((data)    => res.json(data))
-            .catch((data)   => res.json(data));
     });
 
 router.route('/:id')
-    .get((req, res) => {
-        // Get single order.
-        if(!req.session.token) {
-            return res.redirect('/login');
+    /**
+     * Get a single order.
+     * Security: [Session]
+     */
+    .get(async (req, res) => {
+        let secResult = await sec.check(req, sec.session);
+        if(!secResult.valid) {
+            res.status(secResult.code).send();
+        } else {
+            let result = await OrderController.single(req.param.id);
+            res.status(result.code).json(result);
         }
-        OrderController.get(req.params.id)
-            .then((data)    => res.json(data))
-            .catch((data)   => res.json(data));
     })
-    .put((req, res) => {
-        // Update an order.
-        if(!req.session.token) {
-            return res.redirect('/login');
+    /**
+     * Update a single order.
+     * Security: [Session]
+     */
+    .put(async (req, res) => {
+        let secResult = await sec.check(req, sec.session);
+        if(!secResult.valid) {
+            res.status(secResult.code).send();
+        } else {
+            let result = await OrderController.updateSingle(req.param.id, req.body);
+            res.status(result.code).json(result);
         }
-        OrderController.update(req.params.id, req.body)
-            .then((data)    => res.json(data))
-            .catch((data)   => res.json(data));
     })
-    .delete((req, res) => {
-        // Delete an order.
-        if(!req.session.token) {
-            return res.redirect('/login');
+    /**
+     * Delete a single order.
+     * Security: [Admin & Session]
+     */
+    .delete(async (req, res) => {
+        let secResult = await sec.check(req, sec.admin, sec.session);
+        if(!secResult.valid) {
+            res.status(secResult.code).send();
+        } else {
+            let result = await OrderController.deleteSingle(req.param.id);
+            res.status(result.code).json(result);
         }
-        if(!req.session.isAdmin) {
-            return res.status(401).send(MSG.MSGNEEDTOBEADMIN);
-        }
-        OrderController.delete(req.params.id)
-            .then((data)    => res.json(data))
-            .catch((data)   => res.json(data));
-    });
-
-router.route('/for/:userId')
-    .get((req, res) => {
-        // Get orders for a specific user.
-        if(!req.session.token) {
-            return res.redirect('/login');
-        }
-        OrderController.forUser(req.params.userId)
-            .then((data)    => res.json(data))
-            .catch((data)   => res.json(data));
     });
 
 module.exports = router;

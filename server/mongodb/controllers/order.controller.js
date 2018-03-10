@@ -19,145 +19,127 @@ module.exports = {
             }
         }
         // Take stock.
-        await (async () => {
-            for(let i = 0; i < order.content.length; i++) {
-                let item = order.content[i];
-                let result = await StockModel.adjust(item.stockId, -item.quantity);
-                if(result.status == 1) {
-                    stock.taken.push(item);
-                } else {
-                    stock.failed.push(item);
-                }
+        for(let i = 0; i < order.content.length; i++) {
+            let item = order.content[i];
+            let result = await StockModel.adjust(item.stockId, -item.quantity);
+            if(result.status == 1) {
+                stock.taken.push(item);
+            } else {
+                stock.failed.push(item);
             }
-        })();
+        }
         if(stock.failed.length > 0) {
             // If we have failed stock, rollback.
             await rollback();
-            return { "status": 0, "message": "Taking stock failed." };
+            return { "status": 0, "code": 500, "message": "Taking stock failed." };
         } else {
             // Place the order.
-            order.friendlyId = await OrderModel.nextId();
-            order.status = 0;
             let orderResult = await OrderModel.place(order);
             if(orderResult.status == 1) {
                 return orderResult;
             } else {
                 await rollback();
-                return { "status": 0, "message": "Placing order failed." };
+                return { "status": 0, "code": 500, "message": "Placing order failed." };
             }
         }
     },
-    get: (id) => {
-        return new Promise((accept, reject) => {
-            OrderModel.findById(id, (err, result) => {
-                if(err) {
-                    reject({
-                        "status": 0,
-                        "message": err
-                    });
-                } else {
-                    accept({
-                        "status": 1,
-                        "message": result
-                    });
-                }
+    /**
+     * Get a single order from an ID.
+     * @param id The order ID.
+     */
+    single: (id) => {
+        return new Promise((resolve) => {
+            OrderModel.findById(id, (err1, order) => {
+                if (err1) resolve({ "status": 0, "code": 500, "message": "Issue getting order.", "error": err });
+                resolve({ "status": 1, "code": 200, "message": order });
             });
         });
     },
-    list: () => {
-        return new Promise((accept, reject) => {
-            let query = OrderModel.find();
-            query.exec((err, result) => {
-                if(err) {
-                    reject({
-                        "status": 0,
-                        "message": err
-                    });
-                } else {
-                    accept({
-                        "status": 1,
-                        "message": result
-                    });
-                }
+    /**
+     * Get many orders.
+     * @param status Search for an order based on its status.
+     * @param timeRange Search for an order based on when it was created.
+     * @param size Search for an order based on the number of unique items. (Not implemented).
+     * @param items Search for an order that contains one or many items. (Not implemented).
+     */
+    many: (status, dateRange, size, items) => {
+        return new Promise((resolve) => {
+            let search = OrderModel.find();
+            if (status)         search.where('status').equals(status);
+            if (dateRange[0])   search.where('timeCreated').gte(new Date(dateRange[0]));
+            if (dateRange[1])   search.where('timeCreated').lte(new Date(dateRange[1]));
+            search.exec((err1, orders) => {
+                if (err1 || !orders) return resolve({ "status": 0, "code": 500, "message": "Issue obtaining orders.", "error": err1 });
+                return resolve({ "status": 1, "code": 200, "message": orders });
             });
         });
     },
-    forUser: (userId) => {
+    /**
+     * Update the information stored against a single order.
+     * @param id The ID of the order you want the changes to apply to.
+     * @param data The changes you want to make to the order.
+     */
+    updateSingle: (id, data) => {
         return new Promise((accept, reject) => {
-            let query = OrderModel.find({ userId: userId });
-            query.exec((err, result) => {
-                if(err) {
-                    reject({
-                        "status": 0,
-                        "message": err
-                    });
-                } else {
-                    accept({
-                        "status": 1,
-                        "message": result
-                    });
-                }
+            OrderModel.findById(id, (err1, order) => {
+                if (err1 || !order) return resolve({ "status": 0, "code": 500, "message": "Error updating order.", "error": err1 });
+                /*
+                    We only want them to be able to change content, status and table ID.
+                    - timeCreated is auto generated and should not be changed.
+                    - value will be automatically calculated and saved when this document is saved.
+                    - userId shouldn't be allowed to change, but tableId can because they might move table.
+                    - friendlyId definitely shouldn't change.
+                */
+                if (data.content)   order.content = data.content;
+                if (data.status)    order.status = data.status;
+                if (data.tableId)   order.tableId = data.tableId;
+                order.save((err2) => {
+                    if (err2) return resolve({ "status": 0, "code": 500, "message": "Error updating order.", "error": err2 });
+                    return resolve({ "status": 1, "code": 200, "message": "" });
+                });
             });
         });
     },
-    update: (id, data) => {
-        return new Promise((accept, reject) => {
-            OrderModel.findById(id, (err, result) => {
-                if(err) {
-                    reject({
-                        "status": 0,
-                        "message": err
-                    });
-                } else {
-                    result.set(data);
-                    result.save((err) => {
-                        if(err) {
-                            reject({
-                                "status": 0,
-                                "message": err
-                            });
-                        } else {
-                            accept({
-                                "status": 1,
-                                "message": result
-                            });
-                        }
-                    });
-                }
+    /**
+     * Potential future implementation of a function to update
+     * many orders as the same time.
+     * @param ids A list of IDs you want the update to apply to.
+     * @param data The changes you want to make to the orders.
+     */
+    updateMany: (ids, data) => {
+        return new Promise((resolve) => {
+            resolve({ "status": 0, "code": 501, "message": "" });
+        });
+    },
+    /**
+     * Delete a single order.
+     * @param id The ID of the order you want to delete.
+     */
+    deleteSingle: (id) => {
+        return new Promise((resolve) => {
+            OrderModel.remove({ _id: id }, (err1) => {
+                if (err) return resolve({ "status": 0, "code": 500, "message": "Error deleting order.", "error": err });
+                return resolve({ "status": 1, "code": 200, "message": "" });
             });
         });
     },
-    delete: (id) => {
-        return new Promise((accept, reject) => {
-            OrderModel.remove({_id: id}, (err, result) => {
-                if(err) {
-                    reject({
-                        "status": 0,
-                        "message": err
-                    });
-                } else {
-                    accept({
-                        "status": 1,
-                        "message": result
-                    });
-                }
-            });
+    /**
+     * Delete multiple orders.
+     * @param ids The IDs of the orders you want to delete.
+     */
+    deleteMany: (ids) => {
+        return new Promise((resolve) => {
+            resolve({ "status": 0, "code": 501, "message": "" });
         });
     },
+    /**
+     * Get a list of valid statuses for orders or items on an order.
+     */
     statuses: () => {
-        return new Promise((accept, reject) => {
-            OrderStatusModel.find((err, result) => {
-                if(err) {
-                    reject({
-                        "status": 0,
-                        "message": err
-                    });
-                } else {
-                    accept({
-                        "status": 1,
-                        "message": result
-                    });
-                }
+        return new Promise((resolve) => {
+            OrderStatusModel.find((err1, list) => {
+                if (err1 || !list) return resolve({ "status": 0, "code": 500, "message": "Unable to fetch statuses." });
+                return resolve({ "status": 1, "code": 200, "message": list });
             });
         });
     }

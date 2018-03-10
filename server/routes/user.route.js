@@ -1,108 +1,146 @@
 const express = require('express');
 const router = express.Router();
-const MSG = require('../classes/messages');
+const sec = require('../classes/security');
 
 // Controllers
+const UserModel = require('../mongodb/models/user.model');
 const UsersController = require('../mongodb/controllers/user.controller');
 
 router.route('/login')
-    .post((req, res) => {
-        // Login to user account.
-        UsersController.login(req.body)
-            .then((data) => {
-                req.session.token = data.message.token;
-                req.session.tokenExpiry = data.message.tokenExpiry;
-                req.session.isAdmin = data.message.admin;
-                res.json(data);
-            })
-            .catch((err) => res.json(err));
+    /**
+     * Login to a specified account.
+     * Security: None
+     */
+    .post(async (req, res) => {
+        let result = await UserModel.authenticate(req.body.username, req.body.password);
+        if(result.status == 1) {
+            req.session.userId = result.message.id;
+            req.session.token = result.message.token;
+            req.session.tokenExpiry = result.message.tokenExpiry;
+            req.session.admin = result.message.admin;
+        }
+        res.status(result.code).json(result);
     });
 
 router.route('/logout')
-    .post((req, res) => {
-        // Logout of user account.
-        UsersController.logout(req.body.token)
-            .then((data) => {
-                if(req.session.token) {
-                    req.session = null;
-                }
-                return res.json(data);
-            })
-            .catch((err) => {
-                return res.status(500).send(err)
-            });
+    /**
+     * Logout of a specified account.
+     * Security: [Session]
+     */
+    .post(async (req, res) => {
+        let secResult = await sec.check(req, sec.session);
+        if(!secResult.valid) {
+            res.status(secResult.code).send();
+        } else {
+            let result = await UserModel.deauthenticate(req.body.token);
+            if (result.status == 1 && req.session) req.session = null;
+            res.status(result.code).json(result);
+        }
     });
 
 router.route('/reauthenticate')
-    .post((req, res) => {
+    /**
+     * Reauthenticate a specified account.
+     * Security: None
+     */
+    .post(async (req, res) => {
         // Reauthenticate with token.
-        UsersController.reauthenticate(req.body.token)
-            .then((data) => res.json(data))
-            .catch((err) => res.json(err));
+        let result = await UserModel.reauthenticate(req.body.token);
+        if(result.status == 1) {
+            req.session.userId = result.message.id;
+            req.session.token = result.message.token;
+            req.session.tokenExpiry = result.message.tokenExpiry;
+            req.session.admin = result.message.admin;
+        }
+        res.status(result.code).json(result);
     });
 
 router.route('/')
-    .get((req, res) => {
-        // Get all users.
-        if(!req.session.token) {
-            return res.redirect('/login');
+    /**
+     * Get a list of all the users.
+     * Security: [Admin & Session]
+     */
+    .get(async (req, res) => {
+        let secResult = await sec.check(req, sec.admin, sec.session);
+        if(!secResult.valid) {
+            res.status(secResult.code).send();
+        } else {
+            let result = await UsersController.many(
+                req.query.username,
+                req.query.admin,
+                req.query.homepath
+            );
+            res.status(result.code).json(result);
         }
-        if(!req.session.isAdmin) {
-            return res.status(401).send(MSG.MSGNEEDTOBEADMIN);
-        }
-        UsersController.list()
-            .then((data) => res.json(data))
-            .catch((err) => res.json(err));
     })
-    .post((req, res) => {
-        // Add new user.
-        if(!req.session.token) {
-            return res.redirect('/login');
+    /**
+     * Create a new user.
+     * Security: [Admin & Session]
+     */
+    .post(async (req, res) => {
+        let secResult = await sec.check(req, sec.admin, sec.session);
+        if(!secResult.valid) {
+            res.status(secResult.code).send();
+        } else {
+            let result = await UsersController.add(req.body);
+            res.status(result.code).json(result);
         }
-        if(!req.session.isAdmin) {
-            return res.status(401).send(MSG.MSGNEEDTOBEADMIN);
-        }
-        UsersController.add(req.body)
-            .then((data) => res.json(data))
-            .catch((err) => res.json(err));
     });
 
 router.route('/:id')
-    .get((req, res) => {
-        // Get single user.
-        if(!req.session.token) {
-            return res.redirect('/login');
+    /**
+     * Get a single user.
+     * Security: [Admin|User & Session]
+     */
+    .get(async (req, res) => {
+        let secResult = await sec.check(req, sec.session, sec.user);
+        if(!secResult.valid) {
+            res.status(secResult.code).send();
+        } else {
+            let result = await UsersController.single(req.params.id);
+            res.status(result.code).json(result);
         }
-        if((req.session.userId !== req.params.id) && !(req.session.isAdmin)) {
-            return res.status(401).send(MSG.MSGNEEDTOBEUSER);
-        }
-        UsersController.get(req.params.id)
-            .then((data) => res.json(data))
-            .catch((err) => res.json(err));
     })
-    .put((req, res) => {
-        // Update a user.
-        if(!req.session.token) {
-            return res.redirect('/login');
+    /**
+     * Update a single user.
+     * Security: [Admin|User & Session]
+     */
+    .put(async (req, res) => {
+        let secResult = await sec.check(req, sec.session, sec.user);
+        if(!secResult.valid) {
+            res.status(secResult.code).send();
+        } else {
+            let result = await UsersController.updateSingle(req.params.id, req.session.admin, req.body);
+            res.status(result.code).json(result);
         }
-        if((req.session.userId !== req.params.id) && !(req.session.isAdmin)) {
-            return res.status(401).send(MSG.MSGNEEDTOBEUSER);
-        }
-        UsersController.update(req.params.id, req.body)
-            .then((data) => res.json(data))
-            .catch((err) => res.json(err));
     })
-    .delete((req, res) => {
-        // Delete a user.
-        if(!req.session.token) {
-            return res.redirect('/login');
+    /**
+     * Delete a single user.
+     * Security: [Admin & Session]
+     */
+    .delete(async (req, res) => {
+        let secResult = await sec.check(req, sec.admin, sec.session);
+        if(!secResult.valid) {
+            res.status(secResult.code).send();
+        } else {
+            let result = await UsersController.deleteSingle(req.params.id);
+            res.status(result.code).json(result);
         }
-        if(!req.session.isAdmin) {
-            return res.status(401).send(MSG.MSGNEEDTOBEADMIN);
+    });
+
+router.route('/:id/orders')
+    /**
+     * Get the orders of the specific user.
+     * Security: [Admin|User & Session]
+     */
+    .get(async (req, res) => {
+        let secResult = await sec.check(req, sec.session, sec.user);
+        if(!secResult.valid) {
+            res.status(secResult.code).send();
+        } else {
+            let result = await UsersController.orders(req.params.id);
+            res.status(result.code).json(result);
         }
-        UsersController.delete(req.params.id)
-            .then((data) => res.json(data))
-            .catch((err) => res.json(err));
     });
 
 module.exports = router;

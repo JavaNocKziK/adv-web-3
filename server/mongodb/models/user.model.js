@@ -121,7 +121,7 @@ UserSchema.statics.reauthenticate = function reauthenticate(token) {
             let currentDate = new Date();
             let tokenExpiry = new Date(user.tokenExpiry);
             if (tokenExpiry < currentDate) return resolve(resolveError);
-            return resolve({ "status": 0, "code": 200, "message": {
+            return resolve({ "status": 1, "code": 200, "message": {
                 id: user._id,
                 username: user.username,
                 token: user.token,

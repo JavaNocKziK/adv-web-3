@@ -12,10 +12,6 @@ const userRoute = require('./routes/user.route');
 const stockRoute = require('./routes/stock.route');
 const iconRoute = require('./routes/icon.route');
 
-// mongoose.connect('mongodb://<user>:<pass>@<url>:<port>/<database>');
-// mongoose.connect('mongodb://elliot:Rugger126@ds233238.mlab.com:33238/adv-web-2-db');
-// mongoose.connect('mongodb://localhost:27017/advanced_web');
-// mongoose.connect('mongodb+srv://elliot:Rugger126!!??@advancedwebmongodb-levvn.mongodb.net/AdvancedWebMongoDB');
 mongoose.connect('mongodb://admin:abc123@139.59.163.216:8080');
 
 // Set CORS and other stuff.
@@ -30,17 +26,6 @@ app.use(express.static(path.join(__dirname, 'dist')));
 app.use(CORS);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-/*
-app.use(session({
-    secret: 'ass2',
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-        maxAge: 2628000000,
-        secure: true
-    }
-}));
-*/
 app.use(cookieSession({
     name: 'session',
     secret: 'ass2',
@@ -49,7 +34,6 @@ app.use(cookieSession({
     secure: false,
     overwrite: false
 }));
-
 
 // Routes
 app.use('/order', orderRoute);

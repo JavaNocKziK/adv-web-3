@@ -103,7 +103,8 @@ module.exports = {
         });
     },
     /**
-     * Returns a list of orders for the specific user.
+     * Potential future implementation of a function to delete
+     * many users at the same time.
      * @param id The ID of the user of which to return orders.
      */
     orders: (id) => {

@@ -30,8 +30,7 @@ export class OrderService {
             {
                 userId: userId,
                 tableId: tableId,
-                content: content,
-                timeCreated: (new Date()).toJSON()
+                content: content
             },
             options
         ).map((result) => {
@@ -40,7 +39,7 @@ export class OrderService {
     }
     public forUser(id: string) {
         return this.http.get(
-            `${environment.api}/order/for/${id}`,
+            `${environment.api}/user/${id}/orders`,
             options
         ).map((result) => { return result.json(); });
     }

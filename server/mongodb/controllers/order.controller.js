@@ -124,7 +124,8 @@ module.exports = {
         });
     },
     /**
-     * Delete multiple orders.
+     * Potential future implementation of a function to delete
+     * many orders at the same time.
      * @param ids The IDs of the orders you want to delete.
      */
     deleteMany: (ids) => {

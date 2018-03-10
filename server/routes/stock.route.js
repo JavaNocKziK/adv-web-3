@@ -1,74 +1,81 @@
 const express = require('express');
 const router = express.Router();
-const MSG = require('../classes/messages');
+const sec = require('../classes/security');
 
 // Controllers
 const StockController = require('../mongodb/controllers/stock.controller');
 
 router.route('/')
-    .get((req, res) => {
-        // Get all stock.
-        if(!req.session.token) {
-            return res.redirect('/login');
+    /**
+     * Get a list of all the stock.
+     * Security: [Session]
+     */
+    .get(async (req, res) => {
+        let secResult = await sec.check(req, sec.session);
+        if(!secResult.valid) {
+            res.status(secResult.code).send();
+        } else {
+            let result = await StockController.many(
+                req.query.name,
+                req.query.category,
+                [req.query.quantityFrom, req.query.quantityTo]
+            );
+            res.status(result.code).json(result);
         }
-        StockController.list()
-            .then((data) => res.json(data))
-            .catch((err) => res.json(err));
     })
-    .post((req, res) => {
-        // Add new stock.
-        if(!req.session.token) {
-            return res.redirect('/login');
+    /**
+     * Add a new stock item.
+     * Security: [Admin & Session]
+     */
+    .post(async (req, res) => {
+        let secResult = await sec.check(req, sec.admin, sec.session);
+        if(!secResult.valid) {
+            res.status(secResult.code).send();
+        } else {
+            let result = await StockController.add(req.body);
+            res.status(result.code).json(result);
         }
-        if(!req.session.isAdmin) {
-            return res.status(401).send(MSG.MSGNEEDTOBEADMIN);
-        }
-        StockController.add(req.body)
-            .then((data) => res.json(data))
-            .catch((err) => res.json(err));
     });
 
 router.route('/:id')
-    .get((req, res) => {
-        // Get a single stock item.
-        if(!req.session.token) {
-            return res.redirect('/login');
+    /**
+     * Get a single stock item.
+     * Security: [Session]
+     */
+    .get(async (req, res) => {
+        let secResult = await sec.check(req, sec.session);
+        if(!secResult.valid) {
+            res.status(secResult.code).send();
+        } else {
+            let result = await StockController.single(req.params.id);
+            res.status(result.code).json(result);
         }
-        StockController.get(req.params.id)
-            .then((data) => res.json(data))
-            .catch((err) => res.json(err));
     })
-    .put((req, res) => {
-        // Update stock.
-        if(!req.session.token) {
-            return res.redirect('/login');
+    /**
+     * Update a single stock item.
+     * Security: [Admin & Session]
+     */
+    .put(async (req, res) => {
+        let secResult = await sec.check(req, sec.admin, sec.session);
+        if(!secResult.valid) {
+            res.status(secResult.code).send();
+        } else {
+            let result = await StockController.updateSingle(req.params.id, req.body);
+            res.status(result.code).json(result);
         }
-        StockController.update(req.params.id, req.body)
-            .then((data) => res.json(data))
-            .catch((err) => res.json(err));
     })
-    .delete((req, res) => {
-        // Delete stock.
-        if(!req.session.token) {
-            return res.redirect('/login');
+    /**
+     * Delete a single stock item.
+     * Security: [Admin & Session]
+     */
+    .delete(async (req, res) => {
+        let secResult = await sec.check(req, sec.admin, sec.session);
+        if(!secResult.valid) {
+            res.status(secResult.code).send();
+        } else {
+            let result = await StockController.deleteSingle(req.params.id);
+            res.status(result.code).json(result);
         }
-        if(!req.session.isAdmin) {
-            return res.status(401).send(MSG.MSGNEEDTOBEADMIN);
-        }
-        StockController.delete(req.params.id)
-            .then((data) => res.json(data))
-            .catch((err) => res.json(err));
-    });
-
-router.route('/:id/take/:count')
-    .get((req, res) => {
-        // Take a specific amount of quantity from stock.
-        if(!req.session.token) {
-            return res.redirect('/login');
-        }
-        StockController.take(req.params.id, req.params.count)
-            .then((data) => res.json(data))
-            .catch((err) => res.json(err));
     });
 
 module.exports = router;

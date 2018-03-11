@@ -47,7 +47,7 @@ export class CounterAreaComponent implements OnInit {
                     ));
                 });
                 this.orders.push(new Order(
-                    order.id,
+                    order._id,
                     order.friendlyId,
                     orderItems,
                     order.status,
@@ -57,6 +57,17 @@ export class CounterAreaComponent implements OnInit {
                 ));
             });
             console.log(this.orders);
+        });
+    }
+    private pay() {
+        let id: string = this.orders[this.selected].id;
+        this.orderService.update(id, {
+            status: 5 // Archived
+        }).subscribe((result) => {
+            if(result.status == 1) {
+                this.selected = undefined;
+                this.fetchOrders();
+            }
         });
     }
 }

@@ -4,7 +4,7 @@ import { environment } from '../../environments/environment';
 import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Rx';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
-import { Order } from '../classes/order';
+import { Order, OrderItem } from '../classes/order';
 import { OrderStatus } from '../classes/order-status';
 
 const options: RequestOptionsArgs = {
@@ -83,6 +83,17 @@ export class OrderService {
         };
         return this.http.get(
             `${environment.api}/order`,
+            options
+        ).map((result) => { return result.json(); });
+    }
+    public update(id: string, data) {
+        options.params = {};
+        return this.http.put(
+            `${environment.api}/order/${id}`,
+            {
+                status: data.status,
+                tableId: data.tableId
+            },
             options
         ).map((result) => { return result.json(); });
     }

@@ -11,12 +11,14 @@ import { StockService } from './services/stock.service';
 import { UserService } from './services/user.service';
 import { WaitAreaComponent } from './components/wait-area/wait-area.component';
 import { OrderService } from './services/order.service';
+import { KitchenAreaComponent } from './components/kitchen-area/kitchen-area.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    WaitAreaComponent
+    WaitAreaComponent,
+    KitchenAreaComponent
   ],
   imports: [
     FormsModule,

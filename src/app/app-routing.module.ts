@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { LoginComponent } from './components/login/login.component';
 import { WaitAreaComponent } from './components/wait-area/wait-area.component';
+import { AdminAreaComponent } from './components/admin-area/admin-area.component'
 import { AppComponent } from './app.component';
 
 const routes: Routes = [
@@ -17,6 +18,10 @@ const routes: Routes = [
     {
         path: 'wait',
         component: WaitAreaComponent
+    },
+    {
+        path: 'admin',
+        component: AdminAreaComponent
     },
     // Other routes here.
     {

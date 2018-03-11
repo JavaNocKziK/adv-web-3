@@ -80,7 +80,7 @@ module.exports = {
      * @param data The changes you want to make to the order.
      */
     updateSingle: (id, data) => {
-        return new Promise((accept, reject) => {
+        return new Promise((resolve) => {
             OrderModel.findById(id, (err1, order) => {
                 if (err1 || !order) return resolve({ "status": 0, "code": 500, "message": "Error updating order.", "error": err1 });
                 /*

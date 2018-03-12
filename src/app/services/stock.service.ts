@@ -32,7 +32,7 @@ export class StockService {
                         data.name,
                         data.detail,
                         data.category,
-                        data.quantity
+                        data.quantity,
                         data.price
                     ));
                 });

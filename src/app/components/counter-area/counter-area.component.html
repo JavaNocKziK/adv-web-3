@@ -27,17 +27,17 @@
     <div class="split" *ngIf="(_activeTab == 0)">
         <div class="list">
             <h3>Orders</h3>
-            <div class="item" *ngFor="let order of _orders; let i = index" (click)="select(i)">
+            <div class="item" *ngFor="let order of _completedOrders; let i = index" (click)="select(i)">
                 <p>Order #{{order.friendlyId}}</p>
                 <p>Table 1</p>
             </div>
         </div>
         <div class="bill" showing="true" *ngIf="(_selectedOrder !== undefined)">
             <div class="header">
-                <h3>Order #{{_orders[_selectedOrder].friendlyId}}</h3>
+                <h3>Order #{{_completedOrders[_selectedOrder].friendlyId}}</h3>
             </div>
             <div class="items">
-                <div class="item" *ngFor="let item of _orders[_selectedOrder].items">
+                <div class="item" *ngFor="let item of _completedOrders[_selectedOrder].items">
                     <p>{{item.quantity}}x</p>
                     <p>{{item.stockName}}</p>
                     <p>£{{item.totalPrice.toFixed(2)}}</p>
@@ -48,7 +48,7 @@
                 <button colour="blue" (click)="pay()">Payment</button>
                 <div class="total">
                     <h3>Total</h3>
-                    <p>£{{_orders[_selectedOrder].total}}</p>
+                    <p>£{{_completedOrders[_selectedOrder].total}}</p>
                 </div>
             </div>
         </div>

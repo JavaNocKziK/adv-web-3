@@ -27,8 +27,18 @@ export class UserService {
             return this.http.get(
                 `${environment.api}/user`,
                 options
-            ).map((result) => {
+            )
+            .map((result) => {
                 return result.json();
+            })
+            .catch((error) => {
+                if(error.status == 0) {
+                    this.errorService.add('Connection error.');
+                } else {
+                    let response = JSON.parse(error._body);
+                    this.errorService.add(response.message);
+                }
+                return Observable.throw(error);
             });
         })().subscribe((res) => {
             if(res.status == 1) {
@@ -61,8 +71,12 @@ export class UserService {
             return result.json();
         })
         .catch((error) => {
-            let response = JSON.parse(error._body);
-            this.errorService.add(response.message);
+            if(error.status == 0) {
+                this.errorService.add('Connection error.');
+            } else {
+                let response = JSON.parse(error._body);
+                this.errorService.add(response.message);
+            }
             return Observable.throw(error);
         });
     }
@@ -75,8 +89,18 @@ export class UserService {
                     token: (session.value || '')
                 },
                 options
-            ).map((result) => {
+            )
+            .map((result) => {
                 return result.json();
+            })
+            .catch((error) => {
+                if(error.status == 0) {
+                    this.errorService.add('Connection error.');
+                } else {
+                    let response = JSON.parse(error._body);
+                    this.errorService.add(response.message);
+                }
+                return Observable.throw(error);
             });
         })().subscribe((res) => {
             if(res.status == 1) {
@@ -96,8 +120,12 @@ export class UserService {
             return result.json();
         })
         .catch((error) => {
-            let response = JSON.parse(error._body);
-            this.errorService.add(response.message);
+            if(error.status == 0) {
+                this.errorService.add('Connection error.');
+            } else {
+                let response = JSON.parse(error._body);
+                this.errorService.add(response.message);
+            }
             return Observable.throw(error);
         });
     }

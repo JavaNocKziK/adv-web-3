@@ -68,9 +68,9 @@ export class OrderService {
         });
         this.statuses = statuses;
     }
-    public fetch(detail?: boolean, status?: number, dateRange?: [Date, Date]) {
+    public fetch(detail?: boolean, status?: number|number[], dateRange?: [Date, Date]) {
         let paramDetail: boolean;
-        let paramStatus: number;
+        let paramStatus: number|number[];
         let paramDateFrom: string;
         let paramDateTo: string;
         if (detail)         paramDetail = detail;

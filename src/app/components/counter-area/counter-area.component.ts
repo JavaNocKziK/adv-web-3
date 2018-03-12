@@ -29,7 +29,12 @@ export class CounterAreaComponent implements OnInit {
             this.fetchOrders(); // Update every 2 minutes.
         });
         this.orderService.orders.subscribe((orders: Order[]) => {
-            this._orders = orders;
+            if(orders) {
+                this._orders = orders;
+                if(this._selectedOrder > this._orders.length) {
+                    this._selectedOrder = undefined;
+                }
+            }
         });
     }
     ngOnInit() {}
@@ -46,10 +51,13 @@ export class CounterAreaComponent implements OnInit {
         this._selectedOrder = undefined;
         this._activeTab = index;
     }
-    public orders(status: number) {
-        return this._orders.filter((value) => {
-            return value.status == status;
-        });
+    public orders(status: number): Order[] {
+        if(this._orders !== undefined) {
+            return this._orders.filter((value) => {
+                return value.status == status;
+            });
+        }
+        return [];
     }
     get status() {
         switch(this._activeTab) {
@@ -59,11 +67,7 @@ export class CounterAreaComponent implements OnInit {
         }
     }
     private fetchOrders() {
-        let status: number[] = [4, 5]; // [Completed, Archived]
-        this._orders = [];
-        status.forEach((value) => {
-            this.orderService.fetch(true, value, undefined);
-        });
+        this.orderService.fetch(true, [4, 5], undefined);
     }
     private pay() {
         let id: string = this.orders(this.status)[this._selectedOrder].id;

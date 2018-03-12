@@ -247,21 +247,57 @@ body {
 
 .bill {
     display: grid;
-    grid-template-rows: min-content 1fr 100px;
     background-color: #FEFEFE;
     border-radius: 0px 0px 3px 0px;
     height: 100%;
     .header {
-        padding: 30px;
+        display: grid;
+        grid-template-rows: 1fr;
+        grid-template-columns: min-content 1fr;
+        justify-items: center;
+        align-items: center;
         width: 100%;
+        padding: 20px;
         border-bottom: 1px dashed rgba(0, 0, 0, 0.125);
         box-sizing: border-box;
         h3 {
-            margin: 0 auto;
+            margin: 0;
             text-align: center;
             font-size: 24pt;
             text-transform: uppercase;
             color: #1565C0;
+        }
+        button {
+            outline: none;
+            border: none;
+            width: 32px;
+            height: 32px;
+            background-repeat: no-repeat;
+            background-size: 32px 32px;
+            background-position: center center;
+            background-color: transparent;
+            cursor: pointer;
+        }
+    }
+    .total {
+        display: grid;
+        grid-template-rows: 1fr;
+        grid-template-columns: 1fr min-content;
+        grid-column-gap: 10px;
+        padding: 5px 14px 5px 10px;
+        box-sizing: border-box;
+        background-color: rgba(0, 0, 0, 0.025);
+        border-bottom: 1px dashed rgba(0, 0, 0, 0.125);
+        h3 {
+            font-size: 10pt;
+            margin: 0;
+            text-align: right;
+        }
+        p {
+            margin: 0;
+            font-size: 10pt;
+            box-sizing: border-box;
+            text-align: right;
         }
     }
     .items {
@@ -271,11 +307,13 @@ body {
         .item {
             display: grid;
             grid-template-rows: 1fr;
-            grid-template-columns: 50px 1fr 100px;
+            grid-template-columns: 30px 1fr 100px;
+            grid-column-gap: 10px;
+            padding: 5px 10px 5px 10px;
+            box-sizing: border-box;
             width: 100%;
             p {
                 margin: 0;
-                padding: 5px 10px 5px 10px;
                 font-size: 10pt;
                 box-sizing: border-box;
             }
@@ -302,14 +340,18 @@ body {
     .items::-webkit-scrollbar-thumb:window-inactive {
         background-color: #90A4AE;
     }
-    .summary {
+    .payment {
         display: grid;
         grid-template-rows: 1fr;
-        grid-column-gap: 20px;
-        padding: 20px 0px 20px 20px;
+        grid-template-columns: 1fr;
+        justify-items: center;
+        padding: 20px;
         border-top: 1px dashed rgba(0, 0, 0, 0.125);
         box-sizing: border-box;
         button {
+            width: 100%;
+            max-width: 250px;
+            height: 100%;
             border-radius: 4px;
             text-transform: uppercase;
             padding-left: 20px;
@@ -329,22 +371,6 @@ body {
             background-color: #1565C0;
             border: 2px solid transparent;
         }
-        .total {
-            display: grid;
-            grid-template-rows: 1fr 1fr;
-            padding-right: 15px;
-            align-items: center;
-            h3, p {
-                margin: 0;
-                text-align: right;
-            }
-        }
-    }
-    .summary[columns="2"] {
-        grid-template-columns: 1fr 100px;
-    }
-    .summary[columns="3"] {
-        grid-template-columns: 100px 1fr 100px;
     }
 }
 .bill[showing="false"] {
@@ -353,6 +379,13 @@ body {
     justify-content: center;
     align-items: center;
 }
+.bill[payment="true"] {
+    grid-template-rows: min-content min-content 1fr 100px;
+}
+.bill[payment="false"] {
+    grid-template-rows: min-content min-content 1fr;
+}
+
 
 @media (max-width: 820px) {
     .window {
@@ -371,9 +404,6 @@ body {
         }
         .toolbar {
             grid-template-columns: 1fr 250px;
-        }
-        .split {
-            grid-template-columns: 200px 1fr;
         }
     }
     .container .item {
@@ -403,6 +433,20 @@ body {
     }
 }
 
+@media (max-width: 350px) {
+    .bill .header {
+        grid-template-columns: min-content 1fr;
+        h3 {
+            font-size: 14pt;
+        }
+        button {
+            background-size: 24px 24px;
+            width: 24px;
+            height: 24px;
+        }
+    }
+}
+
 [data-icon="user-profile"] {
     background-image: url('http://localhost:3000/icon/userprofile/fefefe');
 }
@@ -411,4 +455,7 @@ body {
 }
 [data-icon="close"] {
     background-image: url('http://localhost:3000/icon/close/fefefe');
+}
+[data-icon="back"] {
+    background-image: url('http://localhost:3000/icon/back/1565C0');
 }

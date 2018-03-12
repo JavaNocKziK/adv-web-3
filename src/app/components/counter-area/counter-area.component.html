@@ -33,9 +33,18 @@
                 <p>Table 1</p>
             </div>
         </div>
-        <div class="bill" showing="true" *ngIf="(_selectedOrder !== undefined)">
+        <div
+            class="bill"
+            showing="true"
+            [attr.payment]="(_activeTab == 0 ? true : false)"
+            *ngIf="(_selectedOrder !== undefined && orders(status)[_selectedOrder] !== undefined)">
             <div class="header">
+                <button data-icon="back" (click)="close()"></button>
                 <h3>Order #{{orders(status)[_selectedOrder].friendlyId}}</h3>
+            </div>
+            <div class="total">
+                <h3>Total</h3>
+                <p>£{{orders(status)[_selectedOrder].total}}</p>
             </div>
             <div class="items">
                 <div class="item" *ngFor="let item of orders(status)[_selectedOrder].items">
@@ -44,13 +53,8 @@
                     <p>£{{item.totalPrice.toFixed(2)}}</p>
                 </div>
             </div>
-            <div class="summary" [attr.columns]="(_activeTab == 0 ? 3 : 2)">
-                <button colour="bgrey" (click)="close()">Close</button>
+            <div class="payment" *ngIf="(_activeTab == 0)">
                 <button colour="blue" (click)="pay()" *ngIf="(_activeTab == 0)">Payment</button>
-                <div class="total">
-                    <h3>Total</h3>
-                    <p>£{{orders(status)[_selectedOrder].total}}</p>
-                </div>
             </div>
         </div>
         <div class="bill" showing="false" *ngIf="(_selectedOrder === undefined)">

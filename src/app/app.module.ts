@@ -12,13 +12,18 @@ import { UserService } from './services/user.service';
 import { WaitAreaComponent } from './components/wait-area/wait-area.component';
 import { OrderService } from './services/order.service';
 import { AdminAreaComponent } from './components/admin-area/admin-area.component';
+import { KitchenAreaComponent } from './components/kitchen-area/kitchen-area.component';
+import { CounterAreaComponent } from './components/counter-area/counter-area.component';
+import { ErrorService } from './services/error.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     WaitAreaComponent,
-    AdminAreaComponent
+    AdminAreaComponent,
+    KitchenAreaComponent,
+    CounterAreaComponent
   ],
   imports: [
     FormsModule,
@@ -30,7 +35,8 @@ import { AdminAreaComponent } from './components/admin-area/admin-area.component
   providers: [
     UserService,
     StockService,
-    OrderService
+    OrderService,
+    ErrorService
   ],
   bootstrap: [AppComponent]
 })

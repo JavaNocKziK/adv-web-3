@@ -1,0 +1,60 @@
+<div class="window">
+    <div class="titlebar">
+        <div class="actions">
+            <button data-icon="user-profile" (click)="logout()"></button>
+        </div>
+        <div class="title">
+            <p>Counter</p>
+        </div>
+        <div class="actions">
+            <button data-icon="refresh" (click)="fetchOrders()"></button>
+        </div>
+    </div>
+    <!--
+    <div class="tabbar">
+        <p selected>Bills</p>
+        <p>Archived</p>
+        <p>Reports</p>
+    </div>
+    -->
+    <div class="tabbar">
+        <p
+            *ngFor="let tab of _tabs; let i = index"
+            [attr.selected]="(_activeTab == i ? true : false)"
+            (click)="changeTab(i)"
+        >{{tab.title}}</p>
+    </div>
+    <div class="split" *ngIf="(_activeTab != 2)">
+        <div class="list">
+            <h3>Orders</h3>
+            <p *ngIf="orders(status).length == 0">No orders yet.</p>
+            <div class="item" *ngFor="let order of orders(status); let i = index" (click)="select(i)">
+                <p>Order #{{order.friendlyId}}</p>
+                <p>Table 1</p>
+            </div>
+        </div>
+        <div class="bill" showing="true" *ngIf="(_selectedOrder !== undefined)">
+            <div class="header">
+                <h3>Order #{{orders(status)[_selectedOrder].friendlyId}}</h3>
+            </div>
+            <div class="items">
+                <div class="item" *ngFor="let item of orders(status)[_selectedOrder].items">
+                    <p>{{item.quantity}}x</p>
+                    <p>{{item.stockName}}</p>
+                    <p>£{{item.totalPrice.toFixed(2)}}</p>
+                </div>
+            </div>
+            <div class="summary" [attr.columns]="(_activeTab == 0 ? 3 : 2)">
+                <button colour="bgrey" (click)="close()">Close</button>
+                <button colour="blue" (click)="pay()" *ngIf="(_activeTab == 0)">Payment</button>
+                <div class="total">
+                    <h3>Total</h3>
+                    <p>£{{orders(status)[_selectedOrder].total}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="bill" showing="false" *ngIf="(_selectedOrder === undefined)">
+            <h3>Pick an order to view the bill.</h3>
+        </div>
+    </div>
+</div>

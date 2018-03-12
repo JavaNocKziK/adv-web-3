@@ -5,7 +5,7 @@ const OrderModel = require('../models/order.model');
 const UserModel = require('../models/user.model');
 
 module.exports = {
-    /**
+    /** 
      * Create a new user.
      * @param user The data of the new user you want to generate.
      */

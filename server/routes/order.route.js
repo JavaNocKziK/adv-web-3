@@ -16,6 +16,7 @@ router.route('/')
             res.status(secResult.code).send();
         } else {
             let result = await OrderController.many(
+                req.query.detail,
                 req.query.status,
                 [req.query.dateAfter, req.query.dateBefore]
             );
@@ -61,7 +62,7 @@ router.route('/:id')
         if(!secResult.valid) {
             res.status(secResult.code).send();
         } else {
-            let result = await OrderController.single(req.param.id);
+            let result = await OrderController.single(req.params.id);
             res.status(result.code).json(result);
         }
     })
@@ -74,7 +75,7 @@ router.route('/:id')
         if(!secResult.valid) {
             res.status(secResult.code).send();
         } else {
-            let result = await OrderController.updateSingle(req.param.id, req.body);
+            let result = await OrderController.updateSingle(req.params.id, req.body);
             res.status(result.code).json(result);
         }
     })
@@ -87,7 +88,7 @@ router.route('/:id')
         if(!secResult.valid) {
             res.status(secResult.code).send();
         } else {
-            let result = await OrderController.deleteSingle(req.param.id);
+            let result = await OrderController.deleteSingle(req.params.id);
             res.status(result.code).json(result);
         }
     });

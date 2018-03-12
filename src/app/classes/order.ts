@@ -62,13 +62,24 @@ export class Order {
     get status(): number {
         return this._status;
     }
+    get total(): number {
+        let total = 0;
+        this.items.forEach((item) => {
+            total += item.totalPrice;
+        });
+        return (total || 0);
+    }
 }
 
 export class OrderItem {
     public stockId: string;
+    public stockName: string;
     public quantity: number;
-    constructor(stockId: string, quantity: number) {
+    public totalPrice: number;
+    constructor(stockId: string, quantity: number, stockName?: string, totalPrice?: number) {
         this.stockId = stockId;
         this.quantity = quantity;
+        this.stockName = stockName;
+        this.totalPrice = totalPrice;
     }
 }

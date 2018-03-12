@@ -24,3 +24,39 @@ body {
     background: -webkit-linear-gradient(45deg, #263238 0%,#37474f 100%);
     background: linear-gradient(45deg, #263238 0%,#37474f 100%);
 }
+
+// Elliot's Debug temp styles
+.redDebug {
+    border: solid 3px red;
+}
+
+.blueDebug {
+    border: solid 3px blue;
+}
+
+.greenDebug {
+    border: solid 4px green;
+}
+
+.padMe {
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+    padding-right: 5px !important;
+    padding-left: 5px !important;
+}
+
+.marMe {
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+    margin-right: 5px !important;
+    margin-left: 5px !important;
+}
+
+.fontWhite {
+    color: white;
+}
+
+.showMeBig {
+    font-size: 50px;
+}
+// END

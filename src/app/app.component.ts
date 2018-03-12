@@ -19,13 +19,11 @@ export class AppComponent {
         private orderService: OrderService
     ) {
         this.userService.user.subscribe((user) => {
-            console.log(user);
             if(user) {
                 // Route to the home area of the user.
                 this.router.navigate([user.home]);
                 // Fetch all static data:
                 this.orderService.loadStatuses();
-                console.log(this.orderService.statuses);
             } else {
                 let session: string = localStorage.getItem('token');
                 if(!session) {
@@ -42,8 +40,8 @@ export class AppComponent {
                 We're going to check their token to make sure
                 it's legitimate and hasn't expired.
             */
-            this.userService.reauthenticate().subscribe((res) => {
-                if(res.status == 1) {
+            this.userService.reauthenticate().subscribe(
+                (res) => {
                     let sessionToken = JSON.parse(session);
                     let data = res.message;
                     let user = new User(
@@ -54,12 +52,13 @@ export class AppComponent {
                     )
                     user.token = new Token(sessionToken.value, sessionToken.expiry);
                     this.userService.set(user);
-                } else {
+                },
+                (err) => {
                     // Token isn't valid.
                     this.userService.clear();
                     this.router.navigate(['/login']);
                 }
-            });
+            );
         } else {
             this.router.navigate(['/login']);
         }

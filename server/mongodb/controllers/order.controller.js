@@ -92,6 +92,7 @@ module.exports = {
                                     stockId: item.stockId,
                                     quantity: item.quantity,
                                     stockName: result.message.name,
+                                    price: item.price,
                                     totalPrice: (result.message.price * item.quantity)
                                 }
                             } else {

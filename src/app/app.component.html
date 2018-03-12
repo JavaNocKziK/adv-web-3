@@ -1,2 +1,13 @@
 <!--<app-login></app-login>-->
 <router-outlet></router-outlet>
+<div class="overlay" id="errors" [attr.display]="(_errors.length > 0 ? true : false)">
+    <div class="plate">
+        <div class="header">
+            <h3>Errors</h3>
+            <button data-icon="close" (click)="clearErrors()"></button>
+        </div>
+        <ul>
+            <li *ngFor="let error of _errors">{{error}}</li>
+        </ul>
+    </div>
+</div>

@@ -223,10 +223,12 @@ body {
         background-color: rgba(0, 0, 0, 0.0125);
     }
     > p {
+        margin: 0;
         width: 100%;
         padding: 10px;
         font-size: 10pt;
         border-top: 1px solid rgba(0, 0, 0, 0.075);
+        box-sizing: border-box;
     }
 }
 .list::-webkit-scrollbar {
@@ -303,7 +305,6 @@ body {
     .summary {
         display: grid;
         grid-template-rows: 1fr;
-        grid-template-columns: 100px 1fr 100px;
         grid-column-gap: 20px;
         padding: 20px 0px 20px 20px;
         border-top: 1px dashed rgba(0, 0, 0, 0.125);
@@ -339,74 +340,18 @@ body {
             }
         }
     }
+    .summary[columns="2"] {
+        grid-template-columns: 1fr 100px;
+    }
+    .summary[columns="3"] {
+        grid-template-columns: 100px 1fr 100px;
+    }
 }
 .bill[showing="false"] {
     background-color: #DEDEDE;
     grid-template-rows: 1fr;
     justify-content: center;
     align-items: center;
-}
-
-.overlay[display="true"] {
-    display: grid;
-    visibility: visible;
-}
-.overlay[display="false"] {
-    display: none;
-    visibility: hidden;
-}
-.overlay {
-    grid-template-rows: 1;
-    grid-template-columns: 1;
-    justify-content: center;
-    align-content: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5);
-    .plate {
-        display: grid;
-        grid-template-rows: 50px min-content min-content;
-        grid-template-columns: 1;
-        width: 450px;
-        background-color: #FEFEFE;
-        border-radius: 4px;
-        .header {
-            display: grid;
-            grid-template-rows: 1fr;
-            grid-template-columns: 1fr 50px;
-            background-color: #B71C1C;
-            border-radius: 4px 4px 0px 0px;
-            h3 {
-                margin: 0;
-                height: 50px;
-                line-height: 50px;
-                padding-left: 50px;
-                box-sizing: border-box;
-                color: #FEFEFE;
-                text-align: center;
-                text-transform: uppercase;
-                font-weight: normal;
-            }
-            button {
-                width: 50px;
-                height: 50px;
-                box-sizing: border-box;
-                border: none;
-                outline: none;
-                cursor: pointer;
-                background-color: transparent;
-                background-size: 24px 24px;
-                background-repeat: no-repeat;
-                background-position: center center;
-            }
-        }
-        ul li {
-            font-size: 11pt;
-        }
-    }
 }
 
 @media (max-width: 820px) {

@@ -1,0 +1,75 @@
+<div class="window">
+    <div class="titlebar">
+        <div class="actions">
+            <button data-icon="user-profile"></button>
+        </div>
+        <div class="title">
+            <p>Admin</p>
+        </div>
+        <div class="actions"></div>
+    </div>
+    <div class="tabbar" >
+      <p
+          *ngFor="let tab of _tabs; let i = index"
+          [attr.selected]="(_activeTab == i ? true : false)"
+          (click)="changeTab(i)"
+      >{{tab.title}}</p>
+    </div>
+    <div class="toolbar">
+        <div class="actions">
+            <button data-icon="user-new"></button>
+            <button data-icon="user-remove-all"></button>
+        </div>
+        <div class="search">
+            <input placeholder="Search for Username..." />
+        </div>
+    </div>
+    <!-- Users Table -->
+    <div class="table" displaying="users" *ngIf="_activeTab == 0 && (_users.length > 0)">
+        <div class="header">
+            <h3>ID</h3>
+            <h3>Username</h3>
+            <h3>Password</h3>
+            <h3>Admin</h3>
+            <h3>Home Area</h3>
+            <h3>Actions</h3>
+        </div>
+        <div class="items">
+            <div class="item" *ngFor="let user of _users; let i = index">
+                <p>{{user.id}}</p>
+                <p>{{user._username}}</p>
+                <p>******</p>
+                <p>{{user.admin}}</p>
+                <p><a href="{{user._homepath}}">{{user._homepath}}</a></p>
+                <p>Edit Remove</p>
+            </div>
+        </div>
+    </div>
+    <div class="table" displaying="noUsers" *ngIf="_activeTab == 0 && (_users.length == 0)">
+        <div class="item">
+            <p>No users found.</p>
+        </div>
+    </div>
+    <!-- / User Table -->
+    <!-- Stock Table -->
+    <div class="table" displaying="stock" *ngIf="_activeTab == 1">
+        <div class="header">
+            <h3>ID</h3>
+            <h3>Name</h3>
+            <h3>Category</h3>
+            <h3>Quantity</h3>
+            <h3>Price</h3>
+            <h3>Actions</h3>
+        </div>
+        <div class="items">
+            <div class="item" *ngFor="let stock of _stock; let i = index">
+                <p>{{stock._id}}</p>
+                <p>{{stock.name}}</p>
+                <p>{{stock.category}}</p>
+                <p>{{stock.quantity}}</p>
+                <p>£{{stock.price}}</p>
+                <p>Edit Remove</p>
+            </div>
+        </div>
+    </div>
+    <!-- / Stock Table -->

@@ -4,12 +4,15 @@ export class Stock {
     private _description: string;
     private _category: number;
     private _quantity: number;
-    constructor(id: string, name: string, description: string, category: number, quantity: number) {
+    private _price: number;
+
+    constructor(id: string, name: string, description: string, category: number, quantity: number, price: number) {
         this._id = id;
         this._name = name;
         this._description = description;
         this._category = category;
         this._quantity = quantity;
+        this._price = price;
     }
     get id(): string {
         return this._id;
@@ -27,5 +30,13 @@ export class Stock {
     }
     get category(): number {
         return this._category;
+    }
+
+    get price(): number {
+        return this._price;
+    }
+
+    get quantity(): number {
+        return this._quantity;
     }
 }

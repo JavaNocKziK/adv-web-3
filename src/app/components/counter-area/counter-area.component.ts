@@ -28,6 +28,9 @@ export class CounterAreaComponent implements OnInit {
         Observable.interval(120000).subscribe(() => {
             this.fetchOrders(); // Update every 2 minutes.
         });
+        this.orderService.orders.subscribe((orders: Order[]) => {
+            this._orders = orders;
+        });
     }
     ngOnInit() {}
     public logout() {
@@ -59,35 +62,7 @@ export class CounterAreaComponent implements OnInit {
         let status: number[] = [4, 5]; // [Completed, Archived]
         this._orders = [];
         status.forEach((value) => {
-            this.orderService.many(true, value, undefined).subscribe((result) => {
-                if(result.status == 1) {
-                    let orders = result.message;
-                    console.log(orders);
-                    orders.forEach((order) => {
-                        let orderItems: OrderItem[] = [];
-                        order.content.forEach((item) => {
-                            orderItems.push(new OrderItem(
-                                item.stockId,
-                                item.quantity,
-                                item.stockName,
-                                item.totalPrice
-                            ));
-                        });
-                        this._orders.push(new Order(
-                            order._id,
-                            order.friendlyId,
-                            orderItems,
-                            order.status,
-                            order.tableId,
-                            new Date(),
-                            order.userId
-                        ));
-                    });
-                    console.log(this._orders);
-                } else {
-                    this.errorService.add(result.message);
-                }
-            });
+            this.orderService.fetch(true, value, undefined);
         });
     }
     private pay() {

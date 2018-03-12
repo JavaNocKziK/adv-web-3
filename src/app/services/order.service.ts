@@ -15,6 +15,8 @@ const options: RequestOptionsArgs = {
 @Injectable()
 export class OrderService {
     public statuses: OrderStatus[] = [];
+    private ordersSource: BehaviorSubject<Order[]> = new BehaviorSubject<Order[]>(undefined);
+    public orders = this.ordersSource.asObservable();
     constructor(
         private http: Http,
         private errorService: ErrorService
@@ -66,7 +68,7 @@ export class OrderService {
         });
         this.statuses = statuses;
     }
-    public many(detail?: boolean, status?: number, dateRange?: [Date, Date]) {
+    public fetch(detail?: boolean, status?: number, dateRange?: [Date, Date]) {
         let paramDetail: boolean;
         let paramStatus: number;
         let paramDateFrom: string;
@@ -83,10 +85,43 @@ export class OrderService {
             dateFrom: paramDateFrom,
             dateTo: paramDateTo
         };
-        return this.http.get(
-            `${environment.api}/order`,
-            options
-        ).map((result) => { return result.json(); });
+        (() => {
+            return this.http.get(
+                `${environment.api}/order`,
+                options
+            )
+            .map((result) => {
+                return result.json();
+            })
+            .catch((error) => {
+                let response = JSON.parse(error._body);
+                this.errorService.add(response.message);
+                return Observable.throw(error);
+            });
+        })().subscribe((result) => {
+            let orders: Order[] = [];
+            result.message.forEach((order) => {
+                let orderItems: OrderItem[] = [];
+                order.content.forEach((item) => {
+                    orderItems.push(new OrderItem(
+                        item.stockId,
+                        item.quantity,
+                        item.stockName,
+                        item.totalPrice
+                    ));
+                });
+                orders.push(new Order(
+                    order._id,
+                    order.friendlyId,
+                    orderItems,
+                    order.status,
+                    order.tableId,
+                    new Date(),
+                    order.userId
+                ));
+            });
+            this.ordersSource.next(orders);
+        });
     }
     public update(id: string, data) {
         options.params = {};

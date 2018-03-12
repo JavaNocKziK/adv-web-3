@@ -59,6 +59,9 @@ export class Order {
     get friendlyId(): string {
         return this._friendlyId;
     }
+    get friendlyDate(): string {
+        return this._timeCreated.toLocaleDateString("en-GB") + " " +this._timeCreated.toLocaleTimeString("en-GB");
+    }
     get status(): number {
         return this._status;
     }

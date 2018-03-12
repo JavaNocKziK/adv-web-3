@@ -120,6 +120,7 @@ export class OrderService {
                     order.userId
                 ));
             });
+            console.log(orders);
             this.ordersSource.next(orders);
         });
     }

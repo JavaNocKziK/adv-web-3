@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { User, Token } from '../../classes/user';
+import { ErrorService } from '../../services/error.service';
 
 @Component({
   selector: 'app-login',
@@ -10,8 +11,8 @@ import { User, Token } from '../../classes/user';
 })
 export class LoginComponent implements OnInit {
     private _loginForm: FormGroup;
-    private _error: string = "";
     constructor(
+        private errorService: ErrorService,
         private userService: UserService
     ) {
         this._loginForm = new FormGroup({
@@ -37,16 +38,11 @@ export class LoginComponent implements OnInit {
                     );
                     user.token = new Token(res.message.token, new Date(res.message.tokenExpiry));
                     this.userService.set(user);
-                } else {
-                    this._error = res.message;
                 }
             });
         }
     }
     private allow(): boolean {
         return this._loginForm.invalid;
-    }
-    private hasError(): boolean {
-        return !(!this._error);
     }
 }

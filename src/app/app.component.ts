@@ -3,14 +3,17 @@ import { UserService } from './services/user.service';
 import { Router } from '@angular/router';
 import { User, Token } from './classes/user';
 import { OrderService } from './services/order.service';
+import { ErrorService } from './services/error.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+    private _errors: string[] = [];
     constructor(
+        private errorService: ErrorService,
         private userService: UserService,
         private router: Router,
         private orderService: OrderService
@@ -60,6 +63,13 @@ export class AppComponent {
         } else {
             this.router.navigate(['/login']);
         }
+        // Subscribe to error service.
+        this.errorService.errors.subscribe((result) => {
+            this._errors = result;
+        });
     }
     ngOnInit() {}
+    public clearErrors() {
+        this.errorService.clear();
+    }
 }

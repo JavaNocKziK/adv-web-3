@@ -32,6 +32,11 @@ let OrderSchema = new mongoose.Schema(
                     type: Number,
                     required: true,
                     default: 0 // Waiting
+                },
+                price: {
+                    type: mongoose.Schema.Types.Double,
+                    required: true,
+                    default: 0 // £0.00
                 }
             }],
             required: true
@@ -64,6 +69,7 @@ OrderSchema.pre('save', async function(next) {
     // Generate the value of the order here.
     for(let i = 0; i < this.content.length; i++) {
         let result = await StockController.single(this.content[i].stockId);
+        this.content[i].price.value = result.message.price;
         this.value.value += (result.message.price * this.content[i].quantity);
     }
     next();

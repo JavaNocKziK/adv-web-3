@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Rx';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 
 import { User } from '../classes/user';
+import { ErrorService } from './error.service';
 
 const options: RequestOptionsArgs = {
     withCredentials: true
@@ -16,7 +17,8 @@ export class UserService {
     private userSource: BehaviorSubject<User> = new BehaviorSubject<User>(undefined);
     public user = this.userSource.asObservable();
     constructor(
-        private http: Http
+        private http: Http,
+        private errorService: ErrorService
     ) {}
     public me(): User {
         return this.userSource.value;
@@ -32,6 +34,11 @@ export class UserService {
         ).map((result) => {
             console.log(result);
             return result.json();
+        })
+        .catch((error) => {
+            let response = JSON.parse(error._body);
+            this.errorService.add(response.message);
+            return Observable.throw(error);
         });
     }
     public logout() {
@@ -62,6 +69,11 @@ export class UserService {
             options
         ).map((result) => {
             return result.json();
+        })
+        .catch((error) => {
+            let response = JSON.parse(error._body);
+            this.errorService.add(response.message);
+            return Observable.throw(error);
         });
     }
     public clear() {

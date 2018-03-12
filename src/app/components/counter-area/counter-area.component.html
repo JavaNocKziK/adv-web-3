@@ -7,27 +7,37 @@
             <p>Counter</p>
         </div>
         <div class="actions">
-            <button data-icon="refresh" (click)="fetchOrders()"></button>
+            <button data-icon="refresh" (click)="fetchCompletedOrders()"></button>
         </div>
     </div>
+    <!--
     <div class="tabbar">
         <p selected>Bills</p>
+        <p>Archived</p>
         <p>Reports</p>
     </div>
-    <div class="split">
+    -->
+    <div class="tabbar">
+        <p
+            *ngFor="let tab of _tabs; let i = index"
+            [attr.selected]="(_activeTab == i ? true : false)"
+            (click)="changeTab(i)"
+        >{{tab.title}}</p>
+    </div>
+    <div class="split" *ngIf="(_activeTab == 0)">
         <div class="list">
             <h3>Orders</h3>
-            <div class="item" *ngFor="let order of orders; let i = index" (click)="select(i)">
+            <div class="item" *ngFor="let order of _orders; let i = index" (click)="select(i)">
                 <p>Order #{{order.friendlyId}}</p>
                 <p>Table 1</p>
             </div>
         </div>
-        <div class="bill" showing="true" *ngIf="(selected !== undefined)">
+        <div class="bill" showing="true" *ngIf="(_selectedOrder !== undefined)">
             <div class="header">
-                <h3>Order #{{orders[selected].friendlyId}}</h3>
+                <h3>Order #{{_orders[_selectedOrder].friendlyId}}</h3>
             </div>
             <div class="items">
-                <div class="item" *ngFor="let item of orders[selected].items">
+                <div class="item" *ngFor="let item of _orders[_selectedOrder].items">
                     <p>{{item.quantity}}x</p>
                     <p>{{item.stockName}}</p>
                     <p>£{{item.totalPrice.toFixed(2)}}</p>
@@ -38,12 +48,23 @@
                 <button colour="blue" (click)="pay()">Payment</button>
                 <div class="total">
                     <h3>Total</h3>
-                    <p>£{{orders[selected].total}}</p>
+                    <p>£{{_orders[_selectedOrder].total}}</p>
                 </div>
             </div>
         </div>
-        <div class="bill" showing="false" *ngIf="(selected === undefined)">
-            <!-- Empty bill. -->
+        <div class="bill" showing="false" *ngIf="(_selectedOrder === undefined)">
+            <h3>Pick an order to view the bill.</h3>
         </div>
+    </div>
+</div>
+<div class="overlay" id="errors" [attr.display]="(hasError)">
+    <div class="plate">
+        <div class="header">
+            <h3>Errors</h3>
+            <button data-icon="close" (click)="clearErrors()"></button>
+        </div>
+        <ul>
+            <li *ngFor="let error of _errors">{{error}}</li>
+        </ul>
     </div>
 </div>

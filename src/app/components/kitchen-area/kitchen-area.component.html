@@ -1,0 +1,41 @@
+<div class="window redDebug">
+    <div class="navbar">
+        <div class="actions">
+            <button data-icon="account-white-32"></button>
+            <button data-icon="list-white-32"></button>
+        </div>
+        <div class="title redDebug">
+            <p>Kitchen View</p>
+        </div>
+        <div class="actions blueDebug">
+            <button data-icon="check-white-32"></button>
+        </div>
+    </div>
+
+<!-- order-container
+order-items are individual table's orders (e.g. every persons orders)
+Each order-item includes a orderNum, tableNum, and order-content 
+order-content is a div surrounding the order-contents-list
+contents-list-item  -->
+
+    <div class="order-container">
+        <div class="order-item list blueDebug" *ngFor="let order of _order; let i = index;">
+            <div class="orderNum tableNum greenDebug">
+                Order#: {{ order._id }} Table#: {{ order.friendlyId }}
+            </div>
+            <div class="order-content">
+                <ul class="contents-list" *ngFor="let orderItem of _order.content; let i = index;">
+                    <li class="contents-list-item redDebug">
+                        {{ order.content[i] }}
+                    </li>
+                    <li class="contents-list-item blueDebug">
+                        <!-- {{ order.getOrderItems() }} -->
+                    </li>
+                    <li class="contents-list-item greenDebug">
+                        <!-- {{ order.getOrderItems() }} -->
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

@@ -6,6 +6,7 @@ import { OrderService } from '../../services/order.service';
 import { UserService } from '../../services/user.service';
 import { User } from '../../classes/user';
 import { OrderStatus } from '../../classes/order-status';
+import { Tab } from '../../classes/tab';
 
 @Component({
   selector: 'app-wait-area',
@@ -143,15 +144,6 @@ export class WaitAreaComponent implements OnInit {
     }
     public logout() {
         this.userSerivce.logout();
-    }
-}
-
-export class Tab {
-    public title: string;
-    public category: number;
-    constructor(title: string, category: number) {
-        this.title = title;
-        this.category = category;
     }
 }
 

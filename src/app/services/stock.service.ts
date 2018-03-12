@@ -36,7 +36,6 @@ export class StockService {
                         data.price
                     ));
                 });
-                console.log(stock);
                 this.stockSource.next(stock);
             }
         });

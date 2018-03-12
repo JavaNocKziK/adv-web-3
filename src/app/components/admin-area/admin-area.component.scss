@@ -150,8 +150,8 @@ body {
 }
 
 
-.table[displaying="users"] { grid-template-columns: 2fr 1fr 1fr 1fr 1fr; }
-.table[displaying="stock"] { grid-template-columns: 2fr 1fr 1fr 1fr 1fr; }
+.table[displaying="users"] { grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr; }
+.table[displaying="stock"] { grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr; }
 .table {
     display: flex;
     flex-direction: row;

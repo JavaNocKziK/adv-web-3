@@ -97,7 +97,7 @@ body {
         p:hover {
             opacity: 1;
         }
-        p[selected] {
+        p[selected="true"] {
             border-bottom: 4px solid #2196F3;
             opacity: 1;
         }
@@ -151,6 +151,7 @@ body {
 
 
 .table[displaying="users"] { grid-template-columns: 2fr 1fr 1fr 1fr 1fr; }
+.table[displaying="stock"] { grid-template-columns: 2fr 1fr 1fr 1fr 1fr; }
 .table {
     display: flex;
     flex-direction: row;

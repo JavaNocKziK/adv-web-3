@@ -33,8 +33,10 @@ export class StockService {
                         data.detail,
                         data.category,
                         data.quantity
+                        data.price
                     ));
                 });
+                console.log(stock);
                 this.stockSource.next(stock);
             }
         });

@@ -15,9 +15,34 @@ const options: RequestOptionsArgs = {
 export class UserService {
     private userSource: BehaviorSubject<User> = new BehaviorSubject<User>(undefined);
     public user = this.userSource.asObservable();
+    private usersSource: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([]);
+    public users = this.usersSource.asObservable();
     constructor(
         private http: Http
     ) {}
+    public fetch() {
+        (() => {
+            return this.http.get(
+                `${environment.api}/user`,
+                options
+            ).map((result) => {
+                return result.json();
+            });
+        })().subscribe((res) => {
+            if(res.status == 1) {
+              let users: User[] = [];
+              res.message.forEach((data) => {
+                  users.push(new User(
+                      data._id,
+                      data.username,
+                      data.admin,
+                      data.homePath
+                  ));
+              });
+              this.usersSource.next(users);
+            }
+        });
+    }
     public me(): User {
         return this.userSource.value;
     }

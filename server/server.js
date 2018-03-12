@@ -18,7 +18,7 @@ mongoose.connect('mongodb://admin:abc123@139.59.163.216:8080');
 const CORS = (req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Headers', 'content-type,x-xsrf-token');
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
 }

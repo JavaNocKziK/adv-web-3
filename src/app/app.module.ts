@@ -12,6 +12,7 @@ import { UserService } from './services/user.service';
 import { WaitAreaComponent } from './components/wait-area/wait-area.component';
 import { OrderService } from './services/order.service';
 import { CounterAreaComponent } from './components/counter-area/counter-area.component';
+import { ErrorService } from './services/error.service';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { CounterAreaComponent } from './components/counter-area/counter-area.com
   providers: [
     UserService,
     StockService,
-    OrderService
+    OrderService,
+    ErrorService
   ],
   bootstrap: [AppComponent]
 })

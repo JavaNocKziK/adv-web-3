@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Rx';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { Order, OrderItem } from '../classes/order';
 import { OrderStatus } from '../classes/order-status';
+import { ErrorService } from './error.service';
 
 const options: RequestOptionsArgs = {
     withCredentials: true
@@ -15,7 +16,8 @@ const options: RequestOptionsArgs = {
 export class OrderService {
     public statuses: OrderStatus[] = [];
     constructor(
-        private http: Http
+        private http: Http,
+        private errorService: ErrorService
     ) {}
     public place(userId: string, tableId: string, order: Order) {
         options.params = {};
@@ -95,6 +97,13 @@ export class OrderService {
                 tableId: data.tableId
             },
             options
-        ).map((result) => { return result.json(); });
+        ).map((result) => {
+            return result.json();
+        })
+        .catch((error: any) => {
+            let response = JSON.parse(error._body);
+            this.errorService.add(`${response.message} (${response.error.message})`);
+            return Observable.throw(error);
+        });
     }
 }

@@ -116,7 +116,7 @@ export class OrderService {
                     orderItems,
                     order.status,
                     order.tableId,
-                    new Date(),
+                    order.timeCreated,
                     order.userId
                 ));
             });

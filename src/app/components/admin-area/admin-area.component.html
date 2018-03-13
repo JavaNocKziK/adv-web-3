@@ -18,7 +18,6 @@
     <div class="toolbar">
         <div class="actions">
             <button data-icon="user-new"></button>
-            <button data-icon="user-remove-all"></button>
         </div>
         <div class="search">
             <input placeholder="Search for Username..." />
@@ -41,7 +40,7 @@
                 <p>******</p>
                 <p>{{user.admin}}</p>
                 <p><a href="{{user._homepath}}">{{user._homepath}}</a></p>
-                <p>Edit Remove</p>
+                <p>Edit <span (click)="removeUser(user.id)">Remove</span></p>
             </div>
         </div>
     </div>
@@ -51,6 +50,29 @@
         </div>
     </div>
     <!-- / User Table -->
+    <!-- Create User Overlay Modal -->
+    <div class="overlay" id="userCreate" [attr.display]="false">
+        <div class="plate">
+            <div class="header">
+                <h3>Add Users</h3>
+                <button data-icon="close" (click)="clearErrors()"></button>
+            </div>
+              <div class="inputs" [formGroup]="_createUserForm" (keyup.enter)="login()">
+                  <input placeholder="Username" type="username" formControlName="username" />
+                  <input placeholder="Password" type="password" formControlName="password" />
+                  <select formControlName="homePath">
+                    <option value="homePath" selected disabled hidden>Home Area</option>
+                    <option value="/kitchen">Kitchen View</option>
+                    <option value="/wait">Wait View</option>
+                    <option value="/counter">Counter View</option>
+                    <option value="/admin">Admin View</option>
+                  </select>
+                  <input type="checkbox" formControlName="admin" value="1">
+                  <button (click)="createUser()">SUBMIT</button>
+              </div>
+        </div>
+    </div>
+    <!-- / Create User Overlay Modal -->
     <!-- Stock Table -->
     <div class="table" displaying="stock" *ngIf="_activeTab == 1">
         <div class="header">
@@ -68,7 +90,7 @@
                 <p>{{stock.category}}</p>
                 <p>{{stock.quantity}}</p>
                 <p>£{{stock.price}}</p>
-                <p>Edit Remove</p>
+                <p>Edit <a href="#" (click)="removeStock(stock._id)">Remove</a></p>
             </div>
         </div>
     </div>
@@ -90,7 +112,7 @@
                 <p>{{order._tableId}}</p>
                 <p>{{order._userId}}</p>
                 <p>{{order.friendlyDate}}</p>
-                <p>Edit Remove</p>
+                <p>Edit <a href="#" (click)="removeOrder(order._id)">Remove</a></p>
             </div>
         </div>
     </div>

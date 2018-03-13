@@ -22,6 +22,27 @@ export class UserService {
         private http: Http,
         private errorService: ErrorService
     ) {}
+    public create(username: string, password: string, homePath: string, admin: boolean) {
+        return this.http.post(
+            `${environment.api}/user`,
+            {
+                username: username,
+                password: password,
+                homePath: homePath,
+                admin: admin
+            },
+            options
+        ).map((result) => {
+            return result.json();
+        });
+    }
+    public remove(id: number) {
+        return this.http.delete(
+            `${environment.api}/user/` + id
+        ).map((result) => {
+            return result.json();
+        });
+    }
     public fetch() {
         (() => {
             return this.http.get(

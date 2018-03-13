@@ -45,9 +45,7 @@ export class AdminAreaComponent implements OnInit {
         'homePath': new FormControl('', [
             Validators.required
         ]),
-        'admin': new FormControl('', [
-
-        ]),
+        'admin': new FormControl(false, []),
     });
     this._createStockForm = new FormGroup({
         'name': new FormControl('', [

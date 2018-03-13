@@ -5,10 +5,15 @@
             <button data-icon="list-white-32"></button>
         </div>
         <div class="title">
-            <p>Kitchen View</p>
+            <p>Kitchen View {{_toggleRefresh}}</p>
         </div>
         <div class="actions">
             <button data-icon="check-white-32"></button>
+            <button class="toggleRefresh" (click)="toggleAutoUpdate()" [attr.data-icon]="(_toggleRefresh ? 'toggleoff' : 'toggleon')">
+
+            </button>
+
+
         </div>
     </div>
 

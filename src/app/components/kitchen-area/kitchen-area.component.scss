@@ -262,7 +262,18 @@
 }
 [data-icon="refresh"] {
     background-image: url('http://localhost:3000/icon/refresh/212121');
+}
+[data-icon="toggleoff"] {
+    background-image: url('http://localhost:3000/icon/toggleoff/388e3c');
+}
+[data-icon="toggleon"] {
+    background-image: url('http://localhost:3000/icon/toggleon/b71c1c');
+}
 
+.toggleRefresh {
+    border-radius: 50px;
+    background-color: #FEFEFE !important;
+    transition: background-image 0.1s ease-in-out;
 }
 
 .order-content {
@@ -299,7 +310,10 @@
     grid-template-columns: auto auto auto auto;
     grid-gap: 10px;
     background-color: #2196F3;
-    padding: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 15px;
     overflow-y: scroll;
     background-color: rgba(255, 255, 255, 0.8);
 }

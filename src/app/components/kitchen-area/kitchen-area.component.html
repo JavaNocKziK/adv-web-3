@@ -1,13 +1,13 @@
-<div class="window redDebug">
+<div class="window">
     <div class="navbar">
         <div class="actions">
             <button data-icon="userprofile" (click)="logout()"></button>
             <button data-icon="list-white-32"></button>
         </div>
-        <div class="title redDebug">
+        <div class="title">
             <p>Kitchen View</p>
         </div>
-        <div class="actions blueDebug">
+        <div class="actions">
             <button data-icon="check-white-32"></button>
         </div>
     </div>
@@ -19,7 +19,7 @@ order-content is a div surrounding the order-contents-list
 contents-list-item  -->
 
     <div class="order-container">
-        <div class="order-item list blueDebug" *ngFor="let order of _order; let i = index;">
+        <div class="order-item list" *ngFor="let order of _order; let i = index;">
             <div class="orderNum tableNum greenDebug">
                 <!-- Order#: {{ order.friendlyId}} Table#: {{ order.friendlyTableId }} -->
                 Order#: {{ order.friendlyId}} Table#: {{ order.tableId }}

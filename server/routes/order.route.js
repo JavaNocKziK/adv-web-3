@@ -93,4 +93,19 @@ router.route('/:id')
         }
     });
 
+router.route('/:id/:item')
+    /**
+     * Update an item under the order.
+     * Security: [Session]
+     */
+    .put(async (req, res) => {
+        let secResult = await sec.check(req, sec.session);
+        if(!secResult.valid) {
+            res.status(secResult.code).send();
+        } else {
+            let result = await OrderController.updateItem(req.params.id, req.params.item, req.body);
+            res.status(result.code).json(result);
+        }
+    });
+
 module.exports = router;

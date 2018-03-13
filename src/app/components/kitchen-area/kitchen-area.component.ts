@@ -5,15 +5,15 @@ import { StockService } from '../../services/stock.service';
 import { OrderService } from '../../services/order.service';
 
 // order-items are individual table's orders (e.g. every persons orders)
-// Each order-item includes a orderNum, tableNum, and order-content 
+// Each order-item includes a orderNum, tableNum, and order-content
 // order-content is a div surrounding the order-contents-list
-// contents-list-item 
+// contents-list-item
 
 
 @Component({
-  selector: "app-kitchen-area",
-  templateUrl: "./kitchen-area.component.html",
-  styleUrls: ["./kitchen-area.component.scss"]
+  selector: 'app-kitchen-area',
+  templateUrl: './kitchen-area.component.html',
+  styleUrls: ['./kitchen-area.component.scss']
 })
 export class KitchenAreaComponent implements OnInit {
   private _orderId: string;
@@ -26,11 +26,15 @@ export class KitchenAreaComponent implements OnInit {
     private orderService: OrderService,
     private userSerivce: UserService
   ) {
-      this.orderService.fetch();
+      this.orderService.fetch(true);
   }
 
   ngOnInit() {
       this.orderService.orders.subscribe((result: Order[]) => { this._order = result; });
+  }
+
+  public logout() {
+    this.userSerivce.logout();
   }
 
 //   private getOrderItems() {}

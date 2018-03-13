@@ -17,7 +17,7 @@ export class Order {
     }
     public add(id: string) {
         let index = this.find(id);
-        if(index != -1) {
+        if (index != -1) {
             this._content[index].quantity++;
         } else {
             this._content.push(new OrderItem(id, 1));
@@ -25,7 +25,7 @@ export class Order {
     }
     public remove(id: string) {
         let index = this.find(id);
-        if(index != -1) {
+        if (index != -1) {
             this._content[index].quantity--;
             if(this._content[index].quantity <= 0) {
                 this._content.splice(index, 1);
@@ -36,7 +36,7 @@ export class Order {
     }
     public quantity(id: string): number {
         let index = this.find(id);
-        if(index != -1) {
+        if (index != -1) {
             return this._content[index].quantity;
         } else {
             return 0;
@@ -55,6 +55,9 @@ export class Order {
     }
     get id(): string {
         return this._id;
+    }
+    get tableId(): string {
+        return this._tableId;
     }
     get friendlyId(): string {
         return this._friendlyId;

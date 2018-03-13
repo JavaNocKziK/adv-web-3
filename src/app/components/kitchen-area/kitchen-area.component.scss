@@ -8,7 +8,7 @@
     display: grid;
     grid-template-columns: 1;
     background: #FEFEFE;
-    width: 1000px;
+    width: 1200px;
     //height: calc();
     border-radius: 4px;
     box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.5);
@@ -249,19 +249,56 @@
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAAAAAAAA+UO7fwAAAAlwSFlzAAAASAAAAEgARslrPgAAAC5JREFUSMdjYBgFo2AUjAKCgBGb4P////+TZRgjI4Z5TAPtw1EwCkbBKGBgYAAAcVoEBMe7gcEAAAAldEVYdGRhdGU6Y3JlYXRlADIwMTgtMDMtMDJUMjI6Mzg6NTcrMDA6MDBhjL38AAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE4LTAzLTAyVDIyOjM4OjU3KzAwOjAwENEFQAAAACh0RVh0c3ZnOmJhc2UtdXJpAGZpbGU6Ly8vdG1wL21hZ2ljay1aTjRZWGZNZB6ECnIAAAAASUVORK5CYII=');
 }
 
-[data-icon="account-white-32"] {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAAAAAAAA+UO7fwAAAAlwSFlzAAAASAAAAEgARslrPgAAAStJREFUWMPtlbFKA0EURe9zBZW0FmqlYCkWIfkE8QdE1MJGfyZI8hUi/oVpFBsbBbGwtxFMFFFh4dhMIKjrzqwzCrKnfLx5984d9q1UU/PHWJVDwKykbUlNV7qQdGxm98kdA5vAkM8MgI3U4utATjE5sJZK3IAbyrkGKj1tmYFVD/ERK75zJwI8LAb0LqUwMAjofQjo9QOYAR494h8C09ETMLMXSQcerR0ze42egEshA46+uf0hkCURHzNhwA7QB57cs5wAW0k+v39PcGTAlKRlSfOSGq78LOlO0q2ZvUV3CbSBHnDl8S+4BLpAK5bwWcAK/sgp0K4qvl9yW19yYC9UvBVJfNxE8yutok24KynmQsncTG8DcxHFRyyEGPg1Jgvq5wm0Usysqfk57yulQ3B+6mAoAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDE4LTAzLTAzVDAwOjA1OjM2KzAwOjAwQtKyCQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxOC0wMy0wM1QwMDowNTozNiswMDowMDOPCrUAAAAodEVYdHN2ZzpiYXNlLXVyaQBmaWxlOi8vL3RtcC9tYWdpY2stUTlqdXpWNEnN5k/sAAAAAElFTkSuQmCC');
+[data-icon="userprofile"] {
+    background-image: url('http://localhost:3000/icon/userprofile/fefefe');
 }
 
 [data-icon="list-white-32"] {
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAAAAAAAA+UO7fwAAAAlwSFlzAAAASAAAAEgARslrPgAAAGpJREFUWMPt1LENgDAQA0CbKUBiBmqYCzEHA8AEyZCmSREiIZpAE1/3n+IjWTJg1jrmg6QBQAAwAThJrmm/ABirHCTj46OkXXdz2gdVUt7syj+8zJ9H0GcRHCS3XyOwJrkH3ANm7gH3gJldnWZWUnRDNxAAAAAldEVYdGRhdGU6Y3JlYXRlADIwMTgtMDMtMDNUMDA6MDY6MDcrMDA6MDCBHQVdAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE4LTAzLTAzVDAwOjA2OjA3KzAwOjAw8EC94QAAACh0RVh0c3ZnOmJhc2UtdXJpAGZpbGU6Ly8vdG1wL21hZ2ljay1yQ3g0VG1yToke2AkAAAAASUVORK5CYII=');
 }
 
+[data-icon="check"] {
+    background-image: url('http://localhost:3000/icon/check/212121');
+}
+[data-icon="refresh"] {
+    background-image: url('http://localhost:3000/icon/refresh/212121');
+
+}
+
+.order-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    .order-content-item {
+        display: grid;
+        grid-template-rows: 1fr;
+        grid-template-columns: 10px 1fr 30px 30px;
+        grid-column-gap: 10px;
+        padding: 10px;
+        width: 100%;
+        height: 30px;
+        span {
+            line-height: 30px;
+            font-size: 11pt;
+            text-align: left;
+        }
+        button {
+            width: 30px;
+            height: 30px;
+            outline: none;
+            border: none;
+            background-position: center center;
+            background-size: 24px 24px;
+            background-repeat: no-repeat;
+            background-color: transparent;
+        }
+    }
+}
 
 // Elliot's Kitchen View
 .order-container {
     display: grid;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: auto auto auto;
+    grid-gap: 10px;
     background-color: #2196F3;
     padding: 10px;
     overflow-y: scroll;

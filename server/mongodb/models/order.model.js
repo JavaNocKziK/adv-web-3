@@ -77,7 +77,7 @@ OrderSchema.pre('save', async function(next) {
         }
     }
     if(allComplete) {
-        this.status = 4; // Completed
+        this.status = (this.status == 5 ? 5 : 4); // Archived/Completed
     } else {
         this.status = 3; // Cooking
     }

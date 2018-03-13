@@ -31,7 +31,7 @@ let OrderSchema = new mongoose.Schema(
                 status: {
                     type: Number,
                     required: true,
-                    default: 0 // Waiting
+                    default: 1 // Pending
                 },
                 price: {
                     type: mongoose.Schema.Types.Double,
@@ -49,7 +49,7 @@ let OrderSchema = new mongoose.Schema(
         status: {
             type: Number,
             required: true,
-            default: 0 // Waiting
+            default: 1 // Pending
         },
         value: {
             type: mongoose.Schema.Types.Double,
@@ -67,10 +67,19 @@ let OrderSchema = new mongoose.Schema(
  */
 OrderSchema.pre('save', async function(next) {
     // Generate the value of the order here.
+    let allComplete = true;
     for(let i = 0; i < this.content.length; i++) {
         let result = await StockController.single(this.content[i].stockId);
         this.content[i].price.value = result.message.price;
         this.value.value += (result.message.price * this.content[i].quantity);
+        if(this.content[i].status != 4) {
+            allComplete = false;
+        }
+    }
+    if(allComplete) {
+        this.status = 4; // Completed
+    } else {
+        this.status = 3; // Cooking
     }
     next();
 });

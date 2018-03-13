@@ -1,6 +1,7 @@
 const OrderModel = require('../models/order.model');
 const OrderStatusModel = require('../models/orderstatus.model');
 const StockModel = require('../models/stock.model');
+const UserController = require('../controllers/user.controller');
 
 module.exports = {
     /**
@@ -77,8 +78,9 @@ module.exports = {
                 } else {
                     // Asking for detail, so we include stock name and price data with the content.
                     for(let a = 0; a < orders.length; a++) {
-                        for(let b = 0; b < orders[a].content.length; b++) {
-                            let item = orders[a].content[b];
+                        let order = orders[a];
+                        for(let b = 0; b < order.content.length; b++) {
+                            let item = order.content[b];
                             let result = await (() => {
                                 return new Promise((resolve) => {
                                     StockModel.findById(item.stockId, (err2, stock) => {
@@ -88,8 +90,9 @@ module.exports = {
                                 });
                             })();
                             if(result.status == 1) {
-                                orders[a].content[b] = {
+                                order.content[b] = {
                                     _id: item._id,
+                                    status: item.status,
                                     stockId: item.stockId,
                                     quantity: item.quantity,
                                     stockName: result.message.name,
@@ -100,6 +103,24 @@ module.exports = {
                                 return resolve({ "status": 0, "code": 500, "message": "Issue obtaining orders.", "error": err1 });
                             }
                         }
+                        // Get users name.
+                        let user = await UserController.single(orders[a].userId);
+                        if(user.status == 1) {
+                            order = {
+                                _id: order._id,
+                                content: order.content,
+                                timeCreated: order.timeCreated,
+                                status: order.status,
+                                value: order.value,
+                                userId: order.userId,
+                                userName: user.message.username,
+                                tableId: order.tableId,
+                                friendlyId: order.friendlyId
+                            }
+                        } else {
+
+                        }
+                        orders[a] = order;
                     }
                     return resolve({ "status": 1, "code": 200, "message": orders });
                 }
@@ -144,13 +165,35 @@ module.exports = {
         });
     },
     /**
+     * Update a single item under the order. Useful if you want to
+     * change the status of an item under the order.
+     * @param orderId The ID of the order.
+     * @param itemId The ID of the item under the order.
+     * @param data The data you want to set.
+     */
+    updateItem: (orderId, itemId, data) => {
+        return new Promise((resolve) => {
+            OrderModel.findById(orderId, (err1, order) => {
+                if (err1 || !order) return resolve({ "status": 0, "code": 500, "message": "Error updating order.", "error": err1 });
+                let index = order.content.findIndex((item) => {
+                    return item._id == itemId;
+                });
+                if(data.status)     order.content[index].status = data.status;
+                order.save((err2) => {
+                    if (err2 || !order) return resolve({ "status": 0, "code": 500, "message": "Error updating order.", "error": err2 });
+                    return resolve({ "status": 1, "code": 200, "message": "" });
+                });
+            });
+        });
+    },
+    /**
      * Delete a single order.
      * @param id The ID of the order you want to delete.
      */
     deleteSingle: (id) => {
         return new Promise((resolve) => {
             OrderModel.remove({ _id: id }, (err1) => {
-                if (err) return resolve({ "status": 0, "code": 500, "message": "Error deleting order.", "error": err });
+                if (err1) return resolve({ "status": 0, "code": 500, "message": "Error deleting order.", "error": err1 });
                 return resolve({ "status": 1, "code": 200, "message": "" });
             });
         });

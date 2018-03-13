@@ -60,7 +60,7 @@ export class Order {
         return this._friendlyId;
     }
     get friendlyDate(): string {
-        return this._timeCreated.toLocaleDateString("en-GB") + " " +this._timeCreated.toLocaleTimeString("en-GB");
+        return this._timeCreated.toLocaleString("en-GB");
     }
     get status(): number {
         return this._status;

@@ -20,6 +20,7 @@ router.route('/')
                 req.query.status,
                 [req.query.dateAfter, req.query.dateBefore]
             );
+            console.log(result.message);
             res.status(result.code).json(result);
         }
     })

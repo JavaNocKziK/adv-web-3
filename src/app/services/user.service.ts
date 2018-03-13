@@ -38,7 +38,8 @@ export class UserService {
     }
     public remove(id: number) {
         return this.http.delete(
-            `${environment.api}/user/` + id
+            `${environment.api}/user/${id}`,
+            options
         ).map((result) => {
             return result.json();
         });

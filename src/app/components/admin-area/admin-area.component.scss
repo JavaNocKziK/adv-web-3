@@ -369,13 +369,30 @@ body {
     }
 }
 
+button {
+    padding: 0;
+    margin: 0;
+    width: 40px;
+    height: 40px;
+    outline: none;
+    border: 0;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 24px 24px;
+    cursor: pointer;
+}
+
 [data-icon="close"] {
-    background-image: url('http://localhost:3000/icon/close/fefefe');
+    background-image: url('http://localhost:3000/icon/close/2B383F');
 }
 
 [data-icon="user-profile"] {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAAAAAAAA+UO7fwAAAAlwSFlzAAAASAAAAEgARslrPgAAAXtJREFUSMfVlT1KQ0EUhc+NiTaxSaUiBBG0133kV+x0CbEza/BnE4JYJxvQFcRaibESXYAKSVQ+i0zkMZn3E7DJgYHHzLnnzj0z74606LCkRWBZUl1SVdKepE239CKpJ6krqWNm47kzA01gQDqegPo8wkvAZQZhH2dALkuCkPgIOAU23Gi7uZkkWWwJoR3gtmO49TjxZednCOsB/loM9xlYmfKintUlbccUF7ptcX5vSaqESNUE944Cc8cJ/Fkt4DHhhoyc52mHPMXDTOnAu6Si/gcfZrbqW0SGwE830vCnFU3wFiAOJV1JakgqmVnRzIqSSpKabm0YiHsNncGN52MPKKduFcrAvRd7HSIeeqSdrIYDu17sQYhUAPoRUmuOBCeRuAGTLhwkNiLEb6AFWIKwOfGfSFzS/yQBF165t0AFyEc4eTd353GTm50LzgHngZ9n7MofuG8f2dp1JFHNO5M49JNsSXsyC5JqmvSWfc0+mR1JXTP7yrzzhcMvKuvFJdN+wSwAAAAldEVYdGRhdGU6Y3JlYXRlADIwMTgtMDMtMDZUMTg6MDE6NTYrMDA6MDAwA/T5AAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE4LTAzLTA2VDE4OjAxOjU2KzAwOjAwQV5MRQAAACh0RVh0c3ZnOmJhc2UtdXJpAGZpbGU6Ly8vdG1wL21hZ2ljay1KVFZ1UVRSSTL+uBIAAAAASUVORK5CYII=');
-    /*background-image: url('http://localhost:3000/icon/user-profile/fefefe');*/
+    background-image: url('http://localhost:3000/icon/userprofile/fefefe');
+}
+
+[data-icon="close"] {
+    background-image: url('http://localhost:3000/icon/close/fefefe');
 }
 
 [data-icon="user-new"] {

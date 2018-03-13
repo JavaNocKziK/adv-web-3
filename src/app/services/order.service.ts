@@ -141,4 +141,12 @@ export class OrderService {
             return Observable.throw(error);
         });
     }
+    public remove(id: number) {
+        return this.http.delete(
+            `${environment.api}/order/${id}`,
+            options
+        ).map((result) => {
+            return result.json();
+        });
+    }
 }

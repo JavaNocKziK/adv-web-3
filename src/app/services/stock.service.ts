@@ -17,6 +17,28 @@ export class StockService {
     constructor(
         private http: Http
     ) {}
+    public create(name: string, category: string, quantity: number, price: number) {
+        return this.http.post(
+            `${environment.api}/stock`,
+            {
+                name: name,
+                category: category,
+                quantity: quantity,
+                price: price
+            },
+            options
+        ).map((result) => {
+            return result.json();
+        });
+    }
+    public remove(id: number) {
+        return this.http.delete(
+            `${environment.api}/stock/${id}`,
+            options
+        ).map((result) => {
+            return result.json();
+        });
+    }
     public fetch() {
         (() => {
             return this.http.get(

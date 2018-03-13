@@ -149,7 +149,7 @@ module.exports = {
     deleteSingle: (id) => {
         return new Promise((resolve) => {
             OrderModel.remove({ _id: id }, (err1) => {
-                if (err) return resolve({ "status": 0, "code": 500, "message": "Error deleting order.", "error": err });
+                if (err1) return resolve({ "status": 0, "code": 500, "message": "Error deleting order.", "error": err1 });
                 return resolve({ "status": 1, "code": 200, "message": "" });
             });
         });

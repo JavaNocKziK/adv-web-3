@@ -1,7 +1,7 @@
 <div class="window">
     <div class="titlebar">
         <div class="actions">
-            <button data-icon="user-profile"></button>
+            <button data-icon="user-profile" (click)="logout()"></button>
         </div>
         <div class="title">
             <p>Admin</p>
@@ -17,10 +17,11 @@
     </div>
     <div class="toolbar">
         <div class="actions">
-            <button data-icon="user-new"></button>
+            <button *ngIf="_activeTab == 0" data-icon="user-new" (click)="userModal(1)"></button>
+            <button *ngIf="_activeTab == 1" data-icon="user-new" (click)="stockModal(1)"></button>
         </div>
         <div class="search">
-            <input placeholder="Search for Username..." />
+            <input placeholder="Search {{_tabs[_activeTab].title}}" />
         </div>
     </div>
     <!-- Users Table -->
@@ -40,7 +41,7 @@
                 <p>******</p>
                 <p>{{user.admin}}</p>
                 <p><a href="{{user._homepath}}">{{user._homepath}}</a></p>
-                <p>Edit <span (click)="removeUser(user.id)">Remove</span></p>
+                <p>Edit <span (click)="removeStock(stock._id)">Remove</span></p>
             </div>
         </div>
     </div>
@@ -51,13 +52,13 @@
     </div>
     <!-- / User Table -->
     <!-- Create User Overlay Modal -->
-    <div class="overlay" id="userCreate" [attr.display]="false">
+    <div class="overlay" id="userCreate" [attr.display]="_userModal == 1">
         <div class="plate">
             <div class="header">
                 <h3>Add Users</h3>
-                <button data-icon="close" (click)="clearErrors()"></button>
+                <button data-icon="close" (click)="userModal(0)"></button>
             </div>
-              <div class="inputs" [formGroup]="_createUserForm" (keyup.enter)="login()">
+              <div class="inputs" [formGroup]="_createUserForm" (keyup.enter)="createUser()">
                   <input placeholder="Username" type="username" formControlName="username" />
                   <input placeholder="Password" type="password" formControlName="password" />
                   <select formControlName="homePath">
@@ -67,7 +68,7 @@
                     <option value="/counter">Counter View</option>
                     <option value="/admin">Admin View</option>
                   </select>
-                  <input type="checkbox" formControlName="admin" value="1">
+                  <input type="checkbox" formControlName="admin" value="true">
                   <button (click)="createUser()">SUBMIT</button>
               </div>
         </div>
@@ -90,11 +91,33 @@
                 <p>{{stock.category}}</p>
                 <p>{{stock.quantity}}</p>
                 <p>£{{stock.price}}</p>
-                <p>Edit <a href="#" (click)="removeStock(stock._id)">Remove</a></p>
+                <p>Edit <span (click)="removeStock(stock._id)">Remove</span></p>
             </div>
         </div>
     </div>
     <!-- / Stock Table -->
+    <!-- Create Stock Overlay Modal -->
+    <div class="overlay" id="stockCreate" [attr.display]="_stockModal == 1">
+        <div class="plate">
+            <div class="header">
+                <h3>Add Stock</h3>
+                <button data-icon="close" (click)="stockModal(0)"></button>
+            </div>
+              <div class="inputs" [formGroup]="_createStockForm" (keyup.enter)="createStock()">
+                  <input placeholder="Name" type="text" formControlName="name" />
+                  <select formControlName="category">
+                    <option value="0">Starter</option>
+                    <option value="1">Mains</option>
+                    <option value="2">Desserts</option>
+                    <option value="3">Drinks</option>
+                  </select>
+                  <input placeholder="Quantity" type="number" formControlName="quantity" />
+                  <input placeholder="Price" type="text" formControlName="price" />
+                  <button (click)="createStock()">SUBMIT</button>
+              </div>
+        </div>
+    </div>
+    <!-- / Create Stock Overlay Modal -->
     <!-- Order Table -->
     <div class="table" displaying="orders" *ngIf="_activeTab == 2">
         <div class="header">
@@ -112,7 +135,7 @@
                 <p>{{order._tableId}}</p>
                 <p>{{order._userId}}</p>
                 <p>{{order.friendlyDate}}</p>
-                <p>Edit <a href="#" (click)="removeOrder(order._id)">Remove</a></p>
+                <p>Edit <span (click)="removeOrder(order._id)">Remove</span></p>
             </div>
         </div>
     </div>

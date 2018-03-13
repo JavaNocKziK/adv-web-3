@@ -52,6 +52,7 @@ router.route('/reauthenticate')
             req.session.tokenExpiry = result.message.tokenExpiry;
             req.session.admin = result.message.admin;
         }
+        console.log(req.session);
         res.status(result.code).json(result);
     });
 
@@ -62,6 +63,7 @@ router.route('/')
      */
     .get(async (req, res) => {
         let secResult = await sec.check(req, sec.admin, sec.session);
+        console.log(req.session);
         if(!secResult.valid) {
             res.status(secResult.code).send();
         } else {
@@ -120,6 +122,8 @@ router.route('/:id')
      */
     .delete(async (req, res) => {
         let secResult = await sec.check(req, sec.admin, sec.session);
+        console.log(secResult);
+        console.log(req.session);
         if(!secResult.valid) {
             res.status(secResult.code).send();
         } else {

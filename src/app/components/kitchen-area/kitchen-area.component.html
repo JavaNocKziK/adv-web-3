@@ -1,36 +1,53 @@
 <div class="window">
     <div class="navbar">
         <div class="actions">
-            <button data-icon="userprofile" (click)="logout()"></button>
-            <button data-icon="list-white-32"></button>
+            <button data-icon="user-profile-white" (click)="toggleProfileMenu($event, true)" [disabled]="(_profilemenu ? true : false)">
+                <div class="profilemenu" [attr.display]="_profilemenu" (mouseleave)="toggleProfileMenu($event, false)">
+                    <button data-icon="back-black" (click)="toggleProfileMenu($event, false)"></button>
+                    <div class="items">
+                        <p (click)="logout()">Logout</p>
+                        <!-- Will add list here later. -->
+                    </div>
+                </div>
+            </button>
         </div>
         <div class="title">
             <p>Kitchen View</p>
         </div>
         <div class="actions">
-            <button data-icon="refreshWhite" (click)="refresh()"></button>
-            <button class="toggleRefresh" (click)="toggleAutoUpdate()" [attr.data-icon]="(_toggleRefresh ? 'toggleoff' : 'toggleon')"></button>
+                <button class="fetcher-manual" [attr.data-icon]="(_autofetch ? 'refresh-disabled' : 'refresh')" (click)="refresh()" [disabled]="(_autofetch ? true : false)"></button>
+                <button class="fetcher-auto" [attr.data-icon]="(_autofetch ? 'toggleoff' : 'toggleon')" (click)="toggleFetcher()"></button>
         </div>
     </div>
     <div class="order-container">
-        <div class="order-item list" *ngFor="let order of _order; let i = index;">
-            <div class="orderNum tableNum greenDebug">
-                <!-- Order#: {{ order.friendlyId}} Table#: {{ order.friendlyTableId }} -->
-                Order#: {{ order.friendlyId}} Table#: {{ order.tableId }}
+        <div class="order-item" *ngFor="let order of _order; let i = index;">
+            <div class="finalise" *ngIf="order.status === 3">
+                <h3 class="order">Order #{{order.friendlyId}}</h3>
+                <h3 class="table">Table #{{order.status}}</h3>
+                <div class="actions">
+                    <button class="accept" (click)="updateOrder(order.id, 4)">Accept</button>
+                    <button class="reject" disabled>Modify</button>
+                </div>
             </div>
-            <div class="order-content">
-                <!--<ul class="contents-list" *ngFor="let orderItem of order.items; let i = index;">
-                    <li class="contents-list-item redDebug">
-                        {{ orderItem.stockId }}
-                    </li>
-                </ul>
-                -->
-                <div class="order-content-item" *ngFor="let orderItem of order.items">
-                    <span>{{orderItem.quantity}}</span>
-                    <span>{{orderItem.stockName}}</span>
-                    <button *ngIf="orderItem.status != 2" data-icon="cookingpot" (click)="updateItem(order.id, orderItem.id, 2)"></button>
-                    <button *ngIf="orderItem.status == 2" data-icon="check" (click)="updateItem(order.id, orderItem.id, 1)"></button>
-                    <button data-icon="refresh"></button>
+            <div class="items" *ngIf="order.status !== 3">
+                <div class="orderNum tableNum greenDebug">
+                    <!-- Order#: {{ order.friendlyId}} Table#: {{ order.friendlyTableId }} -->
+                    Order#: {{ order.friendlyId}} Table#: {{ order.status }}
+                </div>
+                <div class="order-content">
+                    <!--<ul class="contents-list" *ngFor="let orderItem of order.items; let i = index;">
+                        <li class="contents-list-item redDebug">
+                            {{ orderItem.stockId }}
+                        </li>
+                    </ul>
+                    -->
+                    <div class="order-content-item" *ngFor="let orderItem of order.items">
+                        <span [attr.grey]="(orderItem.status == 3 ? true : false)">{{orderItem.quantity}}</span>
+                        <span [attr.grey]="(orderItem.status == 3 ? true : false)">{{orderItem.stockName}}</span>
+                        <button *ngIf="orderItem.status == 0 || orderItem.status == 1" data-icon="cookingpot" (click)="updateItem(order.id, orderItem.id, 2)"></button>
+                        <button *ngIf="orderItem.status == 2" data-icon="check" (click)="updateItem(order.id, orderItem.id, 3)"></button>
+                        <button *ngIf="orderItem.status == 3" data-icon="refresh-black" (click)="updateItem(order.id, orderItem.id, 1)"></button>
+                    </div>
                 </div>
             </div>
         </div>

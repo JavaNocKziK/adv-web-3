@@ -7,6 +7,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 
 import { User } from '../classes/user';
 import { ErrorService } from './error.service';
+import { OrderService } from './order.service';
 
 const options: RequestOptionsArgs = {
     withCredentials: true
@@ -20,7 +21,8 @@ export class UserService {
     public users = this.usersSource.asObservable();
     constructor(
         private http: Http,
-        private errorService: ErrorService
+        private errorService: ErrorService,
+        private orderService: OrderService
     ) {}
     public create(username: string, password: string, homePath: string, admin: boolean) {
         return this.http.post(
@@ -132,6 +134,7 @@ export class UserService {
         })().subscribe((res) => {
             if(res.status == 1) {
                 this.clear();
+                this.orderService.setAutoState(false);
             }
         });
     }

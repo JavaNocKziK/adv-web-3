@@ -68,18 +68,47 @@ let OrderSchema = new mongoose.Schema(
 OrderSchema.pre('save', async function(next) {
     // Generate the value of the order here.
     let allComplete = true;
+    let hasCooking = false;
+    // Legacy check until we have a wait feature.
+    if(this.status == 0) {
+        this.status == 1;
+    }
     for(let i = 0; i < this.content.length; i++) {
         let result = await StockController.single(this.content[i].stockId);
         this.content[i].price.value = result.message.price;
         this.value.value += (result.message.price * this.content[i].quantity);
-        if(this.content[i].status != 4) {
+        if(this.content[i].status == 2 || this.content[i].status == 3) {
+            // Cooking
+            hasCooking = true;
+        }
+        if(this.content[i].status != 3) {
+            // Ready
             allComplete = false;
         }
     }
-    if(allComplete) {
-        this.status = (this.status == 5 ? 5 : 4); // Archived/Completed
-    } else {
-        this.status = 3; // Cooking
+    /**
+     * If we're Pending or Cooking, then toggle the
+     * status based on whether or not we have
+     * something Cooking.
+     */
+    if(this.status == 1 || this.status == 2) {
+        this.status = (hasCooking ? 2 : 1);
+    }
+    /**
+     * If we're Cooking then check to see if we have
+     * all the items complete. If so set the status
+     * to Complete otherwise keep it what it is.
+     */
+    if(this.status == 2) {
+        this.status = (allComplete ? 3 : this.status);
+    }
+    /**
+     * If we're Completed then check to see all are
+     * complete. If not we undid something so change
+     * the status back to Cooking.
+     */
+    if(this.status == 3) {
+        this.status = (allComplete ? 3 : (hasCooking ? 2 : 1));
     }
     next();
 });

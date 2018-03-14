@@ -4,6 +4,8 @@ import { Order } from '../../classes/order';
 import { StockService } from '../../services/stock.service';
 import { OrderService } from '../../services/order.service';
 import { Observable } from "rxjs/Rx";
+import { Subscription } from 'rxjs/Subscription';
+import { AfterContentInit } from '@angular/core/src/metadata/lifecycle_hooks';
 
 // order-items are individual table's orders (e.g. every persons orders)
 // Each order-item includes a orderNum, tableNum, and order-content
@@ -12,60 +14,75 @@ import { Observable } from "rxjs/Rx";
 
 
 @Component({
-  selector: 'app-kitchen-area',
-  templateUrl: './kitchen-area.component.html',
-  styleUrls: ['./kitchen-area.component.scss']
+    selector: 'app-kitchen-area',
+    templateUrl: './kitchen-area.component.html',
+    styleUrls: ['./kitchen-area.component.scss']
 })
 export class KitchenAreaComponent implements OnInit {
-  private _orderId: string;
-  private _tableId: string;
-  private _order: Order[] = [];
-  private _toggleRefresh: boolean = false;
-  private _autoUpdate;
-
-  constructor(
-    private stockService: StockService,
-    private orderService: OrderService,
-    private userSerivce: UserService
-  ) {
-      this.orderService.fetch(true);
-      this.toggleAutoUpdate(true);
-  }
-
-  ngOnInit() {
-      this.orderService.orders.subscribe((result: Order[]) => { this._order = result; });
-  }
-
-  public toggleAutoUpdate(force?: boolean) {
-    this._toggleRefresh = !this._toggleRefresh;
-    if(this._toggleRefresh || force) {
-      this._autoUpdate = Observable.interval(10000).subscribe(() => {
-        this.orderService.fetch(true);
-      });
-    } else {
-      this._autoUpdate.unsubscribe();
+    private _orderId: string;
+    private _tableId: string;
+    private _order: Order[] = [];
+    private _fetcher: Subscription;
+    private _autofetch: boolean = false;
+    private _profilemenu: boolean = false;
+    private _tempModify;
+    
+    constructor(
+        private stockService: StockService,
+        private orderService: OrderService,
+        private userSerivce: UserService
+    ) {
+        this.fetch();
+        this.toggleFetcher();
+        this.orderService.auto.subscribe((active: boolean) => this._autofetch = active);
+        this.orderService.orders.subscribe((result: Order[]) => this._order = result);
     }
-  }
+    ngOnInit() {}
+    public toggleFetcher() {
+        this._autofetch = !this._autofetch;
+        this.orderService.setAutoState(this._autofetch);
+        if(this._autofetch) {
+            this.orderService.setAutoSubscription(
+                Observable.interval(1000).subscribe(() => this.fetch())
+            );
+        }
+    }
+    public toggleProfileMenu(event: any, state: boolean) {
+        if(event !== undefined) {
+            event.stopPropagation();
+        }
+        this._profilemenu = state;
+    }
+    public navigate(route: string) {
+        //
+    }
+    public refresh() {
+        this.fetch();
+    }
+    public logout() {
+        this.userSerivce.logout();
+    }
+    public fetch() {
+        this.orderService.fetch(true, [0,1,2,3]);
+    }
+    public updateOrder(orderId: string, status: number) {
+        this.orderService.update(orderId, {
+            status: status
+        }).subscribe(() => {
+            this.fetch();
+        });
+    }
+    public updateItem(orderId: string, itemId: string, status: number) {
+        this.orderService.updateItem(orderId, itemId, {
+            status: status
+        }).subscribe((res) => {
+            this.fetch();
+        });
+    }
 
-  public refresh() {
-    this.orderService.fetch(true);
-  }
+    //   private getOrderItems() {}
 
-  public logout() {
-    this.userSerivce.logout();
-  }
+    //   private getOrderNum() {}
 
-  public updateItem(orderId: string, itemId: string, status: number) {
-    this.orderService.updateItem(orderId, itemId, {
-      status: status
-    }).subscribe((res) => {
-      this.orderService.fetch(true);
-    });
-  }
-
-//   private getOrderItems() {}
-
-//   private getOrderNum() {}
-
-//   private getTableNum() {}
+    //   private getTableNum() {}
 }

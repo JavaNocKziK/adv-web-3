@@ -28,15 +28,10 @@ export class CounterAreaComponent implements OnInit {
         this._tabs.push(new Tab('Active', 0));
         this._tabs.push(new Tab('Archived', 1));
         this._tabs.push(new Tab('Reports', 2));
+        this.fetchOrders();
         this.toggleFetcher();
-        this.orderService.orders.subscribe((orders: Order[]) => {
-            if(orders) {
-                this._orders = orders;
-                if(this._selectedOrder > this._orders.length) {
-                    this._selectedOrder = undefined;
-                }
-            }
-        });
+        this.orderService.auto.subscribe((active: boolean) => this._autofetch = active);
+        this.orderService.orders.subscribe((result: Order[]) => this._orders = result);
     }
     ngOnInit() {
         this.fetchOrders();
@@ -46,10 +41,11 @@ export class CounterAreaComponent implements OnInit {
     }
     public toggleFetcher() {
         this._autofetch = !this._autofetch;
+        this.orderService.setAutoState(this._autofetch);
         if(this._autofetch) {
-            this._fetcher = Observable.interval(10000).subscribe(() => this.fetchOrders()); // Autofetch.
-        } else {
-            this._fetcher.unsubscribe();
+            this.orderService.setAutoSubscription(
+                Observable.interval(1000).subscribe(() => this.fetchOrders())
+            );
         }
     }
     public toggleProfileMenu(event: any, state: boolean) {

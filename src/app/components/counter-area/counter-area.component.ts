@@ -5,6 +5,7 @@ import { OrderService } from '../../services/order.service';
 import { Observable } from 'rxjs/Rx';
 import { ErrorService } from '../../services/error.service';
 import { Tab } from '../../classes/tab';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
     selector: 'app-counter-area',
@@ -16,6 +17,8 @@ export class CounterAreaComponent implements OnInit {
     private _selectedOrder: number;
     private _activeTab: number = 0;
     private _tabs: Tab[] = [];
+    private _fetcher: Subscription;
+    private _autofetch: boolean = false;
     constructor(
         private errorService: ErrorService,
         private orderService: OrderService,
@@ -24,10 +27,7 @@ export class CounterAreaComponent implements OnInit {
         this._tabs.push(new Tab('Active', 0));
         this._tabs.push(new Tab('Archived', 1));
         this._tabs.push(new Tab('Reports', 2));
-        this.fetchOrders(); // Initial fetch.
-        Observable.interval(120000).subscribe(() => {
-            this.fetchOrders(); // Update every 2 minutes.
-        });
+        this.toggleFetcher();
         this.orderService.orders.subscribe((orders: Order[]) => {
             if(orders) {
                 this._orders = orders;
@@ -37,9 +37,19 @@ export class CounterAreaComponent implements OnInit {
             }
         });
     }
-    ngOnInit() {}
+    ngOnInit() {
+        this.fetchOrders();
+    }
     public logout() {
         this.userService.logout();
+    }
+    public toggleFetcher() {
+        this._autofetch = !this._autofetch;
+        if(this._autofetch) {
+            this._fetcher = Observable.interval(120000).subscribe(() => this.fetchOrders()); // Autofetch.
+        } else {
+            this._fetcher.unsubscribe();
+        }
     }
     private select(index) {
         this._selectedOrder = index;

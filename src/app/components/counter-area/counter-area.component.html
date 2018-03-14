@@ -7,16 +7,10 @@
             <p>Counter</p>
         </div>
         <div class="actions">
-            <button data-icon="refresh" (click)="fetchOrders()"></button>
+            <button class="fetcher-manual" data-icon="refresh" (click)="fetchOrders()"></button>
+            <button class="fetcher-auto" [attr.data-icon]="(_autofetch ? 'toggleoff' : 'toggleon')" (click)="toggleFetcher()"></button>
         </div>
     </div>
-    <!--
-    <div class="tabbar">
-        <p selected>Bills</p>
-        <p>Archived</p>
-        <p>Reports</p>
-    </div>
-    -->
     <div class="tabbar">
         <p
             *ngFor="let tab of _tabs; let i = index"
@@ -44,7 +38,7 @@
             </div>
             <div class="total">
                 <h3>Total</h3>
-                <p>£{{orders(status)[_selectedOrder].total}}</p>
+                <p>£{{orders(status)[_selectedOrder].total.toFixed(2)}}</p>
             </div>
             <div class="items">
                 <div class="item" *ngFor="let item of orders(status)[_selectedOrder].items">

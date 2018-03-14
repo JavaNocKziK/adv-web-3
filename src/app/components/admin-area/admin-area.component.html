@@ -30,7 +30,7 @@
             <h3>Username</h3>
             <h3>Password</h3>
             <h3>Admin</h3>
-            <h3>Home Area</h3>
+            <h3>Areas</h3>
             <h3>Actions</h3>
         </div>
         <div class="items">
@@ -38,7 +38,7 @@
                 <p>{{user._username}}</p>
                 <p>******</p>
                 <p>{{user.admin}}</p>
-                <p><a href="{{user._homepath}}">{{user._homepath}}</a></p>
+                <p><a href="{{user._homepath}}">{{user._homepaths}}</a></p>
                 <p><button data-icon="edit" (click)="userEditModal(1, user.id)"></button> <button data-icon="close" (click)="removeUser(user._id)"></button></p>
             </div>
         </div>

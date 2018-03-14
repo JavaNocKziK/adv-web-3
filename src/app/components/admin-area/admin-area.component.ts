@@ -5,9 +5,9 @@ import { StockService } from '../../services/stock.service';
 import { Stock } from '../../classes/stock';
 import { OrderService } from '../../services/order.service';
 import { Order } from '../../classes/order';
-import { Status } from '../../classes/status';
 import { ErrorService } from '../../services/error.service';
 import { FormControl, FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { OrderStatus } from '../../classes/order-status';
 
 
 @Component({
@@ -16,17 +16,22 @@ import { FormControl, FormBuilder, FormGroup, Validators, FormsModule, ReactiveF
   styleUrls: ['./admin-area.component.scss']
 })
 export class AdminAreaComponent implements OnInit {
+  private _editUserForm: FormGroup;
   private _createUserForm: FormGroup;
+  private _createStockForm: FormGroup;
+  private _editStockForm: FormGroup;
   private _tabs: Tab[] = [];
   private _users: User[] = [];
   private _stock: Stock[] = [];
   private _orders: Order[] = [];
-  private _statuses: Status[] = [];
+  private _statuses: OrderStatus[] = [];
   private _activeTab: number = 0;
   private _userModal = 0;
   private _userEditModal = 0;
   private _stockModal = 0;
   private _stockEditModal = 0;
+  private _profilemenu: boolean = false;
+  private _user: User;
   constructor(
     private userService: UserService,
     private stockService: StockService,
@@ -105,6 +110,13 @@ export class AdminAreaComponent implements OnInit {
     this.userService.users.subscribe((result: User[]) => {this._users = result});
     this.stockService.stock.subscribe((stock: Stock[]) => {this._stock = stock});
     this.orderService.orders.subscribe((order: Order[]) => {this._orders = order;});
+    this.userService.user.subscribe((user: User) => this._user = user);
+  }
+  public toggleProfileMenu(event: any, state: boolean) {
+      if(event !== undefined) {
+          event.stopPropagation();
+      }
+      this._profilemenu = state;
   }
   public changeTab(index: number) {
       this.userRefresh();
@@ -118,20 +130,24 @@ export class AdminAreaComponent implements OnInit {
   public userEditModal(openClose: number, userId?: number) {
     if (userId) {
       this._editUserForm.controls['id'].setValue(userId);
+      /*
       this._editUserForm.controls['username'].setValue(this._users.find(x => x.id === userId)._username);
       this._editUserForm.controls['password'].setValue(this._users.find(x => x.id === userId)._password);
       this._editUserForm.controls['homePath'].setValue(this._users.find(x => x.id === userId)._homepath);
       this._editUserForm.controls['admin'].setValue(this._users.find(x => x.id === userId)._admin);
+      */
     }
     this._userEditModal = openClose;
   }
   public stockEditModal(openClose: number, stockId?: number) {
     if (stockId) {
       this._editStockForm.controls['id'].setValue(stockId);
+      /*
       this._editStockForm.controls['name'].setValue(this._stock.find(x => x.id === stockId)._name);
       this._editStockForm.controls['category'].setValue(this._stock.find(x => x.id === stockId)._category);
       this._editStockForm.controls['quantity'].setValue(this._stock.find(x => x.id === stockId)._quantity);
       this._editStockForm.controls['price'].setValue(this._stock.find(x => x.id === stockId)._price);
+      */
     }
     this._stockEditModal = openClose;
   }
@@ -246,12 +262,14 @@ private search(event: KeyboardEvent) {
       if (!isNaN(id)) {
         this.orderService.fetch(true, undefined, undefined, id);
       }
+    }
 }
 public resolveStatus(value: number): OrderStatus {
   return this.orderService.statuses.find((item) => {
     return item.value == value;
   });
 
+}
 }
 
 export class Tab {

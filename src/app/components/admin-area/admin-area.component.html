@@ -1,17 +1,17 @@
 <div class="window">
     <div class="titlebar">
         <div class="actions">
-          <button data-icon="user-profile" (click)="toggleProfileMenu($event, true)" [disabled]="(_profilemenu ? true : false)">
-              <div class="profilemenu" [attr.display]="_profilemenu" (mouseleave)="toggleProfileMenu($event, false)">
-                  <button data-icon="back-black" (click)="toggleProfileMenu($event, false)"></button>
-                  <div class="items">
-                      <p (click)="logout()">Logout</p>
-                      <div *ngIf="_user">
-                          <p *ngFor="let path of _user.homePaths" [routerLink]="path">{{path}}</p>
-                      </div>
-                  </div>
-              </div>
-          </button>
+                <button data-icon="user-profile-white" (click)="toggleProfileMenu($event, true)" [disabled]="(_profilemenu ? true : false)">
+                    <div class="profilemenu" [attr.display]="_profilemenu" (mouseleave)="toggleProfileMenu($event, false)">
+                        <button data-icon="back-black" (click)="toggleProfileMenu($event, false)"></button>
+                        <div class="items">
+                            <p (click)="logout()">Logout</p>
+                            <div *ngIf="_user">
+                                <p *ngFor="let path of _user.homePaths" [routerLink]="path">{{path}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </button>
         </div>
         <div class="title">
             <p>Admin</p>

@@ -24,6 +24,7 @@ export class WaitAreaComponent implements OnInit {
     private _showTables: boolean = false;
     private _tables: Table[] = [];
     private _profilemenu: boolean = false;
+    private _detailOrder: Order;
     constructor(
         private stockService: StockService,
         private orderService: OrderService,
@@ -119,10 +120,20 @@ export class WaitAreaComponent implements OnInit {
             this.orderService.forUser(this._user.id).subscribe((result) => {
                 this._myOrders = [];
                 result.message.forEach((item) => {
+                    let items: OrderItem[] = [];
+                    item.content.forEach((element) => {
+                        items.push(new OrderItem(
+                            element.id,
+                            element.stockId,
+                            element.quantity,
+                            element.stockName,
+                            (element.quantity * element.price)
+                        ));
+                    });
                     this._myOrders.push(new Order(
                         item._id,
                         item.friendlyId,
-                        [],
+                        items,
                         item.status,
                         item.tableId,
                         item.timeCreated,
@@ -149,6 +160,13 @@ export class WaitAreaComponent implements OnInit {
     }
     public logout() {
         this.userService.logout();
+    }
+    public loadDetail(index: number) {
+        this._detailOrder = this._myOrders[index];
+        console.log(this._detailOrder);
+    }
+    public closeDetail() {
+        this._detailOrder = undefined;
     }
 }
 

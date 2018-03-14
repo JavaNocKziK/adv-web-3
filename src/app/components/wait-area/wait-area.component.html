@@ -63,16 +63,34 @@
             </div>
         </div>
     </div>
-    <div class="list" *ngIf="(_state == 2)">
+    <div class="list" *ngIf="(_state == 2 && !_detailOrder)">
         <div *ngFor="let status of orderStatuses">
             <div *ngIf="myOrders(status.value).length > 0">
                 <h3>{{status.description}}</h3>
-                <div class="item"  *ngFor="let order of myOrders(status.value)">
-                    <p>{{order.friendlyId}}</p>
+                <div class="item mine" *ngFor="let order of myOrders(status.value); let i = index" (click)="loadDetail(i)">
+                    <p>Order #{{order.friendlyId}}</p>
+                    <p>{{order.timeCreated}}</p>
                 </div>
             </div>
         </div>
     </div>
+    <div class="bill" showing="true" payment="false" *ngIf="_detailOrder">
+            <div class="header">
+                <button data-icon="back-blue" (click)="closeDetail()"></button>
+                <h3>Order #{{_detailOrder.friendlyId}}</h3>
+            </div>
+            <div class="total">
+                <h3>Total</h3>
+                <p>£{{_detailOrder.total.toFixed(2)}}</p>
+            </div>
+            <div class="items">
+                <div class="item" *ngFor="let item of _detailOrder.items">
+                    <p>{{item.quantity}}x</p>
+                    <p>{{item.stockName}}</p>
+                    <p>£{{item.totalPrice.toFixed(2)}}</p>
+                </div>
+            </div>
+        </div>
 </div>
 <div class="overlay" [attr.display]="_showTables">
     <div class="plate">

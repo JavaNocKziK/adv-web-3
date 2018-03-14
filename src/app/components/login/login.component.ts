@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
                         res.message.id,
                         data.username,
                         res.message.admin,
-                        res.message.homePath
+                        res.message.homePaths
                     );
                     user.token = new Token(res.message.token, new Date(res.message.tokenExpiry));
                     this.userService.set(user);

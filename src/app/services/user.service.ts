@@ -24,13 +24,13 @@ export class UserService {
         private errorService: ErrorService,
         private orderService: OrderService
     ) {}
-    public create(username: string, password: string, homePath: string, admin: boolean) {
+    public create(username: string, password: string, homePaths: string, admin: boolean) {
         return this.http.post(
             `${environment.api}/user`,
             {
                 username: username,
                 password: password,
-                homePath: homePath,
+                homePaths: homePaths,
                 admin: admin
             },
             options
@@ -77,7 +77,7 @@ export class UserService {
                       data._id,
                       data.username,
                       data.admin,
-                      data.homePath
+                      data.homePaths
                   ));
               });
               this.usersSource.next(users);

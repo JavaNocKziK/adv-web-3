@@ -6,7 +6,9 @@
                     <button data-icon="back-black" (click)="toggleProfileMenu($event, false)"></button>
                     <div class="items">
                         <p (click)="logout()">Logout</p>
-                        <!-- Will add list here later. -->
+                        <div *ngIf="_user">
+                            <p *ngFor="let path of _user.homePaths" [routerLink]="path">{{path}}</p>
+                        </div>
                     </div>
                 </div>
             </button>

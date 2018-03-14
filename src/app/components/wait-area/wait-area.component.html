@@ -1,7 +1,17 @@
 <div class="window" [attr.showtabs]="(_state == 0 ? true : false)">
     <div class="navbar">
         <div class="actions">
-            <button data-icon="account" (click)="logout()"></button>
+            <button data-icon="user-profile-white" (click)="toggleProfileMenu($event, true)" [disabled]="(_profilemenu ? true : false)">
+                <div class="profilemenu" [attr.display]="_profilemenu" (mouseleave)="toggleProfileMenu($event, false)">
+                    <button data-icon="back-black" (click)="toggleProfileMenu($event, false)"></button>
+                    <div class="items">
+                        <p (click)="logout()">Logout</p>
+                        <div *ngIf="_user">
+                            <p *ngFor="let path of _user.homePaths" [routerLink]="path">{{path}}</p>
+                        </div>
+                    </div>
+                </div>
+            </button>
             <button [attr.data-icon]="(_state == 2 ? 'listnew' : 'list')" (click)="toggleOwnOrders()"></button>
             <button data-icon="refresh" (click)="clear()" *ngIf="_state != 2"></button>
         </div>

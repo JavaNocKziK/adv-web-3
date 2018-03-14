@@ -1,16 +1,14 @@
-# Advanced Web Assignment #2
-![license](https://img.shields.io/github/license/mashape/apistatus.svg)
+Advanced Web Assignment #2      ![license](https://img.shields.io/github/license/mashape/apistatus.svg)
+==========================
 
 MMU University *Advanced Web* Unit assignment created by Aubrey Boorer, Elliot Keen and William Southall.
 
 
 ### Postman
-
 When using the Postman script you should create a new environment and set a variable under there called `port`. This variable is used to build the address the request will go to, so that we can change the port easily without having to update all the examples.
 
 
 ### Installation
-
 Before installing and running the project make sure you have the latest versions of node.js and npm.
 
 Next run the following command to globally install some important packages we need:
@@ -51,9 +49,7 @@ This will concurrently run `node server/server.js` which is the server file, and
 
 
 ### System Explaination
-
 The system is split into 4 main views - Admin, Wait, Kitchen and Counter. Each view directs the user to a different part of the system, with users with Admin status having access to all views within the system. The views are outlined in more detail with screenshots within the Wiki Pages of this repository. See here.
 
 ### License
-
 This project is [MIT licensed](./LICENSE).

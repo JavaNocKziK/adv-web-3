@@ -157,7 +157,7 @@ private search(event: KeyboardEvent) {
   } else if (this._activeTab == 1) {
     this.stockService.fetch(event.target.value);
   } else if (this._activeTab == 2) {
-    this.orderService.fetch(true, event.target.value);
+    this.orderService.fetch(true, undefined, undefined, event.target.value);
   }
 }
 public resolveStatus(value: number): OrderStatus {

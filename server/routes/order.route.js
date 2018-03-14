@@ -18,9 +18,9 @@ router.route('/')
             let result = await OrderController.many(
                 req.query.detail,
                 req.query.status,
-                [req.query.dateAfter, req.query.dateBefore]
+                [req.query.dateAfter, req.query.dateBefore],
+                req.query.friendlyId,
             );
-            console.log(result.message);
             res.status(result.code).json(result);
         }
     })

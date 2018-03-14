@@ -27,7 +27,6 @@
     <!-- Users Table -->
     <div class="table" displaying="users" *ngIf="_activeTab == 0 && (_users.length > 0)">
         <div class="header">
-            <h3>ID</h3>
             <h3>Username</h3>
             <h3>Password</h3>
             <h3>Admin</h3>
@@ -36,7 +35,6 @@
         </div>
         <div class="items">
             <div class="item" *ngFor="let user of _users; let i = index">
-                <p>{{user.id}}</p>
                 <p>{{user._username}}</p>
                 <p>******</p>
                 <p>{{user.admin}}</p>
@@ -77,7 +75,6 @@
     <!-- Stock Table -->
     <div class="table" displaying="stock" *ngIf="_activeTab == 1">
         <div class="header">
-            <h3>ID</h3>
             <h3>Name</h3>
             <h3>Category</h3>
             <h3>Quantity</h3>
@@ -86,7 +83,6 @@
         </div>
         <div class="items">
             <div class="item" *ngFor="let stock of _stock; let i = index">
-                <p>{{stock._id}}</p>
                 <p>{{stock.name}}</p>
                 <p>{{stock.category}}</p>
                 <p>{{stock.quantity}}</p>

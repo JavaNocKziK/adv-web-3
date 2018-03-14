@@ -68,22 +68,25 @@ export class OrderService {
         });
         this.statuses = statuses;
     }
-    public fetch(detail?: boolean, status?: number|number[], dateRange?: [Date, Date]) {
+    public fetch(detail?: boolean, status?: number|number[], dateRange?: [Date, Date], friendlyId?: number) {
         let paramDetail: boolean;
         let paramStatus: number|number[];
         let paramDateFrom: string;
         let paramDateTo: string;
+        let paramFriendlyId: number;
         if (detail)         paramDetail = detail;
         if (status)         paramStatus = status;
         if (dateRange) {
             if (dateRange[0])   paramDateFrom = dateRange[0].toJSON();
             if (dateRange[1])   paramDateFrom = dateRange[1].toJSON();
-        }
+        };
+        if (friendlyId)     paramFriendlyId = friendlyId;
         options.params = {
             detail: paramDetail,
             status: paramStatus,
             dateFrom: paramDateFrom,
-            dateTo: paramDateTo
+            dateTo: paramDateTo,
+            friendlyId: paramFriendlyId
         };
         (() => {
             return this.http.get(
@@ -123,7 +126,6 @@ export class OrderService {
                     order.userName
                 ));
             });
-            console.log(orders);
             this.ordersSource.next(orders);
         });
     }

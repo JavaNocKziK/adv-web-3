@@ -44,7 +44,12 @@ export class UserService {
             return result.json();
         });
     }
-    public fetch() {
+    public fetch(userName?: string) {
+        let userNameParam: string;
+        if (userName)   userNameParam = userName;
+        options.params = {
+            username: userNameParam,
+        };
         (() => {
             return this.http.get(
                 `${environment.api}/user`,

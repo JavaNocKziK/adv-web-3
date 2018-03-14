@@ -39,7 +39,12 @@ export class StockService {
             return result.json();
         });
     }
-    public fetch() {
+    public fetch(name: string) {
+      let nameParam: string;
+      if (name)   nameParam = name;
+      options.params = {
+          name: nameParam,
+      };
         (() => {
             return this.http.get(
                 `${environment.api}/stock`,

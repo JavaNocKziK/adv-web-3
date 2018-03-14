@@ -1,13 +1,21 @@
 <div class="window">
     <div class="titlebar">
         <div class="actions">
-            <button data-icon="user-profile" (click)="logout()"></button>
+            <button data-icon="user-profile-white" (click)="toggleProfileMenu($event, true)" [disabled]="(_profilemenu ? true : false)">
+                <div class="profilemenu" [attr.display]="_profilemenu" (mouseleave)="toggleProfileMenu($event, false)">
+                    <button data-icon="back-black" (click)="toggleProfileMenu($event, false)"></button>
+                    <div class="items">
+                        <p (click)="logout()">Logout</p>
+                        <!--<p (click)="navigate('/admin')">Admin</p>-->
+                    </div>
+                </div>
+            </button>
         </div>
         <div class="title">
             <p>Counter</p>
         </div>
         <div class="actions">
-            <button class="fetcher-manual" data-icon="refresh" (click)="fetchOrders()"></button>
+            <button class="fetcher-manual" [attr.data-icon]="(_autofetch ? 'refresh-disabled' : 'refresh')" (click)="fetchOrders()" [attr.disabled]="(_autofetch ? true : false)"></button>
             <button class="fetcher-auto" [attr.data-icon]="(_autofetch ? 'toggleoff' : 'toggleon')" (click)="toggleFetcher()"></button>
         </div>
     </div>

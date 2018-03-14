@@ -1,3 +1,38 @@
+.profilemenu {
+    grid-template-rows: 40px 1fr;
+    grid-template-columns: 1fr;
+    position: relative;
+    width: 100px;
+    background-color: #FEFEFE;
+    border-radius: 4px;
+    z-index: 100;
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.75);
+    cursor: default;
+    .items {
+        p {
+            margin: 0;
+            padding: 10px;
+            font-size: 10pt;
+            text-transform: uppercase;
+            color: #212121;
+            cursor: pointer;
+        }
+        p:not(:only-of-type):first-of-type {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+        }
+        p:hover {
+            color: #2196F3;
+        }
+    }
+}
+.profilemenu[display="true"] {
+    display: grid;
+    visibility: visible;
+}
+.profilemenu[display="false"] {
+    display: none;
+    visibility: hidden;
+}
 .window {
     display: grid;
     grid-template-rows: 50px 50px 1fr;
@@ -33,14 +68,18 @@
                 background-position: center center;
                 background-size: 24px 24px;
                 cursor: pointer;
+                z-index: 101;
             }
             button.fetcher-auto {
-                background-color: #FEFEFE;
-                border-radius: 40px;
+                background-color: #263238;
+                border-radius: 10px 0px 0px 10px;
             }
             button.fetcher-manual {
-                background-color: #FEFEFE;
-                border-radius: 40px;
+                background-color: #263238;
+                border-radius: 0px 10px 10px 0px;
+            }
+            button.fetcher-manual[disabled] {
+                cursor: default;
             }
         }
         .actions:first-of-type {
@@ -432,11 +471,17 @@
     }
 }
 
-[data-icon="user-profile"] {
+[data-icon="user-profile-white"] {
     background-image: url('http://localhost:3000/icon/userprofile/fefefe');
+}
+[data-icon="user-profile-black"] {
+    background-image: url('http://localhost:3000/icon/userprofile/212121');
 }
 [data-icon="refresh"] {
     background-image: url('http://localhost:3000/icon/refresh/fefefe');
+}
+[data-icon="refresh-disabled"] {
+    background-image: url('http://localhost:3000/icon/refresh/37474f');
 }
 [data-icon="close"] {
     background-image: url('http://localhost:3000/icon/close/fefefe');
@@ -444,9 +489,12 @@
 [data-icon="back"] {
     background-image: url('http://localhost:3000/icon/back/1565C0');
 }
+[data-icon="back-black"] {
+    background-image: url('http://localhost:3000/icon/back/212121');
+}
 [data-icon="toggleoff"] {
-    background-image: url('http://localhost:3000/icon/toggleoff/fefefe');
+    background-image: url('http://localhost:3000/icon/toggleoff/388e3c');
 }
 [data-icon="toggleon"] {
-    background-image: url('http://localhost:3000/icon/toggleon/fefefe');
+    background-image: url('http://localhost:3000/icon/toggleon/b71c1c');
 }

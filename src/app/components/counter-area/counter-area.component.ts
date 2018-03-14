@@ -19,6 +19,7 @@ export class CounterAreaComponent implements OnInit {
     private _tabs: Tab[] = [];
     private _fetcher: Subscription;
     private _autofetch: boolean = false;
+    private _profilemenu: boolean = false;
     constructor(
         private errorService: ErrorService,
         private orderService: OrderService,
@@ -46,10 +47,19 @@ export class CounterAreaComponent implements OnInit {
     public toggleFetcher() {
         this._autofetch = !this._autofetch;
         if(this._autofetch) {
-            this._fetcher = Observable.interval(120000).subscribe(() => this.fetchOrders()); // Autofetch.
+            this._fetcher = Observable.interval(10000).subscribe(() => this.fetchOrders()); // Autofetch.
         } else {
             this._fetcher.unsubscribe();
         }
+    }
+    public toggleProfileMenu(event: any, state: boolean) {
+        if(event !== undefined) {
+            event.stopPropagation();
+        }
+        this._profilemenu = state;
+    }
+    public navigate(route: string) {
+        //
     }
     private select(index) {
         this._selectedOrder = index;

@@ -68,9 +68,9 @@ export class OrderService {
         });
         this.statuses = statuses;
     }
-    public fetch(detail?: boolean, status?: number, dateRange?: [Date, Date]) {
+    public fetch(detail?: boolean, status?: number|number[], dateRange?: [Date, Date]) {
         let paramDetail: boolean;
-        let paramStatus: number;
+        let paramStatus: number|number[];
         let paramDateFrom: string;
         let paramDateTo: string;
         if (detail)         paramDetail = detail;
@@ -104,10 +104,12 @@ export class OrderService {
                 let orderItems: OrderItem[] = [];
                 order.content.forEach((item) => {
                     orderItems.push(new OrderItem(
+                        item._id,
                         item.stockId,
                         item.quantity,
                         item.stockName,
-                        item.totalPrice
+                        item.totalPrice,
+                        item.status
                     ));
                 });
                 orders.push(new Order(
@@ -121,6 +123,7 @@ export class OrderService {
                     order.userName
                 ));
             });
+            console.log(orders);
             this.ordersSource.next(orders);
         });
     }
@@ -134,6 +137,21 @@ export class OrderService {
             },
             options
         ).map((result) => {
+            return result.json();
+        })
+        .catch((error: any) => {
+            let response = JSON.parse(error._body);
+            this.errorService.add(`${response.message} (${response.error.message})`);
+            return Observable.throw(error);
+        });
+    }
+    public updateItem(orderId: string, itemId: string, data) {
+        options.params = {};
+        return this.http.put(
+            `${environment.api}/order/${orderId}/${itemId}`, data,
+            options
+        ).map((result) => {
+            console.log(result);
             return result.json();
         })
         .catch((error: any) => {

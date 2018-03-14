@@ -17,28 +17,26 @@ export class Order {
         this._userId = userId;
         this._userName = userName;
     }
-    public add(id: string) {
-        let index = this.find(id);
-        if(index != -1) {
+    public add(itemId: string, itemStockId: string) {
+        let index = this.find(itemStockId);
+        if (index != -1) {
             this._content[index].quantity++;
         } else {
-            this._content.push(new OrderItem(id, 1));
+            this._content.push(new OrderItem(itemId, itemStockId, 1));
         }
     }
-    public remove(id: string) {
-        let index = this.find(id);
-        if(index != -1) {
+    public remove(itemStockId: string) {
+        let index = this.find(itemStockId);
+        if (index != -1) {
             this._content[index].quantity--;
             if(this._content[index].quantity <= 0) {
                 this._content.splice(index, 1);
             }
-        } else {
-            this._content.push(new OrderItem(id, 1));
         }
     }
     public quantity(id: string): number {
         let index = this.find(id);
-        if(index != -1) {
+        if (index != -1) {
             return this._content[index].quantity;
         } else {
             return 0;
@@ -47,9 +45,9 @@ export class Order {
     public clear() {
         this._content = [];
     }
-    private find(id: string): number {
+    private find(itemStockId: string): number {
         return this._content.findIndex((data) => {
-            return data.stockId == id;
+            return data.stockId == itemStockId;
         });
     }
     get items(): OrderItem[] {
@@ -57,6 +55,9 @@ export class Order {
     }
     get id(): string {
         return this._id;
+    }
+    get tableId(): string {
+        return this._tableId;
     }
     get friendlyId(): string {
         return this._friendlyId;
@@ -81,14 +82,18 @@ export class Order {
 }
 
 export class OrderItem {
+    public id: string;
     public stockId: string;
     public stockName: string;
     public quantity: number;
     public totalPrice: number;
-    constructor(stockId: string, quantity: number, stockName?: string, totalPrice?: number) {
+    public status: boolean;
+    constructor(id: string, stockId: string, quantity: number, stockName?: string, totalPrice?: number, status?: boolean) {
+        this.id = id;
         this.stockId = stockId;
         this.quantity = quantity;
         this.stockName = stockName;
         this.totalPrice = totalPrice;
+        this.status = status;
     }
 }

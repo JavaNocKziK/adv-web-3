@@ -58,6 +58,7 @@ module.exports = {
     },
     /**
      * Get many orders.
+     * @param detail Get stock details (name).
      * @param status Search for an order based on its status.
      * @param timeRange Search for an order based on when it was created.
      * @param size Search for an order based on the number of unique items. (Not implemented).
@@ -96,7 +97,7 @@ module.exports = {
                                     quantity: item.quantity,
                                     stockName: result.message.name,
                                     price: item.price,
-                                    totalPrice: (result.message.price * item.quantity)
+                                    totalPrice: (item.price * item.quantity)
                                 }
                             } else {
                                 return resolve({ "status": 0, "code": 500, "message": "Issue obtaining orders.", "error": err1 });

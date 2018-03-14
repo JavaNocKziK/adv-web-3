@@ -1,10 +1,15 @@
-# Advanced Web Assignment #2
-University Advanced Web assignment #2.
+Advanced Web Assignment #2 &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/ebeenandgone/adv-web-2/blob/master/LICENSE)
+==========================
 
-# Postman
+
+MMU University *Advanced Web* Unit assignment created by Aubrey Boorer, Elliot Keen and William Southall.
+
+
+### Postman
 When using the Postman script you should create a new environment and set a variable under there called `port`. This variable is used to build the address the request will go to, so that we can change the port easily without having to update all the examples.
 
-# Installing
+
+### Installation
 Before installing and running the project make sure you have the latest versions of node.js and npm.
 
 Next run the following command to globally install some important packages we need:
@@ -22,7 +27,8 @@ Lastly make sure you run an npm install:
 $ npm i
 ```
 
-# Running (Development)
+
+### Running (Development)
 To run the server in development mode, run the command:
 ```
 $ npm run dev
@@ -34,9 +40,17 @@ If you wish to run the API on its own then run the command:
 $ npm run api
 ```
 
-# Running (Production)
+
+### Running (Production)
 To run the server in production mode, run the command:
 ```
 $ npm run prod
 ```
 This will concurrently run `node server/server.js` which is the server file, and `ng build --prod` will build the Angular project for production and output it to the `dist` folder for the API to serve.
+
+
+### System Explaination
+The system is split into 4 main views - Admin, Wait, Kitchen and Counter. Each view directs the user to a different part of the system, with users with Admin status having access to all views within the system. The views are outlined in more detail with screenshots within the Wiki Pages of this repository. See here.
+
+### License
+This project is [MIT licensed](./LICENSE).

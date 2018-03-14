@@ -37,6 +37,9 @@ export class AdminAreaComponent implements OnInit {
     this._tabs.push(new Tab('Stock', 1, 'Name', 'text'));
     this._tabs.push(new Tab('Orders', 2, 'ID', 'number'));
 
+    this.orderService.setAutoState(false);
+    this.orderService.setAutoSubscription(null);
+
     this.userRefresh();
     this.stockRefresh();
     this.orderRefresh();

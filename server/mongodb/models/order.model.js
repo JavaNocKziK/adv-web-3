@@ -43,8 +43,7 @@ let OrderSchema = new mongoose.Schema(
         },
         timeCreated: {
             type: Date,
-            required: true,
-            default: new Date()
+            required: true
         },
         status: {
             type: Number,
@@ -66,6 +65,7 @@ let OrderSchema = new mongoose.Schema(
  * it gets saved.
  */
 OrderSchema.pre('save', async function(next) {
+    console.log(this.timeCreated);
     // Generate the value of the order here.
     let allComplete = true;
     let hasCooking = false;
@@ -122,6 +122,7 @@ OrderSchema.statics.place = function place(order) {
         let friendlyId = await Order.nextId();
         if (friendlyId.status !== 1) return resolve({ "status": 0, "code": 500, "message": "Error generating order.", "error": friendlyId.error });
         order.friendlyId = friendlyId.value;
+        order.timeCreated = new Date();
         Order.create(order, (err1, instance) => {
             if (err1) return resolve({ "status": 0, "code": 500, "message": "Error generating order.", "error": err1 });
             return resolve({ "status": 1, "code": 200, "message": instance });

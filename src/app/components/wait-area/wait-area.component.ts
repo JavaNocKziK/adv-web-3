@@ -165,7 +165,6 @@ export class WaitAreaComponent implements OnInit {
     }
     public loadDetail(index: number) {
         this._detailOrder = this._myOrders[index];
-        console.log(this._detailOrder);
     }
     public closeDetail() {
         this._detailOrder = undefined;

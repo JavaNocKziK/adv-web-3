@@ -15,7 +15,7 @@
             <p>Counter</p>
         </div>
         <div class="actions">
-            <button class="fetcher-manual" [attr.data-icon]="(_autofetch ? 'refresh-disabled' : 'refresh')" (click)="fetchOrders()" [attr.disabled]="(_autofetch ? true : false)"></button>
+            <button class="fetcher-manual" [attr.data-icon]="(_autofetch ? 'refresh-disabled' : 'refresh')" (click)="fetchOrders()" [disabled]="(_autofetch ? true : false)"></button>
             <button class="fetcher-auto" [attr.data-icon]="(_autofetch ? 'toggleoff' : 'toggleon')" (click)="toggleFetcher()"></button>
         </div>
     </div>

@@ -79,8 +79,9 @@
                 <h3>Edit Users</h3>
                 <button data-icon="close" (click)="userEditModal(0)"></button>
             </div>
-              <div class="inputs" [formGroup]="_editUserForm" (keyup.enter)="createUser()">
-                  <input placeholder="Username" type="username" formControlName="username" />
+              <div class="inputs" [formGroup]="_editUserForm" (keyup.enter)="editUser()">
+                  <input type="text" formControlName="id" hidden/>
+                  <input placeholder="Username" type="username" formControlName="username" disabled />
                   <input placeholder="New Password" type="password" formControlName="password" />
                   <select formControlName="homePath">
                     <option value="test" hidden>
@@ -91,7 +92,7 @@
                     <option value="/admin">Admin View</option>
                   </select>
                   <input type="checkbox" formControlName="admin" value="true">
-                  <button>SUBMIT</button>
+                  <button (click)="editUser()">SUBMIT</button>
               </div>
         </div>
     </div>

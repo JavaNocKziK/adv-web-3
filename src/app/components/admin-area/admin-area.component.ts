@@ -53,12 +53,13 @@ export class AdminAreaComponent implements OnInit {
         'admin': new FormControl(false, []),
     });
     this._editUserForm = new FormGroup({
+        'id': new FormControl('', [
+            Validators.required
+        ]),
         'username': new FormControl('', [
             Validators.required
         ]),
-        'password': new FormControl('', [
-            Validators.required
-        ]),
+        'password': new FormControl('', []),
         'homePath': new FormControl('', [
             Validators.required
         ]),
@@ -95,6 +96,7 @@ export class AdminAreaComponent implements OnInit {
   }
   public userEditModal(openClose: number, userId?: number) {
     if (userId) {
+      this._editUserForm.controls['id'].setValue(userId);
       this._editUserForm.controls['username'].setValue(this._users.find(x => x.id === userId)._username);
       this._editUserForm.controls['password'].setValue(this._users.find(x => x.id === userId)._password);
       this._editUserForm.controls['homePath'].setValue(this._users.find(x => x.id === userId)._homepath);
@@ -118,6 +120,20 @@ export class AdminAreaComponent implements OnInit {
               (res) => {
                   this.userRefresh();
                   this.userModal(0);
+              },
+              (error) => {
+
+              }
+          );
+      }
+  }
+  private editUser() {
+      if(this._editUserForm.valid) {
+          let data = this._editUserForm.value;
+          this.userService.edit(data.id, data.username, data.password, data.homePath, data.admin).subscribe(
+              (res) => {
+                  this.userRefresh();
+                  this.userEditModal(0);
               },
               (error) => {
 
@@ -182,8 +198,6 @@ private search(event: KeyboardEvent) {
     this.stockService.fetch(event.target.value);
   } else if (this._activeTab == 2) {
       let id = Number(event.target.value);
-      console.log(id);
-
       if (!isNaN(id)) {
         this.orderService.fetch(true, undefined, undefined, id);
       }

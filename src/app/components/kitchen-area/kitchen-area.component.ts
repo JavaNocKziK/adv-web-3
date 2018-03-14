@@ -6,6 +6,7 @@ import { OrderService } from '../../services/order.service';
 import { Observable } from "rxjs/Rx";
 import { Subscription } from 'rxjs/Subscription';
 import { AfterContentInit } from '@angular/core/src/metadata/lifecycle_hooks';
+import { User } from '../../classes/user';
 
 // order-items are individual table's orders (e.g. every persons orders)
 // Each order-item includes a orderNum, tableNum, and order-content
@@ -26,18 +27,21 @@ export class KitchenAreaComponent implements OnInit {
     private _autofetch: boolean = false;
     private _profilemenu: boolean = false;
     private _tempModify;
+    private _user: User;
     
     constructor(
         private stockService: StockService,
         private orderService: OrderService,
-        private userSerivce: UserService
+        private userService: UserService
     ) {
         this.fetch();
         this.toggleFetcher();
         this.orderService.auto.subscribe((active: boolean) => this._autofetch = active);
         this.orderService.orders.subscribe((result: Order[]) => this._order = result);
     }
-    ngOnInit() {}
+    ngOnInit() {
+        this.userService.user.subscribe((user: User) => this._user = user);
+    }
     public toggleFetcher() {
         this._autofetch = !this._autofetch;
         this.orderService.setAutoState(this._autofetch);
@@ -60,7 +64,7 @@ export class KitchenAreaComponent implements OnInit {
         this.fetch();
     }
     public logout() {
-        this.userSerivce.logout();
+        this.userService.logout();
     }
     public fetch() {
         this.orderService.fetch(true, [0,1,2,3]);

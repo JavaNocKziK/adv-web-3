@@ -28,7 +28,9 @@ export class OrderService {
     ) {
         this.auto.subscribe((active: boolean) => {
             if(!active) {
-                this.autoSubscriptionSource.value.unsubscribe();
+                if(this.autoSubscriptionSource.value) {
+                    this.autoSubscriptionSource.value.unsubscribe();
+                }
                 this.autoSubscriptionSource.next(null);
             }
         });
@@ -39,8 +41,11 @@ export class OrderService {
     public setAutoSubscription(subscription: Subscription) {
         if(this.autoSubscriptionSource.value) {
             this.ordersSource.next([]);
-            this.autoSubscriptionSource.value.unsubscribe();
-            this.autoSubscriptionSource.value.remove(this.autoSubscriptionSource.value);
+            if(this.autoSubscriptionSource.value) {
+                this.autoSubscriptionSource.value.unsubscribe();
+                this.autoSubscriptionSource.value.remove(this.autoSubscriptionSource.value);
+            }
+            this.autoSubscriptionSource.next(null);
         }
         this.autoSubscriptionSource.next(subscription);
     }

@@ -33,13 +33,13 @@ module.exports = {
      * Get many users.
      * @param username Search for a username or part of a username.
      * @param admin Search if someone is an admin or not.
-     * @param homePath Search for a user based on their home path.
+     * @param homePaths Search for a user based on their home paths.
      */
-    many: (username, admin, homePath) => {
+    many: (username, admin, homePaths) => {
         return new Promise((resolve) => {
             let search = UserModel.find();
             if (username)   search.where('username').regex(new RegExp(username, 'gi'));
-            if (homePath)   search.where('homePath').regex(new RegExp(homePath, 'gi'));
+            if (homePaths)  search.where('homePath').regex(new RegExp(homePaths, 'gi'));
             if (admin)      search.where('admin').equals(admin);
             search.exec((err1, users) => {
                 if (err1 || !users) return resolve({ "status": 0, "code": 500, "message": "Issue obtaining users.", "error": err1 });
@@ -60,7 +60,7 @@ module.exports = {
                 if (data.password)  user.password = data.password;
                 if(isAdmin) {
                     // We only want the user to be able to change these if they're an admin.
-                    if (data.homePath)  user.homePath = data.homePath;
+                    if (data.homePaths) user.homePaths = data.homePaths;
                     if (data.admin)     user.admin = data.admin;
                 }
                 user.save((err2) => {

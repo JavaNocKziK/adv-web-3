@@ -1,3 +1,38 @@
+.profilemenu {
+    grid-template-rows: 40px 1fr;
+    grid-template-columns: 1fr;
+    position: relative;
+    width: 100px;
+    background-color: #FEFEFE;
+    border-radius: 4px;
+    z-index: 100;
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.75);
+    cursor: default;
+    .items {
+        p {
+            margin: 0;
+            padding: 10px;
+            font-size: 10pt;
+            text-transform: uppercase;
+            color: #212121;
+            cursor: pointer;
+        }
+        > p:first-of-type {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+        }
+        p:hover {
+            color: #2196F3;
+        }
+    }
+}
+.profilemenu[display="true"] {
+    display: grid;
+    visibility: visible;
+}
+.profilemenu[display="false"] {
+    display: none;
+    visibility: hidden;
+}
 .window[showtabs="true"] {
     grid-template-rows: 50px 50px 1fr;
 }
@@ -316,8 +351,11 @@
 [data-icon="minus"] {
     background-image: url('http://localhost:3000/icon/minus/fefefe');
 }
-[data-icon="account"] {
-    background-image: url('http://localhost:3000/icon/user/fefefe');
+[data-icon="user-profile-white"] {
+    background-image: url('http://localhost:3000/icon/userprofile/fefefe');
+}
+[data-icon="user-profile-black"] {
+    background-image: url('http://localhost:3000/icon/userprofile/212121');
 }
 [data-icon="list"] {
     background-image: url('http://localhost:3000/icon/list/fefefe');
@@ -330,4 +368,7 @@
 }
 [data-icon="back"] {
     background-image: url('http://localhost:3000/icon/back/fefefe');
+}
+[data-icon="back-black"] {
+    background-image: url('http://localhost:3000/icon/back/212121');
 }

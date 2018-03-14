@@ -21,7 +21,14 @@ export class AppComponent {
         this.userService.user.subscribe((user) => {
             if(user) {
                 // Route to the home area of the user.
-                this.router.navigate([user.home]);
+                let index: number = user.homePaths.findIndex((item) => {
+                    return item == router.url;
+                });
+                if(index !== -1) {
+                    this.router.navigate([user.homePaths[index]]);
+                } else {
+                    this.router.navigate([user.home]);
+                }
                 // Fetch all static data:
                 this.orderService.loadStatuses();
             } else {
@@ -48,7 +55,7 @@ export class AppComponent {
                         data.id,
                         data.username,
                         data.admin,
-                        data.homePath
+                        data.homePaths
                     )
                     user.token = new Token(sessionToken.value, sessionToken.expiry);
                     this.userService.set(user);

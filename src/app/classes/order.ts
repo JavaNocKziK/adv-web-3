@@ -6,7 +6,8 @@ export class Order {
     private _tableId: string;
     private _timeCreated: Date;
     private _userId: string;
-    constructor(id?: string, friendlyId?: string, content?: OrderItem[], status?: number, tableId?: string, timeCreated?: Date, userId?: string) {
+    private _userName: string;
+    constructor(id?: string, friendlyId?: string, content?: OrderItem[], status?: number, tableId?: string, timeCreated?: Date, userId?: string, userName?: string) {
         this._id = id;
         this._friendlyId = friendlyId;
         this._content = (content == undefined ? [] : content);
@@ -14,6 +15,7 @@ export class Order {
         this._tableId = tableId;
         this._timeCreated = timeCreated;
         this._userId = userId;
+        this._userName = userName;
     }
     public add(itemId: string, itemStockId: string) {
         let index = this.find(itemStockId);
@@ -60,6 +62,9 @@ export class Order {
     get friendlyId(): string {
         return this._friendlyId;
     }
+    get friendlyDate(): string {
+        return this._timeCreated.toLocaleString("en-GB");
+    }
     get status(): number {
         return this._status;
     }
@@ -69,6 +74,10 @@ export class Order {
             total += item.totalPrice;
         });
         return (total || 0);
+    }
+
+    get userName(): string {
+      return this._userName;
     }
 }
 

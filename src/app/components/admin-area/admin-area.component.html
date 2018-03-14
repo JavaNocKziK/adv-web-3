@@ -17,8 +17,8 @@
     </div>
     <div class="toolbar">
         <div class="actions">
-            <button *ngIf="_activeTab == 0" data-icon="user-new" (click)="userModal(1)"></button>
-            <button *ngIf="_activeTab == 1" data-icon="user-new" (click)="stockModal(1)"></button>
+            <button *ngIf="_activeTab == 0" data-icon="plus-circle" (click)="userModal(1)"></button>
+            <button *ngIf="_activeTab == 1" data-icon="plus-circle" (click)="stockModal(1)"></button>
         </div>
         <div class="search">
             <input type="{{_tabs[_activeTab].type}}" pattern="[0-9]{3}" placeholder="Search {{_tabs[_activeTab].title}} by {{_tabs[_activeTab].searchBy}}" (keyup)="search($event)"/>

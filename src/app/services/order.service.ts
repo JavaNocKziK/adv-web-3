@@ -7,6 +7,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { Order, OrderItem } from '../classes/order';
 import { OrderStatus } from '../classes/order-status';
 import { ErrorService } from './error.service';
+import { Subscription } from 'rxjs/Subscription';
 
 const options: RequestOptionsArgs = {
     withCredentials: true
@@ -15,12 +16,34 @@ const options: RequestOptionsArgs = {
 @Injectable()
 export class OrderService {
     public statuses: OrderStatus[] = [];
-    private ordersSource: BehaviorSubject<Order[]> = new BehaviorSubject<Order[]>(undefined);
+    private ordersSource: BehaviorSubject<Order[]> = new BehaviorSubject<Order[]>([]);
     public orders = this.ordersSource.asObservable();
+    private autoSource: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+    public auto = this.autoSource.asObservable();
+    private autoSubscriptionSource: BehaviorSubject<Subscription> = new BehaviorSubject<Subscription>(null);
+    public autoSubscription = this.autoSubscriptionSource.asObservable();
     constructor(
         private http: Http,
         private errorService: ErrorService
-    ) {}
+    ) {
+        this.auto.subscribe((active: boolean) => {
+            if(!active) {
+                this.autoSubscriptionSource.value.unsubscribe();
+                this.autoSubscriptionSource.next(null);
+            }
+        });
+    }
+    public setAutoState(value: boolean) {
+        this.autoSource.next(value);
+    }
+    public setAutoSubscription(subscription: Subscription) {
+        if(this.autoSubscriptionSource.value) {
+            this.ordersSource.next([]);
+            this.autoSubscriptionSource.value.unsubscribe();
+            this.autoSubscriptionSource.value.remove(this.autoSubscriptionSource.value);
+        }
+        this.autoSubscriptionSource.next(subscription);
+    }
     public place(userId: string, tableId: string, order: Order) {
         options.params = {};
         let content = [];
@@ -99,6 +122,7 @@ export class OrderService {
                 return Observable.throw(error);
             });
         })().subscribe((result) => {
+            console.log(result);
             let orders: Order[] = [];
             result.message.forEach((order) => {
                 let orderItems: OrderItem[] = [];

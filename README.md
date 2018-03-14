@@ -1,4 +1,4 @@
-# Advanced Web Assignment #2  ![license](https://img.shields.io/github/license/mashape/apistatus.svg)
+# Advanced Web Assignment #2 ![license](https://img.shields.io/github/license/mashape/apistatus.svg)
 
 MMU University *Advanced Web* Unit assignment created by Aubrey Boorer, Elliot Keen and William Southall.
 
@@ -48,6 +48,10 @@ $ npm run prod
 ```
 This will concurrently run `node server/server.js` which is the server file, and `ng build --prod` will build the Angular project for production and output it to the `dist` folder for the API to serve.
 
+
+### System Explaination
+
+The system is split into 4 main views - Admin, Wait, Kitchen and Counter. Each view directs the user to a different part of the system, with users with Admin status having access to all views within the system. The views are outlined in more detail with screenshots within the Wiki Pages of this repository. See here.
 
 ### License
 

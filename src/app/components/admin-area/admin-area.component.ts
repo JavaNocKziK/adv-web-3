@@ -6,6 +6,7 @@ import { Stock } from '../../classes/stock';
 import { OrderService } from '../../services/order.service';
 import { Order } from '../../classes/order';
 import { Status } from '../../classes/status';
+import { ErrorService } from '../../services/error.service';
 import { FormControl, FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
@@ -23,21 +24,35 @@ export class AdminAreaComponent implements OnInit {
   private _statuses: Status[] = [];
   private _activeTab: number = 0;
   private _userModal = 0;
+  private _userEditModal = 0;
   private _stockModal = 0;
   constructor(
     private userService: UserService,
     private stockService: StockService,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private errorService: ErrorService
   ) {
-    this._tabs.push(new Tab('Users', 0));
-    this._tabs.push(new Tab('Stock', 1));
-    this._tabs.push(new Tab('Orders', 2));
+    this._tabs.push(new Tab('Users', 0, 'Username', 'text'));
+    this._tabs.push(new Tab('Stock', 1, 'Name', 'text'));
+    this._tabs.push(new Tab('Orders', 2, 'ID', 'number'));
 
     this.userRefresh();
     this.stockRefresh();
     this.orderRefresh();
 
     this._createUserForm = new FormGroup({
+        'username': new FormControl('', [
+            Validators.required
+        ]),
+        'password': new FormControl('', [
+            Validators.required
+        ]),
+        'homePath': new FormControl('', [
+            Validators.required
+        ]),
+        'admin': new FormControl(false, []),
+    });
+    this._editUserForm = new FormGroup({
         'username': new FormControl('', [
             Validators.required
         ]),
@@ -77,6 +92,13 @@ export class AdminAreaComponent implements OnInit {
   }
   public userModal(openClose: number) {
     this._userModal = openClose;
+  }
+  public userEditModal(openClose: number, userId?: number) {
+    this._editUserForm.controls['username'].setValue(this._users.find());
+    this._editUserForm.controls['password'].setValue('test');
+    this._editUserForm.controls['homePath'].setValue('/kitchen');
+    this._editUserForm.controls['admin'].setValue(true);
+    this._userEditModal = openClose;
   }
   public stockModal(openClose: number) {
     this._stockModal = openClose;
@@ -157,8 +179,12 @@ private search(event: KeyboardEvent) {
   } else if (this._activeTab == 1) {
     this.stockService.fetch(event.target.value);
   } else if (this._activeTab == 2) {
-    this.orderService.fetch(true, undefined, undefined, event.target.value);
-  }
+      let id = Number(event.target.value);
+      console.log(id);
+
+      if (!isNaN(id)) {
+        this.orderService.fetch(true, undefined, undefined, id);
+      }
 }
 public resolveStatus(value: number): OrderStatus {
   return this.orderService.statuses.find((item) => {
@@ -170,8 +196,12 @@ public resolveStatus(value: number): OrderStatus {
 export class Tab {
     public title: string;
     public category: number;
-    constructor(title: string, category: number) {
+    public searchBy: string;
+    public type: string;
+    constructor(title: string, category: number, searchBy: string, type: string) {
         this.title = title;
         this.category = category;
+        this.searchBy = searchBy;
+        this.type = type;
     }
 }

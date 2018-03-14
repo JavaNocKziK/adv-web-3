@@ -21,7 +21,7 @@
             <button *ngIf="_activeTab == 1" data-icon="user-new" (click)="stockModal(1)"></button>
         </div>
         <div class="search">
-            <input placeholder="Search {{_tabs[_activeTab].title}}" (keyup)="search($event)"/>
+            <input type="{{_tabs[_activeTab].type}}" pattern="[0-9]{3}" placeholder="Search {{_tabs[_activeTab].title}} by {{_tabs[_activeTab].searchBy}}" (keyup)="search($event)"/>
         </div>
     </div>
     <!-- Users Table -->
@@ -39,7 +39,7 @@
                 <p>******</p>
                 <p>{{user.admin}}</p>
                 <p><a href="{{user._homepath}}">{{user._homepath}}</a></p>
-                <p>Edit <span (click)="removeUser(user._id)">Remove</span></p>
+                <p><span (click)="userEditModal(1, user.id)">Edit</span> <span (click)="removeUser(user._id)">Remove</span></p>
             </div>
         </div>
     </div>
@@ -72,6 +72,30 @@
         </div>
     </div>
     <!-- / Create User Overlay Modal -->
+    <!-- Edit User Overlay Modal -->
+    <div class="overlay" id="userEdit" [attr.display]="_userEditModal == 1">
+        <div class="plate">
+            <div class="header">
+                <h3>Edit Users</h3>
+                <button data-icon="close" (click)="userEditModal(0)"></button>
+            </div>
+              <div class="inputs" [formGroup]="_editUserForm" (keyup.enter)="createUser()">
+                  <input placeholder="Username" type="username" formControlName="username" />
+                  <input placeholder="Password" type="password" formControlName="password" />
+                  <select formControlName="homePath">
+                    <option value="test" hidden>
+                    <option value="homePath" selected disabled hidden>Home Area</option>
+                    <option value="/kitchen">Kitchen View</option>
+                    <option value="/wait">Wait View</option>
+                    <option value="/counter">Counter View</option>
+                    <option value="/admin">Admin View</option>
+                  </select>
+                  <input type="checkbox" formControlName="admin" value="true">
+                  <button (click)="createUser()">SUBMIT</button>
+              </div>
+        </div>
+    </div>
+    <!-- / Edit User Overlay Modal -->
     <!-- Stock Table -->
     <div class="table" displaying="stock" *ngIf="_activeTab == 1">
         <div class="header">
@@ -89,6 +113,11 @@
                 <p>£{{stock.price}}</p>
                 <p>Edit <span (click)="removeStock(stock._id)">Remove</span></p>
             </div>
+        </div>
+    </div>
+    <div class="table" displaying="noStock" *ngIf="_activeTab == 1 && (_stock.length == 0)">
+        <div class="item">
+            <p>No stock found.</p>
         </div>
     </div>
     <!-- / Stock Table -->
@@ -134,6 +163,11 @@
                 <p>{{order.friendlyDate}}</p>
                 <p>Edit <span (click)="removeOrder(order._id)">Remove</span></p>
             </div>
+        </div>
+    </div>
+    <div class="table" displaying="noOrders" *ngIf="_activeTab == 2 && (_orders.length == 0)">
+        <div class="item">
+            <p>No orders found.</p>
         </div>
     </div>
     <!-- / Stock Table -->

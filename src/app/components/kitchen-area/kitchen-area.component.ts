@@ -39,7 +39,7 @@ export class KitchenAreaComponent implements OnInit {
   public toggleAutoUpdate(force?: boolean) {
     this._toggleRefresh = !this._toggleRefresh;
     if(this._toggleRefresh || force) {
-      this._autoUpdate = Observable.interval(1000).subscribe(() => {
+      this._autoUpdate = Observable.interval(10000).subscribe(() => {
         this.orderService.fetch(true);
       });
     } else {
@@ -47,8 +47,20 @@ export class KitchenAreaComponent implements OnInit {
     }
   }
 
+  public refresh() {
+    this.orderService.fetch(true);
+  }
+
   public logout() {
     this.userSerivce.logout();
+  }
+
+  public updateItem(orderId: string, itemId: string, status: number) {
+    this.orderService.updateItem(orderId, itemId, {
+      status: status
+    }).subscribe((res) => {
+      this.orderService.fetch(true);
+    });
   }
 
 //   private getOrderItems() {}

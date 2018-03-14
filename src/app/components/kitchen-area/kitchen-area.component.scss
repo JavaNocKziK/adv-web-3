@@ -263,11 +263,17 @@
 [data-icon="refresh"] {
     background-image: url('http://localhost:3000/icon/refresh/212121');
 }
+[data-icon="refreshWhite"] {
+    background-image: url('http://localhost:3000/icon/refresh/fefefe');
+}
 [data-icon="toggleoff"] {
     background-image: url('http://localhost:3000/icon/toggleoff/388e3c');
 }
 [data-icon="toggleon"] {
     background-image: url('http://localhost:3000/icon/toggleon/b71c1c');
+}
+[data-icon="cookingpot"] {
+    background-image: url('http://localhost:3000/icon/cookingpot/212121');
 }
 
 .toggleRefresh {

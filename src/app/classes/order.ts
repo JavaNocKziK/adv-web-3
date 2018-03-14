@@ -75,14 +75,18 @@ export class Order {
 }
 
 export class OrderItem {
+    public id: string;
     public stockId: string;
     public stockName: string;
     public quantity: number;
     public totalPrice: number;
-    constructor(stockId: string, quantity: number, stockName?: string, totalPrice?: number) {
+    public status: boolean;
+    constructor(id: string, stockId: string, quantity: number, stockName?: string, totalPrice?: number, status?: boolean) {
+        this.id = id;
         this.stockId = stockId;
         this.quantity = quantity;
         this.stockName = stockName;
         this.totalPrice = totalPrice;
+        this.status = status;
     }
 }

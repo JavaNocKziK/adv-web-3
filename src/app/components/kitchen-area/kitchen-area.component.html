@@ -8,21 +8,10 @@
             <p>Kitchen View</p>
         </div>
         <div class="actions">
-            <button data-icon="check-white-32"></button>
-            <button class="toggleRefresh" (click)="toggleAutoUpdate()" [attr.data-icon]="(_toggleRefresh ? 'toggleoff' : 'toggleon')">
-
-            </button>
-
-
+            <button data-icon="refreshWhite" (click)="refresh()"></button>
+            <button class="toggleRefresh" (click)="toggleAutoUpdate()" [attr.data-icon]="(_toggleRefresh ? 'toggleoff' : 'toggleon')"></button>
         </div>
     </div>
-
-<!-- order-container
-order-items are individual table's orders (e.g. every persons orders)
-Each order-item includes a orderNum, tableNum, and order-content 
-order-content is a div surrounding the order-contents-list
-contents-list-item  -->
-
     <div class="order-container">
         <div class="order-item list" *ngFor="let order of _order; let i = index;">
             <div class="orderNum tableNum greenDebug">
@@ -39,11 +28,11 @@ contents-list-item  -->
                 <div class="order-content-item" *ngFor="let orderItem of order.items">
                     <span>{{orderItem.quantity}}</span>
                     <span>{{orderItem.stockName}}</span>
-                    <button data-icon="check"></button>
+                    <button *ngIf="orderItem.status != 2" data-icon="cookingpot" (click)="updateItem(order.id, orderItem.id, 2)"></button>
+                    <button *ngIf="orderItem.status == 2" data-icon="check" (click)="updateItem(order.id, orderItem.id, 1)"></button>
                     <button data-icon="refresh"></button>
                 </div>
             </div>
         </div>
     </div>
-
 </div>

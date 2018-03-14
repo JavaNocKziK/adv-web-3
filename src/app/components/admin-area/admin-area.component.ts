@@ -26,6 +26,7 @@ export class AdminAreaComponent implements OnInit {
   private _userModal = 0;
   private _userEditModal = 0;
   private _stockModal = 0;
+  private _stockEditModal = 0;
   constructor(
     private userService: UserService,
     private stockService: StockService,
@@ -79,6 +80,23 @@ export class AdminAreaComponent implements OnInit {
             Validators.required
         ]),
     });
+    this._editStockForm = new FormGroup({
+        'id': new FormControl('', [
+            Validators.required
+        ]),
+        'name': new FormControl('', [
+            Validators.required
+        ]),
+        'category': new FormControl('', [
+            Validators.required
+        ]),
+        'quantity': new FormControl('', [
+            Validators.required
+        ]),
+        'price': new FormControl('', [
+            Validators.required
+        ]),
+    });
   }
   ngOnInit() {
     this.userService.users.subscribe((result: User[]) => {this._users = result});
@@ -103,6 +121,16 @@ export class AdminAreaComponent implements OnInit {
       this._editUserForm.controls['admin'].setValue(this._users.find(x => x.id === userId)._admin);
     }
     this._userEditModal = openClose;
+  }
+  public stockEditModal(openClose: number, stockId?: number) {
+    if (stockId) {
+      this._editStockForm.controls['id'].setValue(stockId);
+      this._editStockForm.controls['name'].setValue(this._stock.find(x => x.id === stockId)._name);
+      this._editStockForm.controls['category'].setValue(this._stock.find(x => x.id === stockId)._category);
+      this._editStockForm.controls['quantity'].setValue(this._stock.find(x => x.id === stockId)._quantity);
+      this._editStockForm.controls['price'].setValue(this._stock.find(x => x.id === stockId)._price);
+    }
+    this._stockEditModal = openClose;
   }
   public stockModal(openClose: number) {
     this._stockModal = openClose;
@@ -161,6 +189,20 @@ private createStock() {
             (res) => {
                 this.stockRefresh();
                 this.stockModal(0);
+            },
+            (error) => {
+
+            }
+        );
+    }
+}
+private editStock() {
+    if(this._editStockForm.valid) {
+        let data = this._editStockForm.value;
+        this.stockService.edit(data.id, data.name, data.category, data.quantity, data.price).subscribe(
+            (res) => {
+                this.stockRefresh();
+                this.stockEditModal(0);
             },
             (error) => {
 

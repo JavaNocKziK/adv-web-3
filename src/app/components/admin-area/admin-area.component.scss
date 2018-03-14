@@ -399,7 +399,11 @@ input::-webkit-inner-spin-button {
 }
 
 [data-icon="close"] {
-    background-image: url('http://localhost:3000/icon/close/fefefe');
+    background-image: url('http://localhost:3000/icon/close/212121');
+}
+
+[data-icon="edit"] {
+    background-image: url('http://localhost:3000/icon/edit/212121');
 }
 
 [data-icon="user-new"] {

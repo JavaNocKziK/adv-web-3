@@ -39,7 +39,7 @@
                 <p>******</p>
                 <p>{{user.admin}}</p>
                 <p><a href="{{user._homepath}}">{{user._homepath}}</a></p>
-                <p><span (click)="userEditModal(1, user.id)">Edit</span> <span (click)="removeUser(user._id)">Remove</span></p>
+                <p><button data-icon="edit" (click)="userEditModal(1, user.id)"></button> <button data-icon="close" (click)="removeUser(user._id)"></button></p>
             </div>
         </div>
     </div>
@@ -112,7 +112,7 @@
                 <p>{{stock.category}}</p>
                 <p>{{stock.quantity}}</p>
                 <p>£{{stock.price}}</p>
-                <p>Edit <span (click)="removeStock(stock._id)">Remove</span></p>
+                <p><button data-icon="edit" (click)="stockEditModal(1, stock.id)"></button> <button data-icon="close" (click)="removeStock(stock._id)"></button></p>
             </div>
         </div>
     </div>
@@ -144,6 +144,29 @@
         </div>
     </div>
     <!-- / Create Stock Overlay Modal -->
+    <!-- Edit Stock Overlay Modal -->
+    <div class="overlay" id="stockEdit" [attr.display]="_stockEditModal == 1">
+        <div class="plate">
+            <div class="header">
+                <h3>Edit Stock</h3>
+                <button data-icon="close" (click)="stockEditModal(0)"></button>
+            </div>
+            <div class="inputs" [formGroup]="_editStockForm" (keyup.enter)="createStock()">
+                <input formControlName="id" hidden />
+                <input placeholder="Name" type="text" formControlName="name" />
+                <select formControlName="category">
+                  <option value="0">Starter</option>
+                  <option value="1">Mains</option>
+                  <option value="2">Desserts</option>
+                  <option value="3">Drinks</option>
+                </select>
+                <input placeholder="Quantity" type="number" formControlName="quantity" />
+                <input placeholder="Price" type="text" formControlName="price" />
+                <button (click)="editStock()">SUBMIT</button>
+            </div>
+        </div>
+    </div>
+    <!-- / Edit Stock Overlay Modal -->
     <!-- Order Table -->
     <div class="table" displaying="orders" *ngIf="_activeTab == 2">
         <div class="header">
@@ -162,7 +185,7 @@
                 <p>{{order._tableId}}</p>
                 <p>{{order._userName}}</p>
                 <p>{{order.friendlyDate}}</p>
-                <p>Edit <span (click)="removeOrder(order._id)">Remove</span></p>
+                <p><button data-icon="edit" (click)="orderEditModal(1, order.id)"></button> <button data-icon="close" (click)="removeOrder(order._id)"></button></p>
             </div>
         </div>
     </div>

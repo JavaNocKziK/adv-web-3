@@ -50,7 +50,7 @@ module.exports = {
      * @param data The changes you want to make to the stock item.
      */
     updateSingle: (id, data) => {
-        return new Promise((accept, reject) => {
+        return new Promise((resolve) => {
             StockModel.findById(id, (err1, stock) => {
                 if (err1 || !stock) return resolve({ "status": 0, "code": 500, "message": "Error updating stock.", "error": err1 });
                 stock.set(data);

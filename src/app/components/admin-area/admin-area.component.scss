@@ -1,28 +1,37 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto');
-
-* {
-    color: #212121;
-    font-size: 12pt;
-    font-family: Roboto, sans-serif;
+.profilemenu {
+    grid-template-rows: 40px 1fr;
+    grid-template-columns: 1fr;
+    position: relative;
+    width: 100px;
+    background-color: #FEFEFE;
+    border-radius: 4px;
+    z-index: 100;
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.75);
+    cursor: default;
+    .items {
+        p {
+            margin: 0;
+            padding: 10px;
+            font-size: 10pt;
+            text-transform: uppercase;
+            color: #212121;
+            cursor: pointer;
+        }
+        > p:first-of-type {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+        }
+        p:hover {
+            color: #2196F3;
+        }
+    }
 }
-html, body {
-    height: 100%;
-}
-html {
-    width: 100%;
-}
-body {
+.profilemenu[display="true"] {
     display: grid;
-    grid-template-rows: 1;
-    grid-template-columns: 1;
-    align-items: center;
-    justify-items: center;
-    margin: 0;
-    padding: 0;
-    background: #263238;
-    background: -moz-linear-gradient(45deg, #263238 0%, #37474f 100%);
-    background: -webkit-linear-gradient(45deg, #263238 0%,#37474f 100%);
-    background: linear-gradient(45deg, #263238 0%,#37474f 100%);
+    visibility: visible;
+}
+.profilemenu[display="false"] {
+    display: none;
+    visibility: hidden;
 }
 .window {
     overflow-y: scroll;
@@ -152,8 +161,8 @@ body {
 
 
 .table[displaying="users"] { grid-template-columns: 1fr 1fr 1fr 1fr 1fr; }
-.table[displaying="stock"] { grid-template-columns: 2fr 1fr 1fr 1fr 1fr; }
-.table[displaying="orders"] { grid-template-columns: 1fr 1fr 1fr 2fr 2fr 1fr; }
+.table[displaying="stock"] { grid-template-columns: 1fr 1fr 1fr 1fr 1fr; }
+.table[displaying="orders"] { grid-template-columns: 1fr 1fr 1fr 1fr 2fr; }
 .table {
     display: flex;
     flex-direction: row;
@@ -399,7 +408,15 @@ input::-webkit-inner-spin-button {
 }
 
 [data-icon="close"] {
-    background-image: url('http://localhost:3000/icon/close/fefefe');
+    background-image: url('http://localhost:3000/icon/close/212121');
+}
+
+[data-icon="plus-circle"] {
+    background-image: url('http://localhost:3000/icon/pluscircle/fefefe');
+}
+
+[data-icon="edit"] {
+    background-image: url('http://localhost:3000/icon/edit/212121');
 }
 
 [data-icon="user-new"] {
@@ -415,4 +432,11 @@ input::-webkit-inner-spin-button {
 [data-icon="user-remove-all"] {
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAAAAAAAA+UO7fwAAAAlwSFlzAAAASAAAAEgARslrPgAAAMFJREFUSMftk7ENwjAQRWNEXCIatqBIwRCUkeiZx4gRKCmZJxJBtAkDUKNHc5YsY+I4DRR+kpt//+7LOrsoMhkLoIED0AMdYAAttYuvTQkwfGKktvW1KQF9IOAhtZWvWWYpGQHtFdNSAs4D2uarjwiOT8seupQlK3dICKWUSrjlHwKUQA2cgAZ4ymlEq4FSvAvgCOyA+ZjhFXCL7Uk8lfTsRbsC61hAO2K4pZWepaPdVSRg8AH42Afh9qX8g0zmR7wBCWJuDjue+R0AAAAldEVYdGRhdGU6Y3JlYXRlADIwMTgtMDMtMDZUMTk6NTg6MzcrMDA6MDAAz6jHAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE4LTAzLTA2VDE5OjU4OjM3KzAwOjAwcZIQewAAACh0RVh0c3ZnOmJhc2UtdXJpAGZpbGU6Ly8vdG1wL21hZ2ljay1YMVdYYVYyb2O8F4MAAAAASUVORK5CYII=');
     /*background-image: url('http://localhost:3000/icon/user-remove-all/fefefe');*/
+}
+
+[data-icon="user-profile-white"] {
+    background-image: url('http://localhost:3000/icon/userprofile/fefefe');
+}
+[data-icon="back-black"] {
+    background-image: url('http://localhost:3000/icon/back/212121');
 }

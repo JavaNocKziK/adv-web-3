@@ -1,7 +1,17 @@
 <div class="window">
     <div class="titlebar">
         <div class="actions">
-            <button data-icon="user-profile" (click)="logout()"></button>
+                <button data-icon="user-profile-white" (click)="toggleProfileMenu($event, true)" [disabled]="(_profilemenu ? true : false)">
+                    <div class="profilemenu" [attr.display]="_profilemenu" (mouseleave)="toggleProfileMenu($event, false)">
+                        <button data-icon="back-black" (click)="toggleProfileMenu($event, false)"></button>
+                        <div class="items">
+                            <p (click)="logout()">Logout</p>
+                            <div *ngIf="_user">
+                                <p *ngFor="let path of _user.homePaths" [routerLink]="path">{{path}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </button>
         </div>
         <div class="title">
             <p>Admin</p>
@@ -17,8 +27,8 @@
     </div>
     <div class="toolbar">
         <div class="actions">
-            <button *ngIf="_activeTab == 0" data-icon="user-new" (click)="userModal(1)"></button>
-            <button *ngIf="_activeTab == 1" data-icon="user-new" (click)="stockModal(1)"></button>
+            <button *ngIf="_activeTab == 0" data-icon="plus-circle" (click)="userModal(1)"></button>
+            <button *ngIf="_activeTab == 1" data-icon="plus-circle" (click)="stockModal(1)"></button>
         </div>
         <div class="search">
             <input type="{{_tabs[_activeTab].type}}" pattern="[0-9]{3}" placeholder="Search {{_tabs[_activeTab].title}} by {{_tabs[_activeTab].searchBy}}" (keyup)="search($event)"/>
@@ -30,7 +40,7 @@
             <h3>Username</h3>
             <h3>Password</h3>
             <h3>Admin</h3>
-            <h3>Home Area</h3>
+            <h3>Areas</h3>
             <h3>Actions</h3>
         </div>
         <div class="items">
@@ -38,8 +48,8 @@
                 <p>{{user._username}}</p>
                 <p>******</p>
                 <p>{{user.admin}}</p>
-                <p><a href="{{user._homepath}}">{{user._homepath}}</a></p>
-                <p><span (click)="userEditModal(1, user.id)">Edit</span> <span (click)="removeUser(user._id)">Remove</span></p>
+                <p><a href="{{user._homepath}}">{{user._homepaths}}</a></p>
+                <p><button data-icon="edit" (click)="userEditModal(1, user.id)"></button> <button data-icon="close" (click)="removeUser(user._id)"></button></p>
             </div>
         </div>
     </div>
@@ -79,8 +89,9 @@
                 <h3>Edit Users</h3>
                 <button data-icon="close" (click)="userEditModal(0)"></button>
             </div>
-              <div class="inputs" [formGroup]="_editUserForm" (keyup.enter)="createUser()">
-                  <input placeholder="Username" type="username" formControlName="username" />
+              <div class="inputs" [formGroup]="_editUserForm" (keyup.enter)="editUser()">
+                  <input type="text" formControlName="id" hidden/>
+                  <input placeholder="Username" type="username" formControlName="username" disabled />
                   <input placeholder="New Password" type="password" formControlName="password" />
                   <select formControlName="homePath">
                     <option value="test" hidden>
@@ -91,7 +102,7 @@
                     <option value="/admin">Admin View</option>
                   </select>
                   <input type="checkbox" formControlName="admin" value="true">
-                  <button>SUBMIT</button>
+                  <button (click)="editUser()">SUBMIT</button>
               </div>
         </div>
     </div>
@@ -111,7 +122,7 @@
                 <p>{{stock.category}}</p>
                 <p>{{stock.quantity}}</p>
                 <p>£{{stock.price}}</p>
-                <p>Edit <span (click)="removeStock(stock._id)">Remove</span></p>
+                <p><button data-icon="edit" (click)="stockEditModal(1, stock.id)"></button> <button data-icon="close" (click)="removeStock(stock._id)"></button></p>
             </div>
         </div>
     </div>
@@ -143,6 +154,29 @@
         </div>
     </div>
     <!-- / Create Stock Overlay Modal -->
+    <!-- Edit Stock Overlay Modal -->
+    <div class="overlay" id="stockEdit" [attr.display]="_stockEditModal == 1">
+        <div class="plate">
+            <div class="header">
+                <h3>Edit Stock</h3>
+                <button data-icon="close" (click)="stockEditModal(0)"></button>
+            </div>
+            <div class="inputs" [formGroup]="_editStockForm" (keyup.enter)="createStock()">
+                <input formControlName="id" hidden />
+                <input placeholder="Name" type="text" formControlName="name" />
+                <select formControlName="category">
+                  <option value="0">Starter</option>
+                  <option value="1">Mains</option>
+                  <option value="2">Desserts</option>
+                  <option value="3">Drinks</option>
+                </select>
+                <input placeholder="Quantity" type="number" formControlName="quantity" />
+                <input placeholder="Price" type="text" formControlName="price" />
+                <button (click)="editStock()">SUBMIT</button>
+            </div>
+        </div>
+    </div>
+    <!-- / Edit Stock Overlay Modal -->
     <!-- Order Table -->
     <div class="table" displaying="orders" *ngIf="_activeTab == 2">
         <div class="header">
@@ -151,7 +185,7 @@
             <h3>Table ID</h3>
             <h3>Created By</h3>
             <h3>Time Created</h3>
-            <h3>Actions</h3>
+            <!-- <h3>Actions</h3> -->
         </div>
         <div class="items">
             <div class="item" *ngFor="let order of _orders; let i = index">
@@ -161,7 +195,7 @@
                 <p>{{order._tableId}}</p>
                 <p>{{order._userName}}</p>
                 <p>{{order.friendlyDate}}</p>
-                <p>Edit <span (click)="removeOrder(order._id)">Remove</span></p>
+                <!-- <p><button data-icon="edit" (click)="orderEditModal(1, order.id)"></button> <button data-icon="close" (click)="removeOrder(order._id)"></button></p> -->
             </div>
         </div>
     </div>

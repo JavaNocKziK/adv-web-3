@@ -31,6 +31,20 @@ export class StockService {
             return result.json();
         });
     }
+    public edit(id: string, name: string, category: string, quantity: number, price: number) {
+        return this.http.put(
+            `${environment.api}/stock/${id}`,
+            {
+                name: name,
+                category: category,
+                quantity: quantity,
+                price: price
+            },
+            options
+        ).map((result) => {
+            return result.json();
+        });
+    }
     public remove(id: number) {
         return this.http.delete(
             `${environment.api}/stock/${id}`,

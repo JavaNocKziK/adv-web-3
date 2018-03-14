@@ -9,6 +9,13 @@ export class User {
         this._username = username;
         this._admin = admin;
         this._homepaths = homepaths;
+        if(this._admin) {
+            this._homepaths = [];
+            this._homepaths.push('/wait');
+            this._homepaths.push('/admin');
+            this._homepaths.push('/counter');
+            this._homepaths.push('/kitchen');
+        }
     }
     get home(): string {
         return (this._homepaths[0] || '/login');

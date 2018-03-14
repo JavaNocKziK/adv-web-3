@@ -45,8 +45,8 @@ export class WaitAreaComponent implements OnInit {
             }
         });
     }
-    public add(id: string) {
-        this._order.add(id);
+    public add(itemStockId: string) {
+        this._order.add('', itemStockId);
     }
     public remove(id: string) {
         this._order.remove(id);

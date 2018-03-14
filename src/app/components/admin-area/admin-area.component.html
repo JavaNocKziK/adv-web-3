@@ -81,7 +81,7 @@
             </div>
               <div class="inputs" [formGroup]="_editUserForm" (keyup.enter)="createUser()">
                   <input placeholder="Username" type="username" formControlName="username" />
-                  <input placeholder="Password" type="password" formControlName="password" />
+                  <input placeholder="New Password" type="password" formControlName="password" />
                   <select formControlName="homePath">
                     <option value="test" hidden>
                     <option value="homePath" selected disabled hidden>Home Area</option>
@@ -91,7 +91,7 @@
                     <option value="/admin">Admin View</option>
                   </select>
                   <input type="checkbox" formControlName="admin" value="true">
-                  <button (click)="createUser()">SUBMIT</button>
+                  <button (click)="">SUBMIT</button>
               </div>
         </div>
     </div>

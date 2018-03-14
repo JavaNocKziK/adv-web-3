@@ -39,7 +39,7 @@ export class StockService {
             return result.json();
         });
     }
-    public fetch(name: string) {
+    public fetch(name?: string) {
       let nameParam: string;
       if (name)   nameParam = name;
       options.params = {

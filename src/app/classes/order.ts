@@ -7,7 +7,7 @@ export class Order {
     private _timeCreated: Date;
     private _userId: string;
     private _userName: string;
-    constructor(id?: string, friendlyId?: string, content?: OrderItem[], status?: number, tableId?: string, timeCreated?: Date, userId?: string, userName: string) {
+    constructor(id?: string, friendlyId?: string, content?: OrderItem[], status?: number, tableId?: string, timeCreated?: Date, userId?: string, userName?: string) {
         this._id = id;
         this._friendlyId = friendlyId;
         this._content = (content == undefined ? [] : content);

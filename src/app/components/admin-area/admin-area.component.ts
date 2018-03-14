@@ -94,10 +94,12 @@ export class AdminAreaComponent implements OnInit {
     this._userModal = openClose;
   }
   public userEditModal(openClose: number, userId?: number) {
-    this._editUserForm.controls['username'].setValue(this._users.find());
-    this._editUserForm.controls['password'].setValue('test');
-    this._editUserForm.controls['homePath'].setValue('/kitchen');
-    this._editUserForm.controls['admin'].setValue(true);
+    if (userId) {
+      this._editUserForm.controls['username'].setValue(this._users.find(x => x.id === userId)._username);
+      this._editUserForm.controls['password'].setValue(this._users.find(x => x.id === userId)._password);
+      this._editUserForm.controls['homePath'].setValue(this._users.find(x => x.id === userId)._homepath);
+      this._editUserForm.controls['admin'].setValue(this._users.find(x => x.id === userId)._admin);
+    }
     this._userEditModal = openClose;
   }
   public stockModal(openClose: number) {

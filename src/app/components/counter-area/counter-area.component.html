@@ -1,22 +1,24 @@
 <div class="window">
     <div class="titlebar">
         <div class="actions">
-            <button data-icon="user-profile" (click)="logout()"></button>
+            <button data-icon="user-profile-white" (click)="toggleProfileMenu($event, true)" [disabled]="(_profilemenu ? true : false)">
+                <div class="profilemenu" [attr.display]="_profilemenu" (mouseleave)="toggleProfileMenu($event, false)">
+                    <button data-icon="back-black" (click)="toggleProfileMenu($event, false)"></button>
+                    <div class="items">
+                        <p (click)="logout()">Logout</p>
+                        <!--<p (click)="navigate('/admin')">Admin</p>-->
+                    </div>
+                </div>
+            </button>
         </div>
         <div class="title">
             <p>Counter</p>
         </div>
         <div class="actions">
-            <button data-icon="refresh" (click)="fetchOrders()"></button>
+            <button class="fetcher-manual" [attr.data-icon]="(_autofetch ? 'refresh-disabled' : 'refresh')" (click)="fetchOrders()" [attr.disabled]="(_autofetch ? true : false)"></button>
+            <button class="fetcher-auto" [attr.data-icon]="(_autofetch ? 'toggleoff' : 'toggleon')" (click)="toggleFetcher()"></button>
         </div>
     </div>
-    <!--
-    <div class="tabbar">
-        <p selected>Bills</p>
-        <p>Archived</p>
-        <p>Reports</p>
-    </div>
-    -->
     <div class="tabbar">
         <p
             *ngFor="let tab of _tabs; let i = index"
@@ -33,9 +35,18 @@
                 <p>Table 1</p>
             </div>
         </div>
-        <div class="bill" showing="true" *ngIf="(_selectedOrder !== undefined)">
+        <div
+            class="bill"
+            showing="true"
+            [attr.payment]="(_activeTab == 0 ? true : false)"
+            *ngIf="(_selectedOrder !== undefined && orders(status)[_selectedOrder] !== undefined)">
             <div class="header">
+                <button data-icon="back" (click)="close()"></button>
                 <h3>Order #{{orders(status)[_selectedOrder].friendlyId}}</h3>
+            </div>
+            <div class="total">
+                <h3>Total</h3>
+                <p>£{{orders(status)[_selectedOrder].total.toFixed(2)}}</p>
             </div>
             <div class="items">
                 <div class="item" *ngFor="let item of orders(status)[_selectedOrder].items">
@@ -44,13 +55,8 @@
                     <p>£{{item.totalPrice.toFixed(2)}}</p>
                 </div>
             </div>
-            <div class="summary" [attr.columns]="(_activeTab == 0 ? 3 : 2)">
-                <button colour="bgrey" (click)="close()">Close</button>
+            <div class="payment" *ngIf="(_activeTab == 0)">
                 <button colour="blue" (click)="pay()" *ngIf="(_activeTab == 0)">Payment</button>
-                <div class="total">
-                    <h3>Total</h3>
-                    <p>£{{orders(status)[_selectedOrder].total}}</p>
-                </div>
             </div>
         </div>
         <div class="bill" showing="false" *ngIf="(_selectedOrder === undefined)">

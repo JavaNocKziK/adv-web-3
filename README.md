@@ -1,4 +1,5 @@
-# Advanced Web Assignment #2 ![license](https://img.shields.io/github/license/mashape/apistatus.svg)
+# Advanced Web Assignment #2
+![license](https://img.shields.io/github/license/mashape/apistatus.svg)
 
 MMU University *Advanced Web* Unit assignment created by Aubrey Boorer, Elliot Keen and William Southall.
 

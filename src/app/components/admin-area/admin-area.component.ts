@@ -5,6 +5,7 @@ import { StockService } from '../../services/stock.service';
 import { Stock } from '../../classes/stock';
 import { OrderService } from '../../services/order.service';
 import { Order } from '../../classes/order';
+import { Status } from '../../classes/status';
 import { FormControl, FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
@@ -19,6 +20,7 @@ export class AdminAreaComponent implements OnInit {
   private _users: User[] = [];
   private _stock: Stock[] = [];
   private _orders: Order[] = [];
+  private _statuses: Status[] = [];
   private _activeTab: number = 0;
   private _userModal = 0;
   private _stockModal = 0;
@@ -31,9 +33,9 @@ export class AdminAreaComponent implements OnInit {
     this._tabs.push(new Tab('Stock', 1));
     this._tabs.push(new Tab('Orders', 2));
 
-    this.userService.fetch();
-    this.stockService.fetch();
-    this.orderService.fetch();
+    this.userRefresh();
+    this.stockRefresh();
+    this.orderRefresh();
 
     this._createUserForm = new FormGroup({
         'username': new FormControl('', [
@@ -68,6 +70,9 @@ export class AdminAreaComponent implements OnInit {
     this.orderService.orders.subscribe((order: Order[]) => {this._orders = order;});
   }
   public changeTab(index: number) {
+      this.userRefresh();
+      this.stockRefresh();
+      this.orderRefresh();
       this._activeTab = index;
   }
   public userModal(openClose: number) {
@@ -134,7 +139,7 @@ private removeStock(id: number) {
   );
 }
 public orderRefresh() {
-  this.orderService.fetch();
+  this.orderService.fetch(true);
 }
 private removeOrder(id: number) {
   this.orderService.remove(id).subscribe(
@@ -146,6 +151,22 @@ private removeOrder(id: number) {
       }
   );
 }
+private search(event: KeyboardEvent) {
+  if (this._activeTab == 0) {
+    this.userService.fetch(event.target.value);
+  } else if (this._activeTab == 1) {
+    this.stockService.fetch(event.target.value);
+  } else if (this._activeTab == 2) {
+    this.orderService.fetch(true, event.target.value);
+  }
+}
+public resolveStatus(value: number): OrderStatus {
+  return this.orderService.statuses.find((item) => {
+    return item.value == value;
+  });
+
+}
+
 export class Tab {
     public title: string;
     public category: number;

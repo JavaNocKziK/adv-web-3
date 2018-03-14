@@ -117,7 +117,8 @@ export class OrderService {
                     order.status,
                     order.tableId,
                     order.timeCreated,
-                    order.userId
+                    order.userId,
+                    order.userName
                 ));
             });
             this.ordersSource.next(orders);

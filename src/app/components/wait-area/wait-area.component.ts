@@ -141,6 +141,8 @@ export class WaitAreaComponent implements OnInit {
                     ));
                 });
             });
+        } else {
+            this._detailOrder = undefined;
         }
     }
     public myOrders(status: number): Order[] {

@@ -105,8 +105,6 @@ module.exports = {
                                     price: item.price,
                                     totalPrice: (item.price * item.quantity)
                                 }
-                            } else {
-                                return resolve({ "status": 0, "code": 500, "message": "Issue obtaining orders.", "error": "" });
                             }
                         }
                         // Get users name.
@@ -123,10 +121,8 @@ module.exports = {
                                 tableId: order.tableId,
                                 friendlyId: order.friendlyId
                             }
-                        } else {
-                            return resolve({ "status": 0, "code": 500, "message": "Issue obtaining orders.", "error": "" });
+                            orders[a] = order;
                         }
-                        orders[a] = order;
                     }
                     return resolve({ "status": 1, "code": 200, "message": orders });
                 }

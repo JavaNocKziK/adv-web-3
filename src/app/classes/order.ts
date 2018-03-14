@@ -75,7 +75,9 @@ export class Order {
         });
         return (total || 0);
     }
-
+    get timeCreated(): string {
+        return this._timeCreated.toLocaleString('en-GB').split('T')[0];
+    }
     get userName(): string {
       return this._userName;
     }

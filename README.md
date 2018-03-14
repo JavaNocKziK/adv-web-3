@@ -2,9 +2,11 @@
 
 MMU University *Advanced Web* Unit assignment created by Aubrey Boorer, Elliot Keen and William Southall.
 
+
 ### Postman
 
 When using the Postman script you should create a new environment and set a variable under there called `port`. This variable is used to build the address the request will go to, so that we can change the port easily without having to update all the examples.
+
 
 ### Installation
 
@@ -25,6 +27,7 @@ Lastly make sure you run an npm install:
 $ npm i
 ```
 
+
 ### Running (Development)
 To run the server in development mode, run the command:
 ```
@@ -37,12 +40,14 @@ If you wish to run the API on its own then run the command:
 $ npm run api
 ```
 
+
 ### Running (Production)
 To run the server in production mode, run the command:
 ```
 $ npm run prod
 ```
 This will concurrently run `node server/server.js` which is the server file, and `ng build --prod` will build the Angular project for production and output it to the `dist` folder for the API to serve.
+
 
 ### License
 

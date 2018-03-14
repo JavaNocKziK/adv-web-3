@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Rx';
 import { ErrorService } from '../../services/error.service';
 import { Tab } from '../../classes/tab';
 import { Subscription } from 'rxjs/Subscription';
+import { User } from '../../classes/user';
 
 @Component({
     selector: 'app-counter-area',
@@ -20,6 +21,7 @@ export class CounterAreaComponent implements OnInit {
     private _fetcher: Subscription;
     private _autofetch: boolean = false;
     private _profilemenu: boolean = false;
+    private _user: User;
     constructor(
         private errorService: ErrorService,
         private orderService: OrderService,
@@ -35,6 +37,7 @@ export class CounterAreaComponent implements OnInit {
     }
     ngOnInit() {
         this.fetchOrders();
+        this.userService.user.subscribe((user: User) => this._user = user);
     }
     public logout() {
         this.userService.logout();

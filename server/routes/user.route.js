@@ -68,7 +68,7 @@ router.route('/')
             let result = await UsersController.many(
                 req.query.username,
                 req.query.admin,
-                req.query.homepath
+                req.query.homePaths
             );
             res.status(result.code).json(result);
         }

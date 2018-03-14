@@ -23,10 +23,11 @@ export class WaitAreaComponent implements OnInit {
     private _user: User;
     private _showTables: boolean = false;
     private _tables: Table[] = [];
+    private _profilemenu: boolean = false;
     constructor(
         private stockService: StockService,
         private orderService: OrderService,
-        private userSerivce: UserService
+        private userService: UserService
     ) {
         this._tabs.push(new Tab('Starters', 0));
         this._tabs.push(new Tab('Mains', 1));
@@ -36,14 +37,12 @@ export class WaitAreaComponent implements OnInit {
         this._tables.push(new Table('def456', 2, 'Back corner.'));
         this._tables.push(new Table('ghi789', 3, 'Side window.'));
         this.stockService.fetch();
+        this.orderService.setAutoState(false);
+        this.orderService.setAutoSubscription(null);
     }
     ngOnInit() {
         this.stockService.stock.subscribe((stock: Stock[]) => this._stock = stock);
-        this.userSerivce.user.subscribe((user: User) => {
-            if(user) {
-                this._user = user;
-            }
-        });
+        this.userService.user.subscribe((user: User) => this._user = user);
     }
     public add(itemStockId: string) {
         this._order.add('', itemStockId);
@@ -53,6 +52,12 @@ export class WaitAreaComponent implements OnInit {
         if(this._order.items.length == 0) {
             this._state = 0;
         }
+    }
+    public toggleProfileMenu(event: any, state: boolean) {
+        if(event !== undefined) {
+            event.stopPropagation();
+        }
+        this._profilemenu = state;
     }
     public quantity(id: string): number {
         return this._order.quantity(id);
@@ -143,7 +148,7 @@ export class WaitAreaComponent implements OnInit {
         }
     }
     public logout() {
-        this.userSerivce.logout();
+        this.userService.logout();
     }
 }
 

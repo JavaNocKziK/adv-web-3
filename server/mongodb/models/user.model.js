@@ -25,8 +25,8 @@ let UserSchema = new mongoose.Schema(
             type: String,
             required: false
         },
-        homePath: {
-            type: String,
+        homePaths: {
+            type: [String],
             required: true
         }
     },
@@ -77,7 +77,7 @@ UserSchema.statics.authenticate = function authenticate(username, password) {
                         token: token,
                         tokenExpiry: expiry.toJSON(),
                         admin: user.admin,
-                        homePath: user.homePath
+                        homePaths: user.homePaths
                     }});
                 });
             });
@@ -127,7 +127,7 @@ UserSchema.statics.reauthenticate = function reauthenticate(token) {
                 token: user.token,
                 tokenExpiry: user.tokenExpiry,
                 admin: user.admin,
-                homePath: user.homePath
+                homePaths: user.homePaths
             }});
         });
     });

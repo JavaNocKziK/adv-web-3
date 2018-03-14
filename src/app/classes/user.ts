@@ -3,21 +3,27 @@ export class User {
     private _username: string;
     private _admin: boolean;
     public token: Token;
-    private _homepath: string;
-    constructor(id: string, username: string, admin: boolean, homepath: string) {
+    private _homepaths: string[] = [];
+    constructor(id: string, username: string, admin: boolean, homepaths: string[]) {
         this._id = id;
         this._username = username;
         this._admin = admin;
-        this._homepath = homepath;
+        this._homepaths = homepaths;
     }
     get home(): string {
-        return (this._homepath || '/login');
+        return (this._homepaths[0] || '/login');
     }
     get id(): string {
         return this._id;
     }
     get admin(): boolean {
         return this._admin;
+    }
+    get homePaths(): string[] {
+        return this._homepaths;
+    }
+    public homePathByIndex(index: number): string {
+        return this._homepaths[index];
     }
 }
 

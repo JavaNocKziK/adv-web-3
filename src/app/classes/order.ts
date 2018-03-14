@@ -15,23 +15,21 @@ export class Order {
         this._timeCreated = timeCreated;
         this._userId = userId;
     }
-    public add(id: string) {
-        let index = this.find(id);
+    public add(itemId: string, itemStockId: string) {
+        let index = this.find(itemStockId);
         if (index != -1) {
             this._content[index].quantity++;
         } else {
-            this._content.push(new OrderItem(id, 1));
+            this._content.push(new OrderItem(itemId, itemStockId, 1));
         }
     }
-    public remove(id: string) {
-        let index = this.find(id);
+    public remove(itemStockId: string) {
+        let index = this.find(itemStockId);
         if (index != -1) {
             this._content[index].quantity--;
             if(this._content[index].quantity <= 0) {
                 this._content.splice(index, 1);
             }
-        } else {
-            this._content.push(new OrderItem(id, 1));
         }
     }
     public quantity(id: string): number {
@@ -45,9 +43,9 @@ export class Order {
     public clear() {
         this._content = [];
     }
-    private find(id: string): number {
+    private find(itemStockId: string): number {
         return this._content.findIndex((data) => {
-            return data.stockId == id;
+            return data.stockId == itemStockId;
         });
     }
     get items(): OrderItem[] {

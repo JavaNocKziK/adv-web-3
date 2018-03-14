@@ -3,6 +3,7 @@ const router = express.Router();
 const sec = require('../classes/security');
 
 // Controllers
+const OrderController = require('../mongodb/controllers/order.controller');
 const UserModel = require('../mongodb/models/user.model');
 const UsersController = require('../mongodb/controllers/user.controller');
 
@@ -138,7 +139,7 @@ router.route('/:id/orders')
         if(!secResult.valid) {
             res.status(secResult.code).send();
         } else {
-            let result = await UsersController.orders(req.params.id);
+            let result = await OrderController.many(true, undefined, undefined, undefined, req.params.id);
             res.status(result.code).json(result);
         }
     });

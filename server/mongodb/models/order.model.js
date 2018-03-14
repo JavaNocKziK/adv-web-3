@@ -65,7 +65,6 @@ let OrderSchema = new mongoose.Schema(
  * it gets saved.
  */
 OrderSchema.pre('save', async function(next) {
-    console.log(this.timeCreated);
     // Generate the value of the order here.
     let allComplete = true;
     let hasCooking = false;

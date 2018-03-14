@@ -61,16 +61,21 @@ module.exports = {
      * @param detail Get stock details (name).
      * @param status Search for an order based on its status.
      * @param timeRange Search for an order based on when it was created.
+     * @param friendlyId Search for an order based on its friendly ID.
+     * @param userId Search for orders based on the user ID.
      * @param size Search for an order based on the number of unique items. (Not implemented).
      * @param items Search for an order that contains one or many items. (Not implemented).
      */
-    many: (detail, status, dateRange, friendlyId, size, items) => {
+    many: (detail, status, dateRange, friendlyId, userId, size, items) => {
         return new Promise((resolve) => {
             let search = OrderModel.find();
             if (status)         search.where('status').equals(status);
-            if (dateRange[0])   search.where('timeCreated').gte(new Date(dateRange[0]));
-            if (dateRange[1])   search.where('timeCreated').lte(new Date(dateRange[1]));
+            if (dateRange) {
+                if (dateRange[0])   search.where('timeCreated').gte(new Date(dateRange[0]));
+                if (dateRange[1])   search.where('timeCreated').lte(new Date(dateRange[1]));
+            }
             if (friendlyId)     search.where('friendlyId').equals(friendlyId);
+            if (userId)         search.where('userId').equals(userId);
             search.exec(async (err1, orders) => {
                 if (err1 || !orders) return resolve({ "status": 0, "code": 500, "message": "Issue obtaining orders.", "error": err1 });
                 if (!detail) {
@@ -101,7 +106,7 @@ module.exports = {
                                     totalPrice: (item.price * item.quantity)
                                 }
                             } else {
-                                return resolve({ "status": 0, "code": 500, "message": "Issue obtaining orders.", "error": err1 });
+                                return resolve({ "status": 0, "code": 500, "message": "Issue obtaining orders.", "error": "" });
                             }
                         }
                         // Get users name.
@@ -119,7 +124,7 @@ module.exports = {
                                 friendlyId: order.friendlyId
                             }
                         } else {
-
+                            return resolve({ "status": 0, "code": 500, "message": "Issue obtaining orders.", "error": "" });
                         }
                         orders[a] = order;
                     }
